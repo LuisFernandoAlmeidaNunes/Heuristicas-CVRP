@@ -2,7 +2,6 @@
 # e salvar em um arquivo de texto de nome "NOME-INSTANCIA-arestas" para evitar que metodos de busca tenham que 
 # calcular a distancia entre os nos a cada iteracao.
 
-
 import math
 class No:
 
@@ -41,6 +40,6 @@ def read_file(Path):
                     no1 = nos[ids[i]]
                     no2 = nos[ids[j]]
                     comprimento = calc_comprimento(no1.x, no1.y, no2.x, no2.y)
-                    output_file.write(f"{ids[i]} {ids[j]} {comprimento}\n")
+                    output_file.write(f"{ids[i]} {ids[j]} {comprimento:.2f}\n")
 
 read_file("Benchmark/A-n32-k5.vrp")
