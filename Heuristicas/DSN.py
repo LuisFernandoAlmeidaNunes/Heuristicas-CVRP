@@ -20,6 +20,7 @@ def DSN(inst):
     # 2. Ordenar os clientes do decrescente pela distância do depósito
     clientes_desalocados = list(inst.ids_clientes)
 
+    # TODO: trocar para um algoritmo mais eficiente de ordenação (merge ou quicksort) para poder escalonar
     # Uso do Bubble Sort para ordenar os clientes por distância do depósito (do mais distante para o mais próximo)
     for i in range(len(clientes_desalocados)):
        for j in range(i + 1, len(clientes_desalocados)):

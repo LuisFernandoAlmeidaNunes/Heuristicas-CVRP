@@ -1,5 +1,5 @@
-from Arestas import read_file
-from Instancia import Instancia 
+from core.Arestas import read_file
+from core.Instancia import Instancia
 from Heuristicas.DSN import DSN  # ok ser maiúsculo
 
 # passo 1 — gera o arquivo de arestas
