@@ -1,55 +1,62 @@
-from core.Arestas import read_file
-from core.Instancia import Instancia
-from Heuristicas.DSN import DSN  # ok ser maiúsculo
+from core.Instancia_cvrp import InstanciaCvrp
+from heuristicas.dsn import Dsn
 
-# passo 1 — gera o arquivo de arestas
-read_file("Benchmark/A-n32-k5.vrp")
-read_file("Benchmark/A-n33-k5.vrp")
-
-# passo 2 — lê instância e arestas
-inst1 = Instancia.ler_arquivo("Benchmark/A-n32-k5.vrp")
-inst2 = Instancia.ler_arquivo("Benchmark/A-n33-k5.vrp")
-
-# melhores conhecidos (fora do loop!)
-melhores = {
+# Melhores conhecidos
+MELHORES = {
     "A-n32-k5": 784.0,
     "A-n33-k5": 661.0
 }
 
-# passo 3 — loop nas instâncias
+# passo 1 — lê instâncias (grafo criado internamente!)
+print("LENDO INSTÂNCIAS...")
+inst1 = InstanciaCvrp.ler_arquivo("Benchmark/A-n32-k5.vrp")
+inst2 = InstanciaCvrp.ler_arquivo("Benchmark/A-n33-k5.vrp")
+
+print(f"✓ Instância 1: {inst1}")
+print(f"✓ Instância 2: {inst2}")
+
+# passo 2 — loop nas instâncias
 for inst in [inst1, inst2]:
+    print('\n' + '=' * 60)
+    print(f'INSTÂNCIA: {inst.nome}')
+    print(f'Clientes: {len(inst.ids_clientes)} | Capacidade: {inst.capacidade}')
+    print(f'Depósito: {inst.id_deposito}')
+    print('=' * 60)
 
-    print('\n' + '='*40)
-    print('NOME:', inst.nome)
-    print('CAPACIDADE:', inst.capacidade)
-    print('ID DEPÓSITO:', inst.id_deposito)
+    # Testa grafo
+    print('\n📊 TESTANDO GRAFO:')
+    print(f'  Nós totais: {len(inst.grafo.nos)}')
+    print(f'  Arestas: {len(inst.grafo.arestas)}')
+    print(f'  Distância (1→2): {inst.grafo.dist(1, 2):.2f}')
 
-    print('-' * 40)
-    print('DISTÂNCIA entre nó 1 e nó 2:')
-    print(inst.dist(1, 2))
+    print(f'\n📦 TESTANDO DEMANDAS:')
+    print(f'  Cliente 2: {inst.grafo.nos[2].demanda}')
+    print(f'  Cliente 1: {inst.grafo.nos[1].demanda}')
 
-    print('-' * 40)
-    print('DEMANDA do cliente 2:')
-    print(inst.demandas[2])
+    # Testa DSN
+    print('\n🚛 RODANDO DSN:')
+    dsn = Dsn()
+    rotas, custo, n_veiculos = dsn.resolver(inst)
 
-    print('-' * 40)
-
-    # testando DSN
-    print('TESTANDO DSN:')
-
-    rotas, custo, C = DSN(inst)
-
-    melhor = melhores[inst.nome]
+    # Calcula GAP
+    melhor = MELHORES[inst.nome]
     gap = 100 * abs(custo - melhor) / melhor
 
-    print(f"Veículos usados:  {C}")
-    print(f"Custo total:      {custo:.2f}")
-    print(f"Melhor conhecido: {melhor:.2f}")
-    print(f"GAP:              {gap:.2f}%")
+    print(f'\n📈 RESULTADOS:')
+    print(f'  Veículos:  {n_veiculos}')
+    print(f'  Custo:     {custo:.2f}')
+    print(f'  Ótimo:     {melhor:.2f}')
+    print(f'  GAP:       {gap:.2f}%')
+    print(f'  Heurística:{dsn.nome}')
 
-    print('-' * 40)
+    # Valida solução
+    todas_validas = all(dsn.validar_capacidade(inst, rota) for rota in rotas)
+    print(f'  Válida:    {"✅" if todas_validas else "❌"}')
 
-    # imprime rotas
+    print('\n🛤️ ROTAS:')
     for i, rota in enumerate(rotas):
         caminho = " → ".join(map(str, [inst.id_deposito] + rota + [inst.id_deposito]))
-        print(f"Rota {i+1}: {caminho}")
+        carga = sum(inst.grafo.nos[j].demanda for j in rota)
+        print(f'  R{i + 1:2d}: {caminho} (carga: {carga}/{inst.capacidade})')
+
+print('\n🎉 TESTES CONCLUÍDOS!')
