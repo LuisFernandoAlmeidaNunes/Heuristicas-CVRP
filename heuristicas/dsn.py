@@ -4,6 +4,7 @@ from heuristicas.Heuristica import Heuristica
 class Dsn(Heuristica):
     nome = "DSN (Distance Savings Nearest)"
 
+    #todo: Depois verificar se essa forma de implementação é otimizada para grafos grandes
     def resolver(self, inst) -> Tuple[List[List[int]], float, int]:
         deposito = inst.id_deposito
         capacidade = inst.capacidade
