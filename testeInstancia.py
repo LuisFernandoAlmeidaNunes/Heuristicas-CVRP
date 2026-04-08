@@ -33,7 +33,7 @@ for inst in instancias:
 
     print("\n📊 DADOS DA INSTÂNCIA")
     print(f"Nós totais: {len(inst.grafo.nos)}")
-    print(f"Arestas:    {len(inst.grafo.arestas)}")
+    print(f"Arestas:    {inst.grafo.n_arestas}")
     print(f"Dist(1,2):  {inst.grafo.dist(1, 2):.2f}")
     print(f"Demanda 1:  {inst.grafo.nos[1].demanda}")
     print(f"Demanda 2:  {inst.grafo.nos[2].demanda}")
