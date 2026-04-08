@@ -1,5 +1,5 @@
 from typing import List, Tuple
-from heuristicas.Heuristica import Heuristica
+from Heuristicas.Heuristica import Heuristica
 
 
 class NearestNeighbor(Heuristica):
@@ -34,7 +34,10 @@ class NearestNeighbor(Heuristica):
                 ]
 
                 if not candidatos:
-                    break
+                    break # <- Acredito que isso aqui pode ser um problema
+                    # O algoritmo acha o cliente mais próximo do cluster. Se ele não cabe na capacidade, ele fecha a rota imediatamente
+                    # O problema: pode haver outros clientes com demanda menor que ainda caberiam no veículo.
+                    # O break desperdiça capacidade em toda rota, gerando mais veículos e custo maior que o necessário
 
                 proximo = min(candidatos, key=lambda c: grafo.dist(atual, c))
 
