@@ -5,7 +5,11 @@ from heuristicas.sweep import Sweep
 
 MELHORES = {
     "A-n32-k5": 784.0,
-    "A-n33-k5": 661.0
+    "A-n33-k5": 661.0,
+    "Golden_18": 995.13,
+    "Golden_3": 11036.22,
+    "Tai150b": 2646.47,
+    "Loggi-n601-k42": 347046.00
 }
 
 #para testar novas heurísticas é só adicionar aqui embaixo
@@ -18,7 +22,11 @@ heuristicas = [
 #adicionar aqui as instâncias que devem ser testadas
 instancias = [
     InstanciaCvrp.ler_arquivo("Benchmark/A-n32-k5.vrp"),
-    InstanciaCvrp.ler_arquivo("Benchmark/A-n33-k5.vrp")
+    InstanciaCvrp.ler_arquivo("Benchmark/A-n33-k5.vrp"),
+    InstanciaCvrp.ler_arquivo("Benchmark/Golden_18.vrp"),
+    InstanciaCvrp.ler_arquivo("Benchmark/Golden_3.vrp"),
+    InstanciaCvrp.ler_arquivo("Benchmark/tai150b.vrp"),
+    InstanciaCvrp.ler_arquivo("Benchmark/Loggi-n601-k42.vrp"),
 ]
 
 print("LENDO INSTÂNCIAS...")
@@ -69,14 +77,14 @@ for inst in instancias:
     print(f"{'Melhor conhecido':<35} {melhor:>12.2f}")
     print(f"{'Melhor heurística':<35} {resultados[0]['heuristica']}")
 
-    for r in resultados:
-        print("\n" + "-" * 90)
-        print(f"🛤️ ROTAS — {r['heuristica']}")
-        print("-" * 90)
-
-        for i, rota in enumerate(r["rotas"], start=1):
-            caminho = " → ".join(map(str, [inst.id_deposito] + rota + [inst.id_deposito]))
-            carga = sum(inst.grafo.nos[j].demanda for j in rota)
-            print(f"R{i:02d}: {caminho} | carga: {carga}/{inst.capacidade}")
+    # for r in resultados:
+    #     print("\n" + "-" * 90)
+    #     print(f"🛤️ ROTAS — {r['heuristica']}")
+    #     print("-" * 90)
+    #
+    #     for i, rota in enumerate(r["rotas"], start=1):
+    #         caminho = " → ".join(map(str, [inst.id_deposito] + rota + [inst.id_deposito]))
+    #         carga = sum(inst.grafo.nos[j].demanda for j in rota)
+    #         print(f"R{i:02d}: {caminho} | carga: {carga}/{inst.capacidade}")
 
 print("\nTESTES CONCLUÍDOS!")
