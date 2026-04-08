@@ -1,7 +1,7 @@
 from core.Instancia_cvrp import InstanciaCvrp
-from heuristicas.clarke_wright import ClarkeWright
-from heuristicas.nearest_neighbor import NearestNeighbor
-from heuristicas.sweep import Sweep
+from Heuristicas.clarke_wright import ClarkeWright
+from Heuristicas.nearest_neighbor import NearestNeighbor
+from Heuristicas.sweep import Sweep
 
 MELHORES = {
     "A-n32-k5": 784.0,
@@ -25,7 +25,7 @@ instancias = [
     InstanciaCvrp.ler_arquivo("Benchmark/A-n33-k5.vrp"),
     InstanciaCvrp.ler_arquivo("Benchmark/Golden_18.vrp"),
     InstanciaCvrp.ler_arquivo("Benchmark/Golden_3.vrp"),
-    InstanciaCvrp.ler_arquivo("Benchmark/tai150b.vrp"),
+    # InstanciaCvrp.ler_arquivo("Benchmark/tai150b.vrp"),
     InstanciaCvrp.ler_arquivo("Benchmark/Loggi-n601-k42.vrp"),
 ]
 
