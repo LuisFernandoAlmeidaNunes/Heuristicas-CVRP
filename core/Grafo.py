@@ -42,6 +42,9 @@ class Grafo:
     def dist(self, i: int, j: int) -> float:
         return float(self._matriz[i, j])
 
+    def construir_arestas_explicitas(self, matriz):
+        self._matriz = matriz
+
     @property
     def n_arestas(self) -> int:
         n = self._matriz.shape[0] - 1  # desconta o offset
