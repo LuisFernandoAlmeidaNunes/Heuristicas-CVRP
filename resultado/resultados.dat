@@ -337,3 +337,5 @@ Loggi-n601-k42	SW (Sweep)	1004741.00	0.0292	189.51
 Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	2.2439	31.80
 Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.5125	28.87
 A-n32-k5	CL (Christofides-Like)	1075.10	0.0028	37.13
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0037	37.13
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0010	7.61
