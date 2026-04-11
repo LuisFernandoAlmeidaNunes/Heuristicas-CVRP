@@ -58,7 +58,6 @@ class NearestNeighbor(Heuristica):
                     f"Cliente inviável: demanda excede capacidade {capacidade}"
                 )
 
-        rotas = self.otimizar_rotas_2opt(inst, rotas)
         custo_total = super().calcular_custo(inst, rotas)
         n_veiculos = len(rotas)
 

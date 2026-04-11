@@ -10,7 +10,7 @@ class Sweep(Heuristica):
     2. Ordena os clientes por ângulo crescente (varredura angular)
     3. Agrupa clientes em rotas respeitando a capacidade do veículo
     4. Reordena os clientes DENTRO de cada rota usando Nearest Neighbor local
-    5. Refina cada rota com 2-opt para reduzir cruzamentos internos
+
     """
     nome = "SW (Sweep)"
 
@@ -53,9 +53,6 @@ class Sweep(Heuristica):
         for grupo in grupos:
             rota = self._nn_local(deposito, grupo, grafo)
             rotas.append(rota)
-
-        # 4. Refina com 2-opt (agora disponível na classe base)
-        rotas = self.otimizar_rotas_2opt(inst, rotas)
 
         custo_total = super().calcular_custo(inst, rotas)
         n_veiculos = len(rotas)
