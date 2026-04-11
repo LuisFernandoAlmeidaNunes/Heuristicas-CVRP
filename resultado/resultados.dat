@@ -1,0 +1,339 @@
+INSTANCE	METHOD	OBJECTIVE	RUNTIME	GAP
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0021	7.61
+A-n32-k5	NN (Nearest Neighbor)	1146.40	0.0003	46.22
+A-n32-k5	SW (Sweep)	1001.59	0.0002	27.75
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0016	7.72
+A-n33-k5	NN (Nearest Neighbor)	978.15	0.0003	47.98
+A-n33-k5	SW (Sweep)	747.05	0.0003	13.02
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.1002	7.30
+Golden_18	NN (Nearest Neighbor)	1301.40	0.0273	30.78
+Golden_18	SW (Sweep)	1310.50	0.0015	31.69
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1688	16.82
+Golden_3	NN (Nearest Neighbor)	13470.09	0.0609	22.48
+Golden_3	SW (Sweep)	13026.41	0.0053	18.45
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.3899	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	435491.00	0.0910	25.49
+Loggi-n601-k42	SW (Sweep)	1100073.00	0.0031	216.98
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0013	7.61
+A-n32-k5	NN (Nearest Neighbor)	1146.40	0.0003	46.22
+A-n32-k5	SW (Sweep)	1001.59	0.0002	27.75
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0035	33.72
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0021	7.72
+A-n33-k5	NN (Nearest Neighbor)	978.15	0.0004	47.98
+A-n33-k5	SW (Sweep)	747.05	0.0001	13.02
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0024	29.87
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.1036	7.30
+Golden_18	NN (Nearest Neighbor)	1301.40	0.0270	30.78
+Golden_18	SW (Sweep)	1310.50	0.0018	31.69
+Golden_18	AI (Adaptive Insertion)	1213.12	0.3925	21.91
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1563	16.82
+Golden_3	NN (Nearest Neighbor)	13470.09	0.0460	22.48
+Golden_3	SW (Sweep)	13026.41	0.0053	18.45
+Golden_3	AI (Adaptive Insertion)	13625.16	2.4189	23.89
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.3991	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	435491.00	0.1011	25.49
+Loggi-n601-k42	SW (Sweep)	1100073.00	0.0032	216.98
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	1.8705	31.80
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0014	7.61
+A-n32-k5	NN (Nearest Neighbor)	1146.40	0.0003	46.22
+A-n32-k5	SW (Sweep)	1001.59	0.0001	27.75
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0025	33.72
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0020	7.72
+A-n33-k5	NN (Nearest Neighbor)	978.15	0.0003	47.98
+A-n33-k5	SW (Sweep)	747.05	0.0002	13.02
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0044	29.87
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.1083	7.30
+Golden_18	NN (Nearest Neighbor)	1301.40	0.0304	30.78
+Golden_18	SW (Sweep)	1310.50	0.0027	31.69
+Golden_18	AI (Adaptive Insertion)	1213.12	0.4337	21.91
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1847	16.82
+Golden_3	NN (Nearest Neighbor)	13470.09	0.0477	22.48
+Golden_3	SW (Sweep)	13026.41	0.0055	18.45
+Golden_3	AI (Adaptive Insertion)	13625.16	2.4448	23.89
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.4567	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	435491.00	0.1045	25.49
+Loggi-n601-k42	SW (Sweep)	1100073.00	0.0051	216.98
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	1.9443	31.80
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0018	7.61
+A-n32-k5	NN (Nearest Neighbor)	1146.40	0.0003	46.22
+A-n32-k5	SW (Sweep)	1001.59	0.0003	27.75
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0024	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0029	37.13
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0011	7.72
+A-n33-k5	NN (Nearest Neighbor)	978.15	0.0003	47.98
+A-n33-k5	SW (Sweep)	747.05	0.0003	13.02
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0038	29.87
+A-n33-k5	CL (Christofides-Like)	803.95	0.0028	21.63
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.0952	7.30
+Golden_18	NN (Nearest Neighbor)	1301.40	0.0276	30.78
+Golden_18	SW (Sweep)	1310.50	0.0028	31.69
+Golden_18	AI (Adaptive Insertion)	1213.12	0.4091	21.91
+Golden_18	CL (Christofides-Like)	1279.98	0.5417	28.62
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1626	16.82
+Golden_3	NN (Nearest Neighbor)	13470.09	0.0560	22.48
+Golden_3	SW (Sweep)	13026.41	0.0055	18.45
+Golden_3	AI (Adaptive Insertion)	13625.16	2.6212	23.89
+Golden_3	CL (Christofides-Like)	12430.64	3.0247	13.03
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.4801	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	435491.00	0.1023	25.49
+Loggi-n601-k42	SW (Sweep)	1100073.00	0.0069	216.98
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	1.8829	31.80
+Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.1176	28.87
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0017	7.61
+A-n32-k5	NN (Nearest Neighbor)	1146.40	0.0003	46.22
+A-n32-k5	SW (Sweep)	1001.59	0.0002	27.75
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0039	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0033	37.13
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0015	7.72
+A-n33-k5	NN (Nearest Neighbor)	978.15	0.0008	47.98
+A-n33-k5	SW (Sweep)	747.05	0.0003	13.02
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0042	29.87
+A-n33-k5	CL (Christofides-Like)	803.95	0.0028	21.63
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.0925	7.30
+Golden_18	NN (Nearest Neighbor)	1301.40	0.0276	30.78
+Golden_18	SW (Sweep)	1310.50	0.0018	31.69
+Golden_18	AI (Adaptive Insertion)	1213.12	0.3977	21.91
+Golden_18	CL (Christofides-Like)	1279.98	0.4429	28.62
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1789	16.82
+Golden_3	NN (Nearest Neighbor)	13470.09	0.0443	22.48
+Golden_3	SW (Sweep)	13026.41	0.0082	18.45
+Golden_3	AI (Adaptive Insertion)	13625.16	2.5352	23.89
+Golden_3	CL (Christofides-Like)	12430.64	2.7231	13.03
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.4044	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	435491.00	0.1066	25.49
+Loggi-n601-k42	SW (Sweep)	1100073.00	0.0037	216.98
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	1.8496	31.80
+Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.0819	28.87
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0013	7.61
+A-n32-k5	NN (Nearest Neighbor)	1146.40	0.0006	46.22
+A-n32-k5	SW (Sweep)	1001.59	0.0002	27.75
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0046	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0048	37.13
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0020	7.72
+A-n33-k5	NN (Nearest Neighbor)	978.15	0.0005	47.98
+A-n33-k5	SW (Sweep)	747.05	0.0005	13.02
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0040	29.87
+A-n33-k5	CL (Christofides-Like)	803.95	0.0039	21.63
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.1032	7.30
+Golden_18	NN (Nearest Neighbor)	1301.40	0.0260	30.78
+Golden_18	SW (Sweep)	1310.50	0.0031	31.69
+Golden_18	AI (Adaptive Insertion)	1213.12	0.4781	21.91
+Golden_18	CL (Christofides-Like)	1279.98	0.4770	28.62
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1736	16.82
+Golden_3	NN (Nearest Neighbor)	13470.09	0.0544	22.48
+Golden_3	SW (Sweep)	13026.41	0.0090	18.45
+Golden_3	AI (Adaptive Insertion)	13625.16	2.6185	23.89
+Golden_3	CL (Christofides-Like)	12430.64	2.9131	13.03
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.4060	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	435491.00	0.0955	25.49
+Loggi-n601-k42	SW (Sweep)	1100073.00	0.0032	216.98
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	1.9548	31.80
+Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.7471	28.87
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0013	7.61
+A-n32-k5	NN (Nearest Neighbor)	1146.40	0.0004	46.22
+A-n32-k5	SW (Sweep)	1001.59	0.0004	27.75
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0025	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0029	37.13
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0014	7.72
+A-n33-k5	NN (Nearest Neighbor)	978.15	0.0003	47.98
+A-n33-k5	SW (Sweep)	747.05	0.0002	13.02
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0047	29.87
+A-n33-k5	CL (Christofides-Like)	803.95	0.0046	21.63
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.1310	7.30
+Golden_18	NN (Nearest Neighbor)	1301.40	0.0317	30.78
+Golden_18	SW (Sweep)	1310.50	0.0014	31.69
+Golden_18	AI (Adaptive Insertion)	1213.12	0.4491	21.91
+Golden_18	CL (Christofides-Like)	1279.98	0.5045	28.62
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.2387	16.82
+Golden_3	NN (Nearest Neighbor)	13470.09	0.0467	22.48
+Golden_3	SW (Sweep)	13026.41	0.0051	18.45
+Golden_3	AI (Adaptive Insertion)	13625.16	2.5223	23.89
+Golden_3	CL (Christofides-Like)	12430.64	2.5088	13.03
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.4522	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	435491.00	0.0985	25.49
+Loggi-n601-k42	SW (Sweep)	1100073.00	0.0033	216.98
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	2.2738	31.80
+Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.5203	28.87
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0013	7.61
+A-n32-k5	NN (Nearest Neighbor)	1146.40	0.0006	46.22
+A-n32-k5	SW (Sweep)	1001.59	0.0002	27.75
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0024	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0052	37.13
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0019	7.72
+A-n33-k5	NN (Nearest Neighbor)	978.15	0.0003	47.98
+A-n33-k5	SW (Sweep)	747.05	0.0002	13.02
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0024	29.87
+A-n33-k5	CL (Christofides-Like)	803.95	0.0027	21.63
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.0936	7.30
+Golden_18	NN (Nearest Neighbor)	1301.40	0.0228	30.78
+Golden_18	SW (Sweep)	1310.50	0.0015	31.69
+Golden_18	AI (Adaptive Insertion)	1213.12	0.3944	21.91
+Golden_18	CL (Christofides-Like)	1279.98	0.5088	28.62
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1645	16.82
+Golden_3	NN (Nearest Neighbor)	13470.09	0.0548	22.48
+Golden_3	SW (Sweep)	13026.41	0.0048	18.45
+Golden_3	AI (Adaptive Insertion)	13625.16	2.4103	23.89
+Golden_3	CL (Christofides-Like)	12430.64	2.8615	13.03
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.3983	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	435491.00	0.0998	25.49
+Loggi-n601-k42	SW (Sweep)	1100073.00	0.0031	216.98
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	2.3221	31.80
+Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.5731	28.87
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0014	7.61
+A-n32-k5	NN (Nearest Neighbor)	1146.40	0.0004	46.22
+A-n32-k5	SW (Sweep)	1001.59	0.0005	27.75
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0024	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0030	37.13
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0014	7.72
+A-n33-k5	NN (Nearest Neighbor)	978.15	0.0003	47.98
+A-n33-k5	SW (Sweep)	747.05	0.0002	13.02
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0048	29.87
+A-n33-k5	CL (Christofides-Like)	803.95	0.0045	21.63
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.0996	7.30
+Golden_18	NN (Nearest Neighbor)	1301.40	0.0261	30.78
+Golden_18	SW (Sweep)	1310.50	0.0016	31.69
+Golden_18	AI (Adaptive Insertion)	1213.12	0.4326	21.91
+Golden_18	CL (Christofides-Like)	1279.98	0.6408	28.62
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.2015	16.82
+Golden_3	NN (Nearest Neighbor)	13470.09	0.0473	22.48
+Golden_3	SW (Sweep)	13026.41	0.0064	18.45
+Golden_3	AI (Adaptive Insertion)	13625.16	3.0871	23.89
+Golden_3	CL (Christofides-Like)	12430.64	2.9077	13.03
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.4314	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	435491.00	0.0993	25.49
+Loggi-n601-k42	SW (Sweep)	1100073.00	0.0035	216.98
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	2.0509	31.80
+Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.5445	28.87
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0013	7.61
+A-n32-k5	NN (Nearest Neighbor)	1146.40	0.0003	46.22
+A-n32-k5	SW (Sweep)	1001.59	0.0003	27.75
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0023	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0033	37.13
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0016	7.72
+A-n33-k5	NN (Nearest Neighbor)	978.15	0.0003	47.98
+A-n33-k5	SW (Sweep)	747.05	0.0002	13.02
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0038	29.87
+A-n33-k5	CL (Christofides-Like)	803.95	0.0029	21.63
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.0969	7.30
+Golden_18	NN (Nearest Neighbor)	1301.40	0.0258	30.78
+Golden_18	SW (Sweep)	1310.50	0.0016	31.69
+Golden_18	AI (Adaptive Insertion)	1213.12	0.4019	21.91
+Golden_18	CL (Christofides-Like)	1279.98	0.4561	28.62
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1583	16.82
+Golden_3	NN (Nearest Neighbor)	13470.09	0.0407	22.48
+Golden_3	SW (Sweep)	13026.41	0.0049	18.45
+Golden_3	AI (Adaptive Insertion)	13625.16	2.5373	23.89
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0020	7.61
+Golden_3	CL (Christofides-Like)	12430.64	2.7427	13.03
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.4352	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	435491.00	0.0884	25.49
+Loggi-n601-k42	SW (Sweep)	1100073.00	0.0049	216.98
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	1.9225	31.80
+Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.2665	28.87
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0013	7.61
+A-n32-k5	NN (Nearest Neighbor)	1146.40	0.0006	46.22
+A-n32-k5	SW (Sweep)	1001.59	0.0004	27.75
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0032	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0050	37.13
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0013	7.61
+A-n32-k5	NN (Nearest Neighbor)	1118.26	0.0011	42.64
+A-n32-k5	SW (Sweep)	988.77	0.0007	26.12
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0043	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0035	37.13
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0011	7.72
+A-n33-k5	NN (Nearest Neighbor)	956.79	0.0009	44.75
+A-n33-k5	SW (Sweep)	705.79	0.0004	6.78
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0044	29.87
+A-n33-k5	CL (Christofides-Like)	803.95	0.0028	21.63
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.0909	7.30
+Golden_18	NN (Nearest Neighbor)	1262.10	0.0303	26.83
+Golden_18	SW (Sweep)	1209.61	0.0132	21.55
+Golden_18	AI (Adaptive Insertion)	1213.12	0.3783	21.91
+Golden_18	CL (Christofides-Like)	1279.98	0.4572	28.62
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1502	16.82
+Golden_3	NN (Nearest Neighbor)	12710.20	0.0778	15.57
+Golden_3	SW (Sweep)	11586.40	0.0601	5.35
+Golden_3	AI (Adaptive Insertion)	13625.16	2.3029	23.89
+Golden_3	CL (Christofides-Like)	12430.64	2.4951	13.03
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.3837	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	426299.00	0.1064	22.84
+Loggi-n601-k42	SW (Sweep)	1004741.00	0.0201	189.51
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	1.8619	31.80
+Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.2126	28.87
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0011	7.61
+A-n32-k5	NN (Nearest Neighbor)	1118.26	0.0012	42.64
+A-n32-k5	SW (Sweep)	988.77	0.0003	26.12
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0031	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0029	37.13
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0020	7.72
+A-n33-k5	NN (Nearest Neighbor)	956.79	0.0005	44.75
+A-n33-k5	SW (Sweep)	705.79	0.0009	6.78
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0026	29.87
+A-n33-k5	CL (Christofides-Like)	803.95	0.0027	21.63
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.0963	7.30
+Golden_18	NN (Nearest Neighbor)	1262.10	0.0273	26.83
+Golden_18	SW (Sweep)	1209.61	0.0096	21.55
+Golden_18	AI (Adaptive Insertion)	1213.12	0.4276	21.91
+Golden_18	CL (Christofides-Like)	1279.98	0.4508	28.62
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1543	16.82
+Golden_3	NN (Nearest Neighbor)	12710.20	0.0839	15.57
+Golden_3	SW (Sweep)	11586.40	0.0860	5.35
+Golden_3	AI (Adaptive Insertion)	13625.16	2.4509	23.89
+Golden_3	CL (Christofides-Like)	12430.64	2.5669	13.03
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.3885	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	426299.00	0.1180	22.84
+Loggi-n601-k42	SW (Sweep)	1004741.00	0.0315	189.51
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	2.0302	31.80
+Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.1950	28.87
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0014	7.61
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0015	7.61
+A-n32-k5	NN (Nearest Neighbor)	1118.26	0.0005	42.64
+A-n32-k5	SW (Sweep)	988.77	0.0007	26.12
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0040	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0050	37.13
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0016	7.72
+A-n33-k5	NN (Nearest Neighbor)	956.79	0.0005	44.75
+A-n33-k5	SW (Sweep)	705.79	0.0007	6.78
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0031	29.87
+A-n33-k5	CL (Christofides-Like)	803.95	0.0041	21.63
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.1611	7.30
+Golden_18	NN (Nearest Neighbor)	1262.10	0.0319	26.83
+Golden_18	SW (Sweep)	1209.61	0.0109	21.55
+Golden_18	AI (Adaptive Insertion)	1213.12	0.4123	21.91
+Golden_18	CL (Christofides-Like)	1279.98	0.4727	28.62
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1565	16.82
+Golden_3	NN (Nearest Neighbor)	12710.20	0.0810	15.57
+Golden_3	SW (Sweep)	11586.40	0.0709	5.35
+Golden_3	AI (Adaptive Insertion)	13625.16	2.4473	23.89
+Golden_3	CL (Christofides-Like)	12430.64	2.6133	13.03
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.4121	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	426299.00	0.1353	22.84
+Loggi-n601-k42	SW (Sweep)	1004741.00	0.0262	189.51
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	1.9604	31.80
+Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.1573	28.87
+A-n32-k5	CW (Clarke & Wright Savings)	843.69	0.0013	7.61
+A-n32-k5	NN (Nearest Neighbor)	1118.26	0.0010	42.64
+A-n32-k5	SW (Sweep)	988.77	0.0007	26.12
+A-n32-k5	AI (Adaptive Insertion)	1048.35	0.0041	33.72
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0058	37.13
+A-n33-k5	CW (Clarke & Wright Savings)	712.05	0.0011	7.72
+A-n33-k5	NN (Nearest Neighbor)	956.79	0.0005	44.75
+A-n33-k5	SW (Sweep)	705.79	0.0005	6.78
+A-n33-k5	AI (Adaptive Insertion)	858.42	0.0026	29.87
+A-n33-k5	CL (Christofides-Like)	803.95	0.0030	21.63
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.0966	7.30
+Golden_18	NN (Nearest Neighbor)	1262.10	0.0316	26.83
+Golden_18	SW (Sweep)	1209.61	0.0100	21.55
+Golden_18	AI (Adaptive Insertion)	1213.12	0.4208	21.91
+Golden_18	CL (Christofides-Like)	1279.98	0.4697	28.62
+Golden_3	CW (Clarke & Wright Savings)	12847.40	0.1655	16.82
+Golden_3	NN (Nearest Neighbor)	12710.20	0.0816	15.57
+Golden_3	SW (Sweep)	11586.40	0.0691	5.35
+Golden_3	AI (Adaptive Insertion)	13625.16	2.4790	23.89
+Golden_3	CL (Christofides-Like)	12430.64	2.5261	13.03
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.4331	4.69
+Loggi-n601-k42	NN (Nearest Neighbor)	426299.00	0.1295	22.84
+Loggi-n601-k42	SW (Sweep)	1004741.00	0.0292	189.51
+Loggi-n601-k42	AI (Adaptive Insertion)	457404.00	2.2439	31.80
+Loggi-n601-k42	CL (Christofides-Like)	447234.00	2.5125	28.87
+A-n32-k5	CL (Christofides-Like)	1075.10	0.0028	37.13
