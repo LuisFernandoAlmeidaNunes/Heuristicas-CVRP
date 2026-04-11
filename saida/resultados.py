@@ -175,7 +175,6 @@ def executar_instancia(heuristicas: list,
         r = executar_e_salvar(h, inst, melhor_conhecido, arquivo_resultado, pasta_plots)
         # add veiculos no retorno
         r["veiculos"] = len(r["rotas"])
-        linha_resultado(r)
         resultados.append(r)
 
     for r in resultados:
@@ -184,3 +183,5 @@ def executar_instancia(heuristicas: list,
     mensagem_info(f"Plot salvo em: {pasta_plots}/")
 
     return resultados
+
+#TODO: os dados no arquivo dat devem ser sobescritos a cada vez que rodar o algoritmo. Do jeito que está, está salvando com os resultados anteriores de todas as execuções
