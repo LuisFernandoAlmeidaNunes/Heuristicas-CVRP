@@ -9,7 +9,8 @@ class Sweep(Heuristica):
     1. Calcula o ângulo polar de cada cliente em relação ao depósito
     2. Ordena os clientes por ângulo crescente (varredura angular)
     3. Agrupa clientes em rotas respeitando a capacidade do veículo
-    4. A ordem de visita dentro de cada rota é a própria ordem da varredura
+    4. Reordena os clientes DENTRO de cada rota usando Nearest Neighbor local
+    5. Refina cada rota com 2-opt para reduzir cruzamentos internos
     """
     nome = "SW (Sweep)"
 
@@ -21,34 +22,59 @@ class Sweep(Heuristica):
 
         dep = grafo.nos[deposito]
 
-        # 1. Calcula ângulo polar de cada cliente em relação ao depósito
+        # 1. Ângulo polar de cada cliente em relação ao depósito
         def angulo(cliente_id):
             no = grafo.nos[cliente_id]
             return math.atan2(no.y - dep.y, no.x - dep.x)
 
         clientes_ordenados = sorted(clientes, key=angulo)
 
-        # 2. Agrupa e define ordem de visita pela própria varredura angular
-        rotas = []
-        rota_atual = []
+        # 2. Agrupa por varredura angular respeitando capacidade
+        grupos = []
+        grupo_atual = []
         carga_atual = 0
 
         for c in clientes_ordenados:
             demanda = grafo.nos[c].demanda
-
             if carga_atual + demanda > capacidade:
-                if rota_atual:
-                    rotas.append(rota_atual)
-                rota_atual = [c]
+                if grupo_atual:
+                    grupos.append(grupo_atual)
+                grupo_atual = [c]
                 carga_atual = demanda
             else:
-                rota_atual.append(c)
+                grupo_atual.append(c)
                 carga_atual += demanda
 
-        if rota_atual:
-            rotas.append(rota_atual)
+        if grupo_atual:
+            grupos.append(grupo_atual)
+
+        # 3. Reordena cada grupo com NN local
+        rotas = []
+        for grupo in grupos:
+            rota = self._nn_local(deposito, grupo, grafo)
+            rotas.append(rota)
+
+        # 4. Refina com 2-opt (agora disponível na classe base)
+        rotas = self.otimizar_rotas_2opt(inst, rotas)
 
         custo_total = super().calcular_custo(inst, rotas)
         n_veiculos = len(rotas)
 
         return rotas, custo_total, n_veiculos
+
+    def _nn_local(self, deposito: int, clientes: List[int], grafo) -> List[int]:
+        """
+        Nearest Neighbor dentro de um grupo fixo de clientes.
+        Parte do depósito e visita sempre o mais próximo ainda não visitado.
+        """
+        nao_visitados = set(clientes)
+        rota = []
+        atual = deposito
+
+        while nao_visitados:
+            proximo = min(nao_visitados, key=lambda c: grafo.dist(atual, c))
+            rota.append(proximo)
+            nao_visitados.remove(proximo)
+            atual = proximo
+
+        return rota

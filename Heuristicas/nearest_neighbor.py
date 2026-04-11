@@ -5,12 +5,17 @@ from Heuristicas.Heuristica import Heuristica
 class NearestNeighbor(Heuristica):
     """
     Heurística construtiva Vizinho Mais Próximo (Nearest Neighbor):
-    1. Inicia uma rota a partir do depósito (0)
-    2. Seleciona, entre os clientes não atendidos, o mais próximo do último cliente visitado
-    3. Adiciona o cliente à rota, respeitando a capacidade do veículo
-    4. Repete o processo até não ser possível inserir mais clientes na rota
-    5. Retorna ao depósito e inicia uma nova rota com os clientes restantes
-    6. Continua até que todos os clientes sejam atendidos
+    1. Inicia uma rota a partir do depósito
+    2. Seleciona o cliente mais próximo do último visitado que AINDA CABE no veículo
+    3. Continua até não haver mais nenhum cliente que caiba (não só o mais próximo)
+    4. Fecha a rota e abre uma nova com os clientes restantes
+    5. Repete até atender todos
+
+    CORREÇÃO em relação à versão anterior:
+      - O break antigo fechava a rota assim que o cliente MAIS PRÓXIMO não cabia,
+        mesmo que outros clientes com demanda menor ainda coubessem.
+      - Agora os candidatos são filtrados por capacidade restante antes de escolher
+        o mais próximo, aproveitando melhor cada veículo.
     """
     nome = "NN (Nearest Neighbor)"
 
@@ -28,17 +33,17 @@ class NearestNeighbor(Heuristica):
             atual = deposito
 
             while True:
+                # Filtra TODOS os clientes que ainda cabem — não só o mais próximo
                 candidatos = [
                     c for c in nao_visitados
                     if carga + grafo.nos[c].demanda <= capacidade
                 ]
 
+                # Só fecha a rota quando realmente não há mais nenhum que caiba
                 if not candidatos:
-                    break # <- Acredito que isso aqui pode ser um problema
-                    # O algoritmo acha o cliente mais próximo do cluster. Se ele não cabe na capacidade, ele fecha a rota imediatamente
-                    # O problema: pode haver outros clientes com demanda menor que ainda caberiam no veículo.
-                    # O break desperdiça capacidade em toda rota, gerando mais veículos e custo maior que o necessário
+                    break
 
+                # Entre os que cabem, escolhe o mais próximo
                 proximo = min(candidatos, key=lambda c: grafo.dist(atual, c))
 
                 rota.append(proximo)
@@ -46,14 +51,14 @@ class NearestNeighbor(Heuristica):
                 nao_visitados.remove(proximo)
                 atual = proximo
 
-            if rota:  # evita rotas vazias
+            if rota:
                 rotas.append(rota)
-            elif nao_visitados:  # evita loop infinito
-                # Cliente inviável: remove o de menor demanda (ou lança erro)
+            elif nao_visitados:
                 raise ValueError(
-                    f"Cliente inviável detectado demanda excede capacidade {capacidade}"
+                    f"Cliente inviável: demanda excede capacidade {capacidade}"
                 )
 
+        rotas = self.otimizar_rotas_2opt(inst, rotas)
         custo_total = super().calcular_custo(inst, rotas)
         n_veiculos = len(rotas)
 
