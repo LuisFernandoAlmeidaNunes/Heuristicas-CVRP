@@ -33,17 +33,15 @@ class NearestNeighbor(Heuristica):
             atual = deposito
 
             while True:
-                # Filtra TODOS os clientes que ainda cabem — não só o mais próximo
                 candidatos = [
                     c for c in nao_visitados
                     if carga + grafo.nos[c].demanda <= capacidade
+                       and self.validar_viabilidade(inst, rota + [c])  # ← linha adicionada
                 ]
 
-                # Só fecha a rota quando realmente não há mais nenhum que caiba
                 if not candidatos:
                     break
 
-                # Entre os que cabem, escolhe o mais próximo
                 proximo = min(candidatos, key=lambda c: grafo.dist(atual, c))
 
                 rota.append(proximo)

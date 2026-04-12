@@ -9,6 +9,7 @@ TODO:
 - pasta saida ->  vai conter arquivo para plotar gráficos e salvar os resultados em csv (o correto é não printar os resultados na tela) e também o arquivo de análise de benchmark. o main apenas vai instanciar e invocar os métodos mas não deve ter implementação de nada.
 - pasta resultado -> é onde os arquivos csv e gráficos serão salvos
 """
+from Heuristicas.sequential_insertion import MoleJameson
 
 """
 Main.py — CVRP Solver
@@ -32,9 +33,10 @@ from core.Instancia_cvrp import InstanciaCvrp
 from Heuristicas.clarke_wright import ClarkeWright
 from Heuristicas.nearest_neighbor import NearestNeighbor
 from Heuristicas.sweep import Sweep
-from Heuristicas.adaptive_insertion import AdaptiveInsertion
+from Heuristicas.sequential_insertion import MoleJameson
+
 from saida.resultados import executar_e_salvar
-from Heuristicas.christofides_like import ChristofidesLike
+
 from saida.terminal import (
     BOLD, CINZA, CIANO, DIM, RESET,
     cabecalho_instancia, linha_resultado, rodape_instancia,
@@ -46,8 +48,8 @@ HEURISTICAS = {
     "CW": ClarkeWright(),
     "NN": NearestNeighbor(),
     "SW": Sweep(),
-    "AI": AdaptiveInsertion(),
-    "CL": ChristofidesLike(),
+    "ML": MoleJameson(),
+
 }
 
 # Melhores valores conhecidos (BKS) das instâncias do benchmark

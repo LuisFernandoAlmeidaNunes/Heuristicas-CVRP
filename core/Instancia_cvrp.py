@@ -26,7 +26,7 @@ def _att(x1, y1, x2, y2) -> float:
     return float(t + 1 if t < r else t)
 
 _DIST_FUNC = {
-    "EUC_2D":  None,       # None -> usa o caminho vetorizado rápido do Grafo
+    "EUC_2D":  None,        # ← BUG: vetorizado sem arredondamento
     "CEIL_2D": _ceil_2d,
     "ATT":     _att,
 }
@@ -54,6 +54,8 @@ class InstanciaCvrp:
         tipo_distancia = "EUC_2D"   # ← BUG CORRIGIDO: antes lançava erro se ausente
         formato_peso = None
         pesos_brutos = []
+        max_distancia = float('inf')  # Se não houver a chave DISTANCE, a autonomia é infinita
+        tempo_servico = 0
 
         modo = None
 
@@ -77,6 +79,10 @@ class InstanciaCvrp:
                         tipo_distancia = valor.upper()
                     elif chave == "EDGE_WEIGHT_FORMAT":
                         formato_peso = valor.upper()
+                    elif chave == "DISTANCE":
+                        max_distancia = float(valor)
+                    elif chave == "SERVICE_TIME":
+                        tempo_servico = float(valor)
                     continue
 
                 # ── marcadores de seção ─────────────────────────────────────
@@ -117,7 +123,7 @@ class InstanciaCvrp:
 
         if tipo_distancia == "EXPLICIT":
             grafo = cls._montar_grafo_explicit(
-                demandas, pesos_brutos, formato_peso
+                demandas, pesos_brutos, formato_peso, coordenadas
             )
 
         elif tipo_distancia in _DIST_FUNC:
@@ -137,7 +143,7 @@ class InstanciaCvrp:
         return cls(nome, capacidade, id_deposito, grafo)
 
     @staticmethod
-    def _montar_grafo_explicit(demandas, pesos_brutos, formato_peso):
+    def _montar_grafo_explicit(demandas, pesos_brutos, formato_peso, coordenadas):
         """Monta o grafo a partir de uma matriz de pesos explícita."""
         if not pesos_brutos:
             raise ValueError("EDGE_WEIGHT_SECTION vazio")
@@ -146,7 +152,7 @@ class InstanciaCvrp:
         ids_ordenados = sorted(demandas.keys())
 
         # Matriz indexada por ID (linha/col 0 é buffer)
-        M = np.zeros((n + 1, n + 1), dtype=np.float64)
+        M = np.zeros((n + 1, n + 1), dtype=np.float32)
 
         fmt = (formato_peso or "LOWER_ROW").upper()
 
@@ -180,6 +186,7 @@ class InstanciaCvrp:
 
         grafo = Grafo()
         for id_no in ids_ordenados:
-            grafo.adicionar_no(No(id_no, 0.0, 0.0, demandas[id_no]))
+            x, y = coordenadas.get(id_no, (0.0, 0.0))
+            grafo.adicionar_no(No(id_no, x, y, demandas[id_no]))
         grafo.construir_arestas_explicitas(M)
         return grafo
