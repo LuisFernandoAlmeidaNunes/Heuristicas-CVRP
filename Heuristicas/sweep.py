@@ -1,80 +1,62 @@
 import math
 from typing import List, Tuple
-from Heuristicas.Heuristica import Heuristica
+from heuristicas.Heuristica import Heuristica
 
 
 class Sweep(Heuristica):
     """
-    Heurística construtiva Sweep (Varredura) - Gillett & Miller:
-    1. Calcula o ângulo polar de cada cliente em relação ao depósito
-    2. Ordena os clientes por ângulo crescente (varredura angular)
-    3. Agrupa clientes em rotas respeitando a capacidade do veículo
-    4. Reordena os clientes DENTRO de cada rota usando Nearest Neighbor local
-    5. Refina cada rota com 2-opt para reduzir cruzamentos internos
+    Heurística construtiva Sweep (Varredura) - Gillett & Miller Clássica.
+    1. Calcula o ângulo polar de cada cliente em relação ao depósito.
+    2. Ordena os clientes por ângulo.
+    3. Constrói rotas seguindo a ordem angular e validando restrições totais.
     """
     nome = "SW (Sweep)"
 
     def resolver(self, inst) -> Tuple[List[List[int]], float, int]:
         deposito = inst.id_deposito
-        capacidade = inst.capacidade
         grafo = inst.grafo
         clientes = inst.ids_clientes
-
         dep = grafo.nos[deposito]
 
-        # 1. Ângulo polar de cada cliente em relação ao depósito
-        def angulo(cliente_id):
+        # 1. Cálculo do ângulo polar (atan2 lida com todos os quadrantes)
+        def calcular_angulo(cliente_id):
             no = grafo.nos[cliente_id]
             return math.atan2(no.y - dep.y, no.x - dep.x)
 
-        clientes_ordenados = sorted(clientes, key=angulo)
+        # 2. Ordenação Angular (A "Varredura")
+        clientes_ordenados = sorted(clientes, key=calcular_angulo)
 
-        # 2. Agrupa por varredura angular respeitando capacidade
-        grupos = []
-        grupo_atual = []
-        carga_atual = 0
-
-        for c in clientes_ordenados:
-            demanda = grafo.nos[c].demanda
-            if carga_atual + demanda > capacidade:
-                if grupo_atual:
-                    grupos.append(grupo_atual)
-                grupo_atual = [c]
-                carga_atual = demanda
-            else:
-                grupo_atual.append(c)
-                carga_atual += demanda
-
-        if grupo_atual:
-            grupos.append(grupo_atual)
-
-        # 3. Reordena cada grupo com NN local
+        # 3. Agrupamento em rotas respeitando a viabilidade total (Carga + Distância + Tempo)
         rotas = []
-        for grupo in grupos:
-            rota = self._nn_local(deposito, grupo, grafo)
-            rotas.append(rota)
+        rota_atual = []
 
-        # 4. Refina com 2-opt (agora disponível na classe base)
-        rotas = self.otimizar_rotas_2opt(inst, rotas)
+        for cliente in clientes_ordenados:
+            # Testa se o cliente cabe na rota ATUAL
+            # Criamos uma cópia temporária para validar
+            teste_rota = rota_atual + [cliente]
 
-        custo_total = super().calcular_custo(inst, rotas)
+            if self.validar_viabilidade(inst, teste_rota):
+                rota_atual.append(cliente)
+            else:
+                # Se não cabe, fecha a rota atual e começa uma nova com o cliente
+                if rota_atual:
+                    rotas.append(rota_atual)
+
+                # Importante: Validar se o cliente sozinho cabe em uma rota nova
+                # (necessário para instâncias com limites de distância muito rígidos)
+                if self.validar_viabilidade(inst, [cliente]):
+                    rota_atual = [cliente]
+                else:
+                    # Caso extremo: um único cliente é inviável (ex: longe demais)
+                    # Em instâncias válidas de benchmark isso não deve ocorrer
+                    rota_atual = []
+
+        # Adiciona a última rota se não estiver vazia
+        if rota_atual:
+            rotas.append(rota_atual)
+
+        # 4. Cálculo final usando os métodos genéricos da Base
+        custo_total = self.calcular_custo(inst, rotas)
         n_veiculos = len(rotas)
 
         return rotas, custo_total, n_veiculos
-
-    def _nn_local(self, deposito: int, clientes: List[int], grafo) -> List[int]:
-        """
-        Nearest Neighbor dentro de um grupo fixo de clientes.
-        Parte do depósito e visita sempre o mais próximo ainda não visitado.
-        """
-        nao_visitados = set(clientes)
-        rota = []
-        atual = deposito
-
-        while nao_visitados:
-            proximo = min(nao_visitados, key=lambda c: grafo.dist(atual, c))
-            rota.append(proximo)
-            nao_visitados.remove(proximo)
-            atual = proximo
-
-        return rota

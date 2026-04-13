@@ -1,34 +1,42 @@
+
 from core.Instancia_cvrp import InstanciaCvrp
-from Heuristicas.clarke_wright import ClarkeWright
-from Heuristicas.nearest_neighbor import NearestNeighbor
-from Heuristicas.sweep import Sweep
-from Heuristicas.adaptive_insertion import AdaptiveInsertion
-from Heuristicas.christofides_like import ChristofidesLike
+from heuristicas.clarke_wright import ClarkeWright
+from heuristicas.nearest_neighbor import NearestNeighbor
+from heuristicas.sweep import Sweep
+from heuristicas.sequential_insertion import MoleJameson
 from saida.resultados import executar_instancia
 from saida.terminal import cabecalho_sistema, mensagem_sucesso, mensagem_info, mensagem_aviso
 
 MELHORES = {
-    "A-n32-k5":       784.0,
-    "A-n33-k5":       661.0,
+    "A-n80-k10":       1763.00,
+    "F-n72-k4":        237.00,
     "Golden_18":      995.13,
     "Golden_3":       10997.80,
     "Loggi-n601-k42": 347046.00,
+    "XL-n1701-k562":   521136.00,
+    "XL-n2541-k121":   146390.00,
+    "CMT10":           1395.85,
+    "Li_21":            16212.83,
+    "tai150b":         2727.03,
 }
 
 heuristicas = [
     ClarkeWright(),
     NearestNeighbor(),
     Sweep(),
-    AdaptiveInsertion(),
-    ChristofidesLike(),
+    MoleJameson()
 ]
 
 instancias = [
-    InstanciaCvrp.ler_arquivo("Benchmark/A-n32-k5.vrp"),
-    InstanciaCvrp.ler_arquivo("Benchmark/A-n33-k5.vrp"),
-    InstanciaCvrp.ler_arquivo("Benchmark/Golden_18.vrp"),
-    InstanciaCvrp.ler_arquivo("Benchmark/Golden_3.vrp"),
-    InstanciaCvrp.ler_arquivo("Benchmark/Loggi-n601-k42.vrp"),
+    # InstanciaCvrp.ler_arquivo("Benchmark/A-n80-k10.vrp"), #pequeno
+    # InstanciaCvrp.ler_arquivo("Benchmark/F-n72-k4.vrp"), #pequeno
+    # InstanciaCvrp.ler_arquivo("Benchmark/Golden_18.vrp"), #medio
+    InstanciaCvrp.ler_arquivo("Benchmark/Golden_3.vrp"), #medio
+    InstanciaCvrp.ler_arquivo("Benchmark/CMT10.vrp"),
+    InstanciaCvrp.ler_arquivo("Benchmark/Li_21.vrp"),
+    # InstanciaCvrp.ler_arquivo("Benchmark/Loggi-n601-k42.vrp"), #grande tratar
+    # InstanciaCvrp.ler_arquivo("Benchmark/XL-n1701-k562.vrp"), #grande
+    # InstanciaCvrp.ler_arquivo("Benchmark/XL-n2541-k121.vrp") #grande
 ]
 
 # ── Exibe banner ──────────────────────────────────────────────────────────────

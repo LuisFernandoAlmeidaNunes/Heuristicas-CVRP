@@ -125,10 +125,10 @@ def linha_resultado(resultado: dict):
     custo_fmt = _fmt_custo(resultado["custo"])
 
     # Ícone e cor do GAP
-    if gap < 10:
+    if gap < 20:
         icone   = f"{VERDE}●{RESET}"
         cor_gap = VERDE
-    elif gap < 25:
+    elif gap < 50:
         icone   = f"{AMARELO}●{RESET}"
         cor_gap = AMARELO
     else:

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Tuple
 
+
 class Heuristica(ABC):
     nome: str = "BASE"
 
@@ -10,55 +11,55 @@ class Heuristica(ABC):
         pass
 
     def calcular_custo(self, inst, rotas: List[List[int]]) -> float:
-        """Calcula custo total da solução"""
-        custo_total = 0.0
+        """
+        Calcula o custo total considerando Distâncias
+        """
+        custo_viagem = 0.0
         deposito = inst.id_deposito
         grafo = inst.grafo
 
         for rota in rotas:
             if not rota:
                 continue
-            custo_total += grafo.dist(deposito, rota[0])
+
+            # 1. Soma distâncias (Depósito -> Clientes -> Depósito)
+            custo_viagem += grafo.dist(deposito, rota[0])
             for i in range(len(rota) - 1):
-                custo_total += grafo.dist(rota[i], rota[i + 1])
-            custo_total += grafo.dist(rota[-1], deposito)
-        return custo_total
+                custo_viagem += grafo.dist(rota[i], rota[i + 1])
+            custo_viagem += grafo.dist(rota[-1], deposito)
 
-    @staticmethod
-    def validar_capacidade(inst, rota: List[int]) -> bool:
-        return sum(inst.grafo.nos[i].demanda for i in rota) <= inst.capacidade
 
-    def otimizar_rotas_2opt(self, inst, rotas: List[List[int]]) -> List[List[int]]:
-        """Refina cada rota com 2-opt local (permuta segmentos internos)."""
-        deposito = inst.id_deposito
+        return custo_viagem
+
+    def validar_viabilidade(self, inst, rota: List[int]) -> bool:
+        # 1. Capacidade
+        carga_total = sum(inst.grafo.nos[c].demanda for c in rota)
+        if carga_total > inst.capacidade:
+            return False
+
+        # 2. Distância e autonomia (só se houver limite finito)
+        max_dist = getattr(inst, 'max_distancia', float('inf')) # ASSUMINDO que não existe SERVICE_TIME sem DISTANCE nas instâncias
+        if max_dist == float('inf'):
+            return True  # Sem restrição de autonomia, encerra aqui
+
+        dep = inst.id_deposito
         grafo = inst.grafo
 
-        def _two_opt_rota(rota: List[int]) -> List[int]:
-            if len(rota) < 3:
-                return rota
+        dist_total = grafo.dist(dep, rota[0])
+        for i in range(len(rota) - 1):
+            dist_total += grafo.dist(rota[i], rota[i + 1])
+        dist_total += grafo.dist(rota[-1], dep)
 
-            melhor = rota
-            melhor_encontrado = True
 
-            while melhor_encontrado:
-                melhor_encontrado = False
-                for i in range(len(melhor) - 2):
-                    for k in range(i + 2, len(melhor)):
-                        j = k + 1
-                        anterior = deposito if i == 0 else melhor[i - 1]
-                        inicio = melhor[i]
-                        fim = melhor[k]
-                        seguinte = deposito if j == len(melhor) else melhor[j]
+        st_unitario = getattr(inst, 'tempo_servico', 0.0)
 
-                        delta = (grafo.dist(anterior, fim) + grafo.dist(inicio, seguinte)
-                                 - grafo.dist(anterior, inicio) - grafo.dist(fim, seguinte))
-                        if delta < -1e-6:
-                            melhor = melhor[:i] + list(reversed(melhor[i:k + 1])) + melhor[j:]
-                            melhor_encontrado = True
-                            break
-                    if melhor_encontrado:
-                        break
+        if st_unitario == 0.0:
+            tempo_total = dist_total
+        else:
+            tempo_total = dist_total + (len(rota) * st_unitario)
 
-            return melhor
+        # O limite DISTANCE engloba distância + service time (jornada total)
+        if tempo_total > max_dist:
+            return False
 
-        return [_two_opt_rota(rota) if rota else rota for rota in rotas]
+        return True
