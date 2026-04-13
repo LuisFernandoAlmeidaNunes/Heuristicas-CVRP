@@ -9,8 +9,6 @@ TODO:
 - pasta saida ->  vai conter arquivo para plotar gráficos e salvar os resultados em csv (o correto é não printar os resultados na tela) e também o arquivo de análise de benchmark. o main apenas vai instanciar e invocar os métodos mas não deve ter implementação de nada.
 - pasta resultado -> é onde os arquivos csv e gráficos serão salvos
 """
-from Heuristicas.sequential_insertion import MoleJameson
-
 """
 Main.py — CVRP Solver
 Trabalho de Heurísticas para o CVRP - 2026.1
@@ -21,12 +19,9 @@ Modos de uso:
   Linha de comando direta:
        python Main.py <arquivo.vrp> <saida.dat> <melhor_conhecido> <SIGLA>
 
-     Exemplos:
+     Exemplo:
        python Main.py Benchmark/A-n32-k5.vrp resultado/resultados.dat 784 CW
-       python Main.py Benchmark/A-n32-k5.vrp resultado/resultados.dat 784 NN
-       python Main.py Benchmark/A-n32-k5.vrp resultado/resultados.dat 784 SW
-       python Main.py Benchmark/A-n32-k5.vrp resultado/resultados.dat 784 AI
-       python Main.py Benchmark/A-n32-k5.vrp resultado/resultados.dat 784 CL
+       
 """
 import sys
 from core.Instancia_cvrp import InstanciaCvrp
@@ -49,7 +44,6 @@ HEURISTICAS = {
     "NN": NearestNeighbor(),
     "SW": Sweep(),
     "ML": MoleJameson(),
-
 }
 
 # Melhores valores conhecidos (BKS) das instâncias do benchmark

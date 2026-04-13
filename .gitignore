@@ -1,0 +1,91 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches e ambientes virtuais
+venv/
+env/
+.venv/
+pipenv/
+.env
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Builds e distribuição
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testes
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.coverage.*
+
+# PyInstaller
+*.manifest
+*.spec
+
+# VSCode
+.vscode/settings.json
+.vscode/launch.json
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Documentos do professor/backup
+#pratico-1-metaheuristicas-2026.1-errata.pdf
+#*.pdf
+
+# Resultados (recuperáveis)
+resultado/
+resultados.dat
+*.dat
+
+# Gráficos gerados (recuperáveis)
+*.png
+grafico_*.png
+
+# Benchmarks
+#Benchmark/
+*#.vrp
+
+# Plots individuais das rotas
+A-n*.png
+Golden*.png
+Loggi*.png
+XL*.png
+
+# Temporários do Windows/PS
+resultado\\*
+PSReadLine/
+
+# Python scripts gerados
+temp_*.py
