@@ -15,7 +15,6 @@ class Heuristica(ABC):
         Calcula o custo total considerando Distâncias
         """
         custo_viagem = 0.0
-        total_service_time = 0.0
         deposito = inst.id_deposito
         grafo = inst.grafo
 
@@ -30,7 +29,7 @@ class Heuristica(ABC):
             custo_viagem += grafo.dist(rota[-1], deposito)
 
 
-        return custo_viagem + total_service_time
+        return custo_viagem
 
     def validar_viabilidade(self, inst, rota: List[int]) -> bool:
         # 1. Capacidade
@@ -39,7 +38,7 @@ class Heuristica(ABC):
             return False
 
         # 2. Distância e autonomia (só se houver limite finito)
-        max_dist = getattr(inst, 'max_distancia', float('inf'))
+        max_dist = getattr(inst, 'max_distancia', float('inf')) # ASSUMINDO que não existe SERVICE_TIME sem DISTANCE nas instâncias
         if max_dist == float('inf'):
             return True  # Sem restrição de autonomia, encerra aqui
 
@@ -51,9 +50,13 @@ class Heuristica(ABC):
             dist_total += grafo.dist(rota[i], rota[i + 1])
         dist_total += grafo.dist(rota[-1], dep)
 
-        # 'tempo_servico' é o nome real setado pelo leitor
+
         st_unitario = getattr(inst, 'tempo_servico', 0.0)
-        tempo_total = dist_total + (len(rota) * st_unitario)
+
+        if st_unitario == 0.0:
+            tempo_total = dist_total
+        else:
+            tempo_total = dist_total + (len(rota) * st_unitario)
 
         # O limite DISTANCE engloba distância + service time (jornada total)
         if tempo_total > max_dist:

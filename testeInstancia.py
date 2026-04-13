@@ -1,9 +1,9 @@
-from Heuristicas import sequential_insertion
+
 from core.Instancia_cvrp import InstanciaCvrp
-from Heuristicas.clarke_wright import ClarkeWright
-from Heuristicas.nearest_neighbor import NearestNeighbor
-from Heuristicas.sweep import Sweep
-from Heuristicas.sequential_insertion import MoleJameson
+from heuristicas.clarke_wright import ClarkeWright
+from heuristicas.nearest_neighbor import NearestNeighbor
+from heuristicas.sweep import Sweep
+from heuristicas.sequential_insertion import MoleJameson
 from saida.resultados import executar_instancia
 from saida.terminal import cabecalho_sistema, mensagem_sucesso, mensagem_info, mensagem_aviso
 

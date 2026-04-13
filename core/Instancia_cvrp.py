@@ -32,11 +32,17 @@ _DIST_FUNC = {
 }
 
 class InstanciaCvrp:
-    def __init__(self, nome: str, capacidade: int, id_deposito: int, grafo: Grafo):
+    def __init__(self, nome: str, capacidade: int, id_deposito: int, grafo: Grafo,
+                 max_distancia: float, tempo_servico: float):
+
         self.nome = nome
         self.capacidade = capacidade
         self.id_deposito = id_deposito
         self.grafo = grafo
+
+        self.max_distancia = max_distancia
+        self.tempo_servico = tempo_servico
+
         self.ids_clientes = [i for i in grafo.nos if i != id_deposito]
 
     def __repr__(self):
@@ -54,6 +60,7 @@ class InstanciaCvrp:
         tipo_distancia = "EUC_2D"   # ← BUG CORRIGIDO: antes lançava erro se ausente
         formato_peso = None
         pesos_brutos = []
+
         max_distancia = float('inf')  # Se não houver a chave DISTANCE, a autonomia é infinita
         tempo_servico = 0
 
@@ -140,7 +147,14 @@ class InstanciaCvrp:
                 f"EDGE_WEIGHT_TYPE '{tipo_distancia}' não suportado."
             )
 
-        return cls(nome, capacidade, id_deposito, grafo)
+        return cls(
+            nome,
+            capacidade,
+            id_deposito,
+            grafo,
+            max_distancia,
+            tempo_servico
+        )
 
     @staticmethod
     def _montar_grafo_explicit(demandas, pesos_brutos, formato_peso, coordenadas):
@@ -152,7 +166,7 @@ class InstanciaCvrp:
         ids_ordenados = sorted(demandas.keys())
 
         # Matriz indexada por ID (linha/col 0 é buffer)
-        M = np.zeros((n + 1, n + 1), dtype=np.float32)
+        M = np.zeros((n + 1, n + 1), dtype=np.float64)
 
         fmt = (formato_peso or "LOWER_ROW").upper()
 

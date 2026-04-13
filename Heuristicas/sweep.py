@@ -1,6 +1,6 @@
 import math
 from typing import List, Tuple
-from Heuristicas.Heuristica import Heuristica
+from heuristicas.Heuristica import Heuristica
 
 
 class Sweep(Heuristica):

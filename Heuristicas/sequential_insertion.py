@@ -1,5 +1,5 @@
 from typing import List, Tuple
-from Heuristicas.Heuristica import Heuristica
+from heuristicas.Heuristica import Heuristica
 
 
 class MoleJameson(Heuristica):
