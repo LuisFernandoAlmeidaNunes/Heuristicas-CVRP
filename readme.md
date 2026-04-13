@@ -6,13 +6,7 @@
 ---
 
 ## 📖 **Descrição**
-Solver **ultra-rápido** para **CVRP** com **5 heurísticas construtivas** e benchmark das **15 instâncias** do CVRPLib.
-
-**Performance:**
-- 🥇 **CW Gap médio: 7.5%** 
-- ⚡ **2540 nós: 0.2s**
-- 📊 **IC 95% robusto**
-
+Solver **ultra-rápido** para **CVRP** com **4 heurísticas construtivas** e benchmark das **15 instâncias** do CVRPLib.
 ---
 
 ## ✨ **Heurísticas Implementadas**
