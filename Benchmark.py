@@ -1,121 +1,73 @@
-"""
-    python Benchmark.py
-"""
-
 import os
 import sys
+import pandas as pd
 
-# ── Garante que a raiz do projeto está no path ────────────────────────────────
+# Garante que a raiz do projeto está no path
 ROOT = os.path.dirname(os.path.abspath(__file__))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-# ── Imports do próprio projeto ────────────────────────────────────────────────
 from core.Instancia_cvrp import InstanciaCvrp
-from saida.resultados import executar_instancia
-from saida.graficos import gerar_graficos
+from saida.execution import executar_instancia, CABECALHO
+from saida.graphics import gerar_graficos
 
-# ── Heurísticas disponíveis ───────────────────────────────────────────────────
-from Heuristicas.clarke_wright    import ClarkeWright       # CW
-from Heuristicas.nearest_neighbor import NearestNeighbor    # NN
-from Heuristicas.sequential_insertion import MoleJameson    # MJ
-from Heuristicas.sweep            import Sweep              # SW
-# Adicione ou remova conforme o que seu grupo implementou
+# Heurísticas
+from Heuristicas.clarke_wright    import ClarkeWright
+from Heuristicas.nearest_neighbor import NearestNeighbor
+from Heuristicas.sequential_insertion import MoleJameson
+from Heuristicas.sweep            import Sweep
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Tabela com todas as 15 instâncias do enunciado
-# Formato: (nome_arquivo_sem_extensao, melhor_conhecido)
-# ─────────────────────────────────────────────────────────────────────────────
 INSTANCIAS = [
-    # Small
-    ("A-n80-k10",      1763.00),
-    ("F-n72-k4",        237.00),
-    ("E-n101-k14",      106.00),   # atenção: BKS = 106 (já estava errado no enunciado)
-    ("F-n135-k7",      1162.00),
-    ("M-n151-k12",     1015.00),
-    # Medium
-    ("Golden_18",       995.13),
-    ("CMT10",          1395.85),
-    ("tai150b",        2727.03),
-    ("tai385",        24366.41),
-    ("Golden_3",      10997.80),
-    # Large
-    ("Li_21",         16212.83),
-    ("X-n502-k39",    69226.00),
-    ("Loggi-n601-k42",347046.00),
-    ("XL-n1701-k562", 521136.00),
-    ("XL-n2541-k121", 146390.00),
+    ("A-n80-k10", 1763.00), ("F-n72-k4", 237.00), ("E-n101-k14", 1067.00),
+    ("F-n135-k7", 1162.00), ("M-n151-k12", 1015.00), ("Golden_18", 995.13),
+    ("CMT10", 1395.85), ("tai150b", 2727.03), ("tai385", 24366.41),
+    ("Golden_3", 10997.80), ("Li_21", 16212.83), ("X-n502-k39", 69226.00),
+    ("Loggi-n601-k42", 347046.00), ("XL-n1701-k562", 521136.00), ("XL-n2541-k121", 146390.00),
 ]
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Configurações
-# ─────────────────────────────────────────────────────────────────────────────
-PASTA_INSTANCIAS = "Benchmark"          # onde ficam os arquivos .vrp
-ARQUIVO_DAT      = "resultado/resultados.dat"
-PASTA_PLOTS      = "resultado"
+PASTA_INSTANCIAS = "Benchmark"
+ARQUIVO_DAT      = "resultados/resultados.dat"
+PASTA_PLOTS      = "resultados"
+N_EXECUCOES      = 30  # Definido conforme necessidade do benchmark
 
-# Heurísticas que serão usadas em todas as instâncias
-HEURISTICAS = [
-    ClarkeWright(),
-    NearestNeighbor(),
-    MoleJameson(),  
-    Sweep(),                
-]
+HEURISTICAS = [ClarkeWright(), NearestNeighbor(), MoleJameson(), Sweep()]
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Função auxiliar: limpa o .dat antes de começar (resolve o TODO do resultados.py)
-# ─────────────────────────────────────────────────────────────────────────────
-def limpar_resultados():
-    if os.path.isfile(ARQUIVO_DAT):
-        os.remove(ARQUIVO_DAT)
-        print(f"[benchmark] Arquivo anterior removido: {ARQUIVO_DAT}")
+def preparar_arquivo_resultados():
+    """Cria a pasta e reseta o arquivo com o cabeçalho."""
+    os.makedirs(os.path.dirname(ARQUIVO_DAT), exist_ok=True)
+    with open(ARQUIVO_DAT, "w", encoding="utf-8") as f:
+        f.write("\t".join(CABECALHO) + "\n")
+    print(f"[benchmark] Arquivo inicializado: {ARQUIVO_DAT}")
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Loop principal
-# ─────────────────────────────────────────────────────────────────────────────
 def main():
-    limpar_resultados()
+    preparar_arquivo_resultados()
+    total_inst = len(INSTANCIAS)
 
-    total   = len(INSTANCIAS)
-    falhas  = []
+    for n in range(1, N_EXECUCOES + 1):
+        print(f"\n>>> INICIANDO RODADA {n}/{N_EXECUCOES}")
+        for idx, (nome, bks) in enumerate(INSTANCIAS, start=1):
+            caminho_vrp = os.path.join(PASTA_INSTANCIAS, f"{nome}.vrp")
 
-    for idx, (nome, bks) in enumerate(INSTANCIAS, start=1):
-        caminho_vrp = os.path.join(PASTA_INSTANCIAS, f"{nome}.vrp")
+            if not os.path.isfile(caminho_vrp):
+                continue
 
-        print(f"\n{'='*60}")
-        print(f"[{idx}/{total}] {nome}  (BKS = {bks})")
-        print(f"{'='*60}")
+            try:
+                inst = InstanciaCvrp.ler_arquivo(caminho_vrp)
+                # O executar_instancia agora apenas faz append no arquivo
+                executar_instancia(
+                    heuristicas=HEURISTICAS,
+                    inst=inst,
+                    melhor_conhecido=bks,
+                    arquivo_resultado=ARQUIVO_DAT,
+                    pasta_plots=PASTA_PLOTS
+                )
+            except Exception as e:
+                print(f"  Erro em {nome}: {e}")
 
-        if not os.path.isfile(caminho_vrp):
-            print(f"  AVISO: arquivo não encontrado → {caminho_vrp}  (pulando)")
-            falhas.append(nome)
-            continue
-
-        try:
-            inst = InstanciaCvrp.ler_arquivo(caminho_vrp)
-            executar_instancia(
-                heuristicas      = HEURISTICAS,
-                inst             = inst,
-                melhor_conhecido = bks,
-                arquivo_resultado= ARQUIVO_DAT,
-                pasta_plots      = PASTA_PLOTS,
-            )
-        except Exception as e:
-            print(f"  ERRO em {nome}: {e}")
-            falhas.append(nome)
-
-    # ── Relatório final ───────────────────────────────────────────────────────
-    print(f"\n{'='*60}")
-    print(f"Benchmark concluído.  {total - len(falhas)}/{total} instâncias processadas.")
-    if falhas:
-        print(f"  Instâncias com falha: {', '.join(falhas)}")
-
-    # ── Gera os três gráficos ─────────────────────────────────────────────────
-    print("\nGerando gráficos de análise...")
+    print("\nGerando análise estatística e gráficos...")
     gerar_graficos(ARQUIVO_DAT, PASTA_PLOTS)
-    print("Pronto! Verifique a pasta resultado/")
-
+    print("Benchmark Finalizado.")
 
 if __name__ == "__main__":
     main()
+    # gerar_graficos(ARQUIVO_DAT, PASTA_PLOTS)

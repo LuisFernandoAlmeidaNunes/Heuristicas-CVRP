@@ -4,7 +4,7 @@ from Heuristicas.clarke_wright import ClarkeWright
 from Heuristicas.nearest_neighbor import NearestNeighbor
 from Heuristicas.sweep import Sweep
 from Heuristicas.sequential_insertion import MoleJameson
-from saida.resultados import executar_instancia
+from saida.execution import executar_instancia
 from saida.terminal import cabecalho_sistema, mensagem_sucesso, mensagem_info, mensagem_aviso
 
 MELHORES = {
@@ -57,9 +57,10 @@ for inst in instancias:
         heuristicas=heuristicas,
         inst=inst,
         melhor_conhecido=MELHORES[inst.nome],
-        arquivo_resultado="resultado/resultados.dat",
-        pasta_plots="resultado",
+        arquivo_resultado="resultados/resultados.dat",
+        pasta_plots="resultados",
     )
 
+
 mensagem_sucesso("Testes concluídos!")
-mensagem_info("Arquivo de resultados: resultado/resultados.dat")
+mensagem_info("Arquivo de resultados: resultados/resultados.dat")

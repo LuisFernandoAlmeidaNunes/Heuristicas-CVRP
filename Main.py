@@ -7,7 +7,7 @@ TODO:
 - implementar menu aqui e remover o teste instancia
 - Implementar heurísticas Clarke & Wright, Sweep e uma outra a escolher (de preferência diferente das anteriores, Maria sugeriu o K-insertion) (Lembra que as heurísticas devem implementar a classe base abstrata 'heuristica', igual no exemplo do dsn)
 - pasta saida ->  vai conter arquivo para plotar gráficos e salvar os resultados em csv (o correto é não printar os resultados na tela) e também o arquivo de análise de benchmark. o main apenas vai instanciar e invocar os métodos mas não deve ter implementação de nada.
-- pasta resultado -> é onde os arquivos csv e gráficos serão salvos
+- pasta resultados -> é onde os arquivos csv e gráficos serão salvos
 """
 """
 Main.py — CVRP Solver
@@ -20,7 +20,7 @@ Modos de uso:
        python Main.py <arquivo.vrp> <saida.dat> <melhor_conhecido> <SIGLA>
 
      Exemplo:
-       python Main.py Benchmark/A-n32-k5.vrp resultado/resultados.dat 784 CW
+       python Main.py Benchmark/A-n32-k5.vrp resultados/resultados.dat 784 CW
        
 """
 import sys
@@ -30,7 +30,7 @@ from Heuristicas.nearest_neighbor import NearestNeighbor
 from Heuristicas.sweep import Sweep
 from Heuristicas.sequential_insertion import MoleJameson
 
-from saida.resultados import executar_e_salvar
+from saida.execution import executar_e_salvar
 
 from saida.terminal import (
     BOLD, CINZA, CIANO, DIM, RESET,
@@ -38,7 +38,7 @@ from saida.terminal import (
     mensagem_sucesso, mensagem_info, mensagem_aviso, mensagem_erro
 )
 # ── Registro de heurísticas disponíveis ──────────────────────────────────────
-# Para adicionar uma nova heurística, basta incluir aqui
+
 HEURISTICAS = {
     "CW": ClarkeWright(),
     "NN": NearestNeighbor(),
@@ -126,7 +126,7 @@ def modo_cli(args):
         inst=inst,
         melhor_conhecido=melhor,
         arquivo_resultado=arquivo_saida,
-        pasta_plots="resultado"
+        pasta_plots="resultados"
     )
 
     titulo("RESULTADO")
