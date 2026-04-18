@@ -23,9 +23,9 @@ def salvar_resultado(instancia, metodo, objetivo, runtime, gap):
         writer.writerow([instancia, metodo, f"{objetivo:.2f}", f"{runtime:.6f}", f"{gap:.4f}"])
 
 # execução individual
-def executar_e_salvar(heuristica, inst, melhor_conhecido):
+def executar_e_salvar(heuristica, inst, melhor_conhecido, melhor_k):
     inicio = time.perf_counter()
-    rotas, custo, n_veiculos = heuristica.resolver(inst)
+    rotas, custo, k_veiculos = heuristica.resolver(inst)
     fim = time.perf_counter()
     runtime = fim - inicio
 
@@ -40,16 +40,16 @@ def executar_e_salvar(heuristica, inst, melhor_conhecido):
     return {
         "heuristica": heuristica.nome,
         "custo": custo,
-        "veiculos": n_veiculos,
+        "veiculos": k_veiculos,
         "runtime": runtime,
         "gap": gap,
         # "png": caminho_png,
     }
 
 # usado no benchmark
-def executar_instancia(heuristicas, inst, melhor_conhecido, arquivo_resultado, pasta_plots):
+def executar_instancia(heuristicas, inst, melhor_conhecido, melhor_k, arquivo_resultado, pasta_plots):
     resultados = []
     for h in heuristicas:
-        r = executar_e_salvar(h, inst, melhor_conhecido)
+        r = executar_e_salvar(h, inst, melhor_conhecido, melhor_k)
         resultados.append(r)
     return resultados
