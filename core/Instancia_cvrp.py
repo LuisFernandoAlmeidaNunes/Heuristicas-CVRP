@@ -33,7 +33,7 @@ _DIST_FUNC = {
 
 class InstanciaCvrp:
     def __init__(self, nome: str, capacidade: int, id_deposito: int, grafo: Grafo,
-                 max_distancia: float, tempo_servico: float):
+                max_distancia: float, tempo_servico: float):
 
         self.nome = nome
         self.capacidade = capacidade
