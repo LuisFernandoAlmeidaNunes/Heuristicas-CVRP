@@ -6,26 +6,7 @@ from Heuristicas.sweep import Sweep
 from Heuristicas.sequential_insertion import MoleJameson
 from saida.execution import executar_instancia
 from saida.terminal import cabecalho_sistema, mensagem_sucesso, mensagem_info, mensagem_aviso
-
-MELHORES = {
-    "A-n80-k10":       1763.00,
-    "F-n72-k4":        237.00,
-    "Golden_18":      995.13,
-    "Golden_3":       10997.80,
-    "Loggi-n601-k42": 347046.00,
-    "XL-n1701-k562":   521136.00,
-    "XL-n2541-k121":   146390.00,
-    "CMT10":           1395.85,
-    "Li_21":            16212.83,
-    "tai150b":         2727.03,
-}
-
-heuristicas = [
-    ClarkeWright(),
-    NearestNeighbor(),
-    Sweep(),
-    MoleJameson()
-]
+from core.Registro_heuristicas import HEURISTICAS, MELHORES
 
 instancias = [
     # InstanciaCvrp.ler_arquivo("Benchmark/A-n80-k10.vrp"), #pequeno

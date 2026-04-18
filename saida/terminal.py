@@ -56,8 +56,7 @@ _CORES = {
     "CW": CIANO,
     "NN": AMARELO,
     "SW": MAGENTA,
-    "AI": AZUL,
-    "CL": VERDE,
+    "Mj": AZUL,
 }
 
 def cor_heuristica(nome: str) -> str:
