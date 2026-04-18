@@ -121,9 +121,7 @@ def modo_cli(args):
     resultado = executar_e_salvar(
         heuristica=heuristica,
         inst=inst,
-        melhor_conhecido=melhor,
-        arquivo_resultado=arquivo_saida,
-        pasta_plots="resultados"
+        melhor_conhecido=melhor
     )
 
     titulo("RESULTADO")

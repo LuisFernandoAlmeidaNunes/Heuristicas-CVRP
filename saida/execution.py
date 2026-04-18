@@ -35,7 +35,7 @@ def executar_e_salvar(heuristica, inst, melhor_conhecido, melhor_k):
 
     salvar_resultado(inst.nome, heuristica.nome, custo, runtime, gap)
     from saida.graphics import plotar_rotas
-    # caminho_png = plotar_rotas(inst, rotas, heuristica.nome, PASTA_PLOTS)
+    caminho_png = plotar_rotas(inst, rotas, heuristica.nome, PASTA_PLOTS)
 
     return {
         "heuristica": heuristica.nome,
@@ -43,7 +43,7 @@ def executar_e_salvar(heuristica, inst, melhor_conhecido, melhor_k):
         "veiculos": k_veiculos,
         "runtime": runtime,
         "gap": gap,
-        # "png": caminho_png,
+        "png": caminho_png,
     }
 
 # usado no benchmark
