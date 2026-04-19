@@ -125,22 +125,32 @@ def gerar_graficos(caminho_dat, pasta_saida):
     df = carregar_resultados(caminho_dat)
     if df.empty: return
 
-    # Colapsa as 30 runs → 1 valor médio por (instância, heurística)
     df_medio = df.groupby(["INSTANCE", "METHOD"]).mean().reset_index()
-    # n=15 por heurística — unidade amostral para boxplot e IC
 
-    # Gráfico 1: Runtime
-    fig, ax = plt.subplots(figsize=(12, 6))
-    tabela_time = df_medio.pivot(index="INSTANCE", columns="METHOD", values="RUNTIME")
-    tabela_time.plot(kind="bar", ax=ax, edgecolor="black")
-    ax.set_title("Tempo Médio de Execução (N=30 runs)")
-    ax.set_ylabel("Segundos")
-    plt.xticks(rotation=45, ha="right")
-    plt.tight_layout()
-    plt.savefig(os.path.join(pasta_saida, "grafico_barras_runtime.png"))
-    plt.close()   # ← obrigatório
+    # ── Gráfico 1: Runtime separado em pequenas e grandes ──────────────────
+    INSTANCIAS_PEQUENAS = {"A-n80-k10", "CMT10", "E-n101-k14", "F-n135-k7",
+                           "F-n72-k4", "Golden_18", "M-n151-k12", "tai150b"}
+    INSTANCIAS_GRANDES  = {"Golden_3", "Li_21", "Loggi-n601-k42", "tai385",
+                           "X-n502-k39", "XL-n1701-k562", "XL-n2541-k121"}
 
-    # Gráfico 2: Boxplot — usa df_medio (n=15 por heurística)
+    for grupo, label in [(INSTANCIAS_PEQUENAS, "pequenas"), (INSTANCIAS_GRANDES, "grandes")]:
+        df_grupo = df_medio[df_medio["INSTANCE"].isin(grupo)]
+        if df_grupo.empty:
+            continue
+
+        tabela = df_grupo.pivot(index="INSTANCE", columns="METHOD", values="RUNTIME")
+
+        fig, ax = plt.subplots(figsize=(12, 6))
+        tabela.plot(kind="bar", ax=ax, edgecolor="black")
+        ax.set_title(f"Tempo Médio de Execução — Instâncias {label.capitalize()}")
+        ax.set_ylabel("Segundos")
+        ax.grid(axis="y", linestyle="--", alpha=0.3)
+        plt.xticks(rotation=45, ha="right")
+        plt.tight_layout()
+        plt.savefig(os.path.join(pasta_saida, f"grafico_barras_runtime_{label}.png"))
+        plt.close()
+
+    # ── Gráfico 2: Boxplot ─────────────────────────────────────────────────
     fig, ax = plt.subplots(figsize=(10, 6))
     df_medio.boxplot(column="GAP", by="METHOD", ax=ax)
     ax.set_title("Dispersão do Gap Médio entre Instâncias")
@@ -148,13 +158,10 @@ def gerar_graficos(caminho_dat, pasta_saida):
     ax.set_ylabel("Gap médio por instância (%)")
     plt.tight_layout()
     plt.savefig(os.path.join(pasta_saida, "grafico_boxplot_gap.png"))
-    plt.close()   # ← obrigatório
+    plt.close()
 
-    # Gráfico 3: IC 95%
+    # ── Gráfico 3: IC 95% ──────────────────────────────────────────────────
     grafico_ic_gap(df_medio, pasta_saida)
 
+    # ── Tabela comparativa ─────────────────────────────────────────────────
     df_medio.to_csv(os.path.join(pasta_saida, "tabela_comparativa_media.csv"), index=False)
-
-    # 4. Tabela Comparativa Final (Média)
-    df_medio.to_csv(os.path.join(pasta_saida, "tabela_comparativa_media.csv"), index=False)
-
