@@ -63,7 +63,7 @@ def executar_e_salvar(heuristica, inst, melhor_conhecido, melhor_k=None):
     }
 
 # usado no benchmark
-def executar_instancia(heuristicas, inst, melhor_conhecido, arquivo_resultado, pasta_plots):
+def executar_instancia(heuristicas, inst, melhor_conhecido, melhor_k, arquivo_resultado, pasta_plots):
     resultados = []
     for h in heuristicas:
         r = executar_e_salvar(h, inst, melhor_conhecido, melhor_k)
