@@ -16,4 +16,4 @@ def testaHipotese():
     return friedman(data)
 
 # teste
-# testaHipotese()
+testaHipotese()
