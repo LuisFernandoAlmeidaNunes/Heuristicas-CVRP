@@ -15,7 +15,7 @@ Solver **ultra-rápido** para **CVRP** com **4 heurísticas construtivas** e ben
 | **CW** | 
 | **NN** | 
 | **SW** | 
-| **MJ** | 
+| **ML** | 
 ---
 
 ## 🚀 **Instalação**
