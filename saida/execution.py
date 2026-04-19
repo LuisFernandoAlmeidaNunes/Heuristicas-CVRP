@@ -50,6 +50,8 @@ def executar_e_salvar(heuristica, inst, melhor_conhecido, melhor_k=None):
 
     salvar_resultado(inst.nome, heuristica.nome, custo, runtime, gap)
     
+    #print(f"{inst.nome} | {heuristica.nome} | custo={custo:.2f} | k={n_veiculos} | melhor_k={melhor_k} | penalidade={penalidade:.2f}\n")  
+    
     from saida.graphics import plotar_rotas
     caminho_png = plotar_rotas(inst, rotas, heuristica.nome, PASTA_PLOTS)
 

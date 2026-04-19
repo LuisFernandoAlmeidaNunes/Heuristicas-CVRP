@@ -165,3 +165,38 @@ def gerar_graficos(caminho_dat, pasta_saida):
 
     # ── Tabela comparativa ─────────────────────────────────────────────────
     df_medio.to_csv(os.path.join(pasta_saida, "tabela_comparativa_media.csv"), index=False)
+
+def plotar_comparativo(inst, rotas_melhor, rotas_pior, metodo_melhor, metodo_pior, pasta_saida):
+    """Plota lado a lado a melhor e pior rota da mesma instância."""
+    fig, axes = plt.subplots(1, 2, figsize=(20, 9))
+
+    for ax, rotas, metodo in zip(axes, [rotas_melhor, rotas_pior], [metodo_melhor, metodo_pior]):
+        grafo    = inst.grafo
+        dep_id   = inst.id_deposito
+        dep_no   = grafo.nos[dep_id]
+        n_rotas  = len(rotas)
+        colormap = cm.get_cmap('tab20')
+
+        for idx, rota in enumerate(rotas):
+            if not rota:
+                continue
+            cor     = colormap(idx % 20) if n_rotas <= 20 else cm.jet(idx / n_rotas)
+            ids_seq = [dep_id] + rota + [dep_id]
+            coords  = np.array([(grafo.nos[i].x, grafo.nos[i].y) for i in ids_seq])
+            ax.plot(coords[:, 0], coords[:, 1], color=cor, linewidth=1.5, alpha=0.6)
+            ax.scatter(coords[1:-1, 0], coords[1:-1, 1], color=cor, s=40,
+                       edgecolors='black', linewidths=0.3, zorder=2)
+
+        ax.scatter(dep_no.x, dep_no.y, color="black", s=300, marker="*",
+                   zorder=4, label="Depósito")
+        ax.set_title(f"{metodo}\nVeículos: {len(rotas)}", fontsize=13, fontweight='bold')
+        ax.set_aspect("equal", adjustable="datalim")
+        ax.grid(True, linestyle=':', alpha=0.4)
+        ax.legend(fontsize=9)
+
+    fig.suptitle(f"Comparativo de Rotas — {inst.nome}", fontsize=15, fontweight='bold')
+    plt.tight_layout()
+    caminho = os.path.join(pasta_saida, f"{inst.nome}_comparativo.png")
+    plt.savefig(caminho, dpi=150, bbox_inches='tight')
+    plt.close(fig)
+    return caminho
