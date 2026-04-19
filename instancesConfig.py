@@ -7,7 +7,7 @@ from Heuristicas.sequential_insertion import MoleJameson
 ARQUIVO_DAT = "resultados/resultados.dat"
 
 # Set de instancias e seus melhores valores para funcao obj (KBS) e numero de veiculos(k)
-# INSTANCIAS{ (nome, melhor_val, melhor_k) }
+# INSTANCIAS{ (nome, melhor_conhecido, melhor_k) }
 INSTANCIAS = {
     ("A-n80-k10",       1763.00,    10),
     ("F-n72-k4",        237.00,     4),
