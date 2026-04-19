@@ -1,42 +1,61 @@
 INSTANCE	METHOD	OBJECTIVE	RUNTIME	GAP
-A-n80-k10	CW (Clarke & Wright Savings)	1860.94	0.005049	5.5554
-A-n80-k10	NN (Nearest Neighbor)	2255.46	0.005752	27.9332
-A-n80-k10	MJ (Mole & Jameson)	1913.40	0.055547	8.5310
-A-n80-k10	SW (Sweep)	3321.25	0.000343	88.3862
-F-n72-k4	CW (Clarke & Wright Savings)	256.19	0.003381	8.0954
-F-n72-k4	NN (Nearest Neighbor)	368.27	0.005710	55.3868
-F-n72-k4	MJ (Mole & Jameson)	339.80	0.087384	43.3765
-F-n72-k4	SW (Sweep)	480.87	0.000318	102.8973
-E-n101-k14	CW (Clarke & Wright Savings)	1139.07	0.008556	6.7546
-E-n101-k14	NN (Nearest Neighbor)	1610.91	0.006832	50.9753
-E-n101-k14	MJ (Mole & Jameson)	1327.87	0.063486	24.4485
-E-n101-k14	SW (Sweep)	1685.50	0.000368	57.9661
-F-n135-k7	CW (Clarke & Wright Savings)	1219.32	0.020359	4.9330
-F-n135-k7	NN (Nearest Neighbor)	1784.34	0.020663	53.5573
-F-n135-k7	MJ (Mole & Jameson)	1404.88	0.282744	20.9015
-F-n135-k7	SW (Sweep)	2768.10	0.000736	138.2190
-M-n151-k12	CW (Clarke & Wright Savings)	1140.42	0.016618	12.3569
-M-n151-k12	NN (Nearest Neighbor)	1426.23	0.018901	40.5153
-M-n151-k12	MJ (Mole & Jameson)	1272.54	0.228798	25.3736
-M-n151-k12	SW (Sweep)	2199.99	0.000508	116.7479
-Golden_18	CW (Clarke & Wright Savings)	1067.77	0.130134	7.2991
-Golden_18	NN (Nearest Neighbor)	1301.40	0.122368	30.7771
-Golden_18	MJ (Mole & Jameson)	1103.93	0.580713	10.9329
-Golden_18	SW (Sweep)	2031.59	0.001266	104.1530
-CMT10	CW (Clarke & Wright Savings)	1538.66	0.032539	10.2308
-CMT10	NN (Nearest Neighbor)	1801.25	0.079839	29.0432
-CMT10	MJ (Mole & Jameson)	1599.99	0.502740	14.6247
-CMT10	SW (Sweep)	3113.22	0.001237	123.0340
-Tai150b	CW (Clarke & Wright Savings)	2890.40	0.018816	5.9909
-Tai150b	NN (Nearest Neighbor)	4384.57	0.019469	60.7817
-Tai150b	MJ (Mole & Jameson)	3199.21	0.204268	17.3148
-Tai150b	SW (Sweep)	5453.62	0.000508	99.9840
-Tai385	CW (Clarke & Wright Savings)	25342.98	0.128972	4.0079
-Tai385	NN (Nearest Neighbor)	38546.83	0.190607	58.1966
-Tai385	MJ (Mole & Jameson)	27249.12	1.439213	11.8307
-Tai385	SW (Sweep)	58268.09	0.001252	139.1328
-Golden_3	CW (Clarke & Wright Savings)	12355.87	0.130977	12.3485
-Golden_3	NN (Nearest Neighbor)	15833.95	0.909227	43.9738
-A-n80-k10	CW (Clarke & Wright Savings)	1860.94	0.009593	137.3651
-A-n80-k10	CW (Clarke & Wright Savings)	1860.94	0.012210	137.3651
-A-n80-k10	CW (Clarke & Wright Savings)	1860.94	0.010033	137.3651
+F-n135-k7	CW (Clarke & Wright Savings)	1219.32	0.018236	4.9330
+F-n135-k7	NN (Nearest Neighbor)	1784.34	0.020659	53.5573
+F-n135-k7	SW (Sweep)	2768.10	0.000455	138.2190
+F-n135-k7	MJ (Mole & Jameson)	1404.88	0.265828	20.9015
+E-n101-k14	CW (Clarke & Wright Savings)	1139.07	0.009340	6.7546
+E-n101-k14	NN (Nearest Neighbor)	1610.91	0.007934	50.9753
+E-n101-k14	SW (Sweep)	1685.50	0.000293	57.9661
+E-n101-k14	MJ (Mole & Jameson)	1327.87	0.070920	24.4485
+Golden_3	CW (Clarke & Wright Savings)	12355.87	0.146084	12.3485
+Golden_3	NN (Nearest Neighbor)	15833.95	0.812233	43.9738
+Golden_3	SW (Sweep)	39989.68	0.002624	263.6152
+Golden_3	MJ (Mole & Jameson)	12858.90	13.853994	16.9225
+X-n502-k39	CW (Clarke & Wright Savings)	71804.05	0.371360	3.7241
+X-n502-k39	NN (Nearest Neighbor)	72364.52	0.257074	4.5337
+X-n502-k39	SW (Sweep)	105845.86	0.001334	52.8990
+X-n502-k39	MJ (Mole & Jameson)	72024.40	2.087161	4.0424
+Loggi-n601-k42	CW (Clarke & Wright Savings)	363333.00	0.359569	4.6930
+Loggi-n601-k42	NN (Nearest Neighbor)	435491.00	0.362070	25.4851
+Loggi-n601-k42	SW (Sweep)	917972.00	0.002328	164.5102
+Loggi-n601-k42	MJ (Mole & Jameson)	377274.00	3.479451	8.7101
+Tai150b	CW (Clarke & Wright Savings)	2890.40	0.018716	5.9909
+Tai150b	NN (Nearest Neighbor)	4384.57	0.019571	60.7817
+Tai150b	SW (Sweep)	5453.62	0.000530	99.9840
+Tai150b	MJ (Mole & Jameson)	3199.21	0.202922	17.3148
+Li_21	CW (Clarke & Wright Savings)	18665.19	0.326210	15.1261
+Li_21	NN (Nearest Neighbor)	21637.03	1.996329	33.4562
+Li_21	SW (Sweep)	66918.25	0.003465	312.7488
+Li_21	MJ (Mole & Jameson)	20595.05	44.349457	27.0293
+Golden_18	CW (Clarke & Wright Savings)	1067.77	0.089568	7.2991
+Golden_18	NN (Nearest Neighbor)	1301.40	0.099477	30.7771
+Golden_18	SW (Sweep)	2031.59	0.002023	104.1530
+Golden_18	MJ (Mole & Jameson)	1103.93	0.668007	10.9329
+M-n151-k12	CW (Clarke & Wright Savings)	1140.42	0.038151	12.3569
+M-n151-k12	NN (Nearest Neighbor)	1426.23	0.020053	40.5153
+M-n151-k12	SW (Sweep)	2199.99	0.000384	116.7479
+M-n151-k12	MJ (Mole & Jameson)	1272.54	0.191173	25.3736
+F-n72-k4	CW (Clarke & Wright Savings)	256.19	0.004816	8.0954
+F-n72-k4	NN (Nearest Neighbor)	368.27	0.005582	55.3868
+F-n72-k4	SW (Sweep)	480.87	0.000244	102.8973
+F-n72-k4	MJ (Mole & Jameson)	339.80	0.081735	43.3765
+XL-n2541-k121	CW (Clarke & Wright Savings)	155069.61	8.503624	5.9291
+XL-n2541-k121	NN (Nearest Neighbor)	160186.84	7.701990	9.4247
+XL-n2541-k121	SW (Sweep)	598052.90	0.007334	308.5340
+XL-n2541-k121	MJ (Mole & Jameson)	158965.38	68.109938	8.5903
+CMT10	CW (Clarke & Wright Savings)	1538.66	0.038185	10.2308
+CMT10	NN (Nearest Neighbor)	1801.25	0.083492	29.0432
+CMT10	SW (Sweep)	3113.22	0.000952	123.0340
+CMT10	MJ (Mole & Jameson)	1599.99	0.614030	14.6247
+Tai385	CW (Clarke & Wright Savings)	25342.98	0.160198	4.0079
+Tai385	NN (Nearest Neighbor)	38546.83	0.125823	58.1966
+Tai385	SW (Sweep)	58268.09	0.001095	139.1328
+Tai385	MJ (Mole & Jameson)	27249.12	1.701881	11.8307
+XL-n1701-k562	CW (Clarke & Wright Savings)	557176.51	4.603066	6.9158
+XL-n1701-k562	NN (Nearest Neighbor)	578576.52	2.262784	11.0222
+XL-n1701-k562	SW (Sweep)	760588.26	0.004658	45.9481
+XL-n1701-k562	MJ (Mole & Jameson)	553431.70	11.521336	6.1972
+A-n80-k10	CW (Clarke & Wright Savings)	1860.94	0.005762	5.5554
+A-n80-k10	NN (Nearest Neighbor)	2255.46	0.005157	27.9332
+A-n80-k10	SW (Sweep)	3321.25	0.000270	88.3862
+A-n80-k10	MJ (Mole & Jameson)	1913.40	0.048445	8.5310
