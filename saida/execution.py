@@ -8,6 +8,13 @@ PASTA_PLOTS = "resultados"
 
 CABECALHO = ["INSTANCE", "METHOD", "OBJECTIVE", "RUNTIME", "GAP"]
 
+def calcular_penalidade(n_veiculos, melhor_k, melhor_conhecido):
+    if melhor_k is None:
+        return 0.0
+    a = melhor_conhecido * 0.05 # 5% por veiculos a mais
+    b = melhor_conhecido * 0.05
+    return a * max(0,n_veiculos - melhor_k) + b * max(0, melhor_k - n_veiculos)
+
 def carregar_resultados(caminho_dat=CAMINHO_ARQUIVO):
     df = pd.read_csv(caminho_dat, sep="\t")
     # Limpeza de strings e conversão numérica
@@ -23,31 +30,40 @@ def salvar_resultado(instancia, metodo, objetivo, runtime, gap):
         writer.writerow([instancia, metodo, f"{objetivo:.2f}", f"{runtime:.6f}", f"{gap:.4f}"])
 
 # execução individual
-def executar_e_salvar(heuristica, inst, melhor_conhecido, melhor_k):
+def executar_e_salvar(heuristica, inst, melhor_conhecido, melhor_k=None):
     inicio = time.perf_counter()
-    rotas, custo, k_veiculos = heuristica.resolver(inst)
+    rotas, custo, n_veiculos = heuristica.resolver(inst)
     fim = time.perf_counter()
     runtime = fim - inicio
 
+    """
+    Resumo: 
+    k_veiculos > melhor_k = penalidade grande, GAP piora
+    k_veiculos == melhor_k = penalidade zero, GAP sai normal
+    k_veiculos < melhor_k = penalidade pequena, GAP nao muda muito
+    """
+    penalidade = calcular_penalidade(n_veiculos, melhor_k, melhor_conhecido)
+
     # Cálculo do GAP (Garante que não seja negativo por float drift)
-    gap = ((custo - melhor_conhecido) / melhor_conhecido) * 100
+    gap = (((custo + penalidade) - melhor_conhecido) / melhor_conhecido) * 100
     gap = max(0.0, gap)
 
     salvar_resultado(inst.nome, heuristica.nome, custo, runtime, gap)
+    
     from saida.graphics import plotar_rotas
     caminho_png = plotar_rotas(inst, rotas, heuristica.nome, PASTA_PLOTS)
 
     return {
         "heuristica": heuristica.nome,
         "custo": custo,
-        "veiculos": k_veiculos,
+        "veiculos": n_veiculos,
         "runtime": runtime,
         "gap": gap,
         "png": caminho_png,
     }
 
 # usado no benchmark
-def executar_instancia(heuristicas, inst, melhor_conhecido, melhor_k, arquivo_resultado, pasta_plots):
+def executar_instancia(heuristicas, inst, melhor_conhecido, arquivo_resultado, pasta_plots):
     resultados = []
     for h in heuristicas:
         r = executar_e_salvar(h, inst, melhor_conhecido, melhor_k)
