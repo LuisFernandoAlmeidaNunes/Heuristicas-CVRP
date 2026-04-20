@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 import numpy as np  
 import math
 
-from utils import rank
+from TesteDeHipotese.utils import rank
 
 """
 Teste de Wilcoxon

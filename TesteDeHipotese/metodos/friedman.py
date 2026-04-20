@@ -1,5 +1,5 @@
 import numpy as np
-from utils import rank, load_data
+from TesteDeHipotese.utils import rank, load_data
 from scipy.stats import f
 
 """
@@ -45,6 +45,7 @@ def friedman(dist):
     return {
         "friedman": (chi_f, df_friedman),
         "iman": (iman, df_iman),
-        "p_value": p_value
+        "p_value": p_value,
+        'rankings': R
     }
 

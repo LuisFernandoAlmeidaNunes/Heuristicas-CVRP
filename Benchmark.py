@@ -36,7 +36,7 @@ def preparar_arquivo_resultados():
 def main():
     preparar_arquivo_resultados()
 
-    INSTANCIAS_COMPARATIVO = {"A-n80-k10", "Loggi-n601-k42", "Golden_18"}  
+    INSTANCIAS_COMPARATIVO = {"Li_21", "Golden_3", "XL-n2541-k121"}  
 
     for n in range(1, N_EXECUCOES + 1):
         print(f"\n>>> INICIANDO RODADA {n}/{N_EXECUCOES}")
