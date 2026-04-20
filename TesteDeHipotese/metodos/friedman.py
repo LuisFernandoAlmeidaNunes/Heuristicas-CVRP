@@ -1,5 +1,5 @@
 import numpy as np
-from utils import rank, load_data
+from TesteDeHipotese.utils import rank
 from scipy.stats import f
 
 """
@@ -42,11 +42,11 @@ def friedman(dist):
 
     p_value = 1 - f.cdf(iman, df_friedman, df_iman[1])
 
-    print("Friedman finalizado.")
+    # print("Friedman finalizado.")
 
     return {
-        "friedman": (chi_f, df_friedman),
-        "iman": (iman, df_iman),
-        "p_value": p_value
+        "friedman": (float(chi_f), float(df_friedman)), # chi_f e graus de liberdade do teste de Friedman
+        "iman": (float(iman), float(df_iman[1])), # estatística de Iman-Davenport e seus graus de liberdade
+        "p_value": float(p_value) # p-valor do teste de Friedman
     }
 

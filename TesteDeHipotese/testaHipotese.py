@@ -9,23 +9,38 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 from instancesConfig import ARQUIVO_DAT, HEURISTICAS
-from metodos.friedman import friedman
-from metodos.wilcoxon import wilcoxon
-from utils import load_data 
+from TesteDeHipotese.metodos.friedman import friedman
+from TesteDeHipotese.metodos.wilcoxon import wilcoxon
+from TesteDeHipotese.utils import load_data, ranking_wilcoxon
 
 def testaHipotese():
-    data = load_data(ARQUIVO_DAT)
+    ORDEM= [
+        "CW (Clarke & Wright Savings)",
+        "NN (Nearest Neighbor)",
+        "MJ (Mole & Jameson)",
+        "SW (Sweep)"
+    ]
+    data = load_data(ARQUIVO_DAT, ORDEM)
     friedman_result = friedman(data)
     wilcoxon_result = None
+    ranking_global = None
+    print("Iniciando teste de Friedman...")
     if friedman_result["p_value"] < 0.05:
-        print("Diferenças significativas encontradas. Realizando teste de Wilcoxon para comparações par a par.")
+        print("Diferenças significativas encontradas. \niniciando Wilcoxon...")
 
         bonferroni = 0.05 / comb(len(HEURISTICAS), 2)
         wilcoxon_result = wilcoxon(data, alpha=bonferroni)
+        ranking_global = ranking_wilcoxon(wilcoxon_result, alpha=bonferroni)
 
-    return {
-        "friedman": friedman_result,
-        "wilcoxon": wilcoxon_result,
-    }
+
+        print("Teste de hipótese finalizado. \nRanking global dos métodos")
+        for i in range(len(ranking_global)):
+            if i < len(ranking_global) -1:
+                print(f" {ORDEM[ranking_global[i]]} >", end="")
+            else:
+                print(f" {ORDEM[ranking_global[i]]}")
+                
+    return friedman_result, wilcoxon_result
+
 # teste
-testaHipotese()
+# testaHipotese()

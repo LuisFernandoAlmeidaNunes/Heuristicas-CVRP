@@ -10,7 +10,7 @@ if ROOT not in sys.path:
 from core.Instancia_cvrp import InstanciaCvrp
 from saida.execution import executar_instancia, CABECALHO
 from saida.graphics import gerar_graficos
-
+from TesteDeHipotese.testaHipotese import testaHipotese as th
 # Heurísticas
 # from Heuristicas.clarke_wright    import ClarkeWright
 # from Heuristicas.nearest_neighbor import NearestNeighbor
@@ -68,6 +68,14 @@ def main():
                 )
             except Exception as e:
                 print(f"  Erro em {nome}: {e}")
+
+    f_result, w_result= th()
+
+    print("Resultados do teste de Friedman:")
+    print(f_result)
+    print("\n Analise por Wilcoxon:")
+    print(w_result)
+
 
     print("\nGerando análise estatística e gráficos...")
     gerar_graficos(ARQUIVO_DAT, PASTA_PLOTS)

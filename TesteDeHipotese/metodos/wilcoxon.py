@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 import numpy as np  
 import math
 
-from utils import rank
+from TesteDeHipotese.utils import rank
 
 """
 Teste de Wilcoxon
@@ -59,10 +59,10 @@ def wilcoxon(dist: NDArray[np.float64], alpha: float):
         p = 2 * (1 - 0.5 * (1 + math.erf(abs(z) / math.sqrt(2))))
 
         results[(i, j)] = {
-            "W": W,
-            "p": p,
-            "i_melhor": W_pos,
-            "j_melhor": W_neg
+            "W": float(W), # menor valor entre W_pos e W_neg
+            "p": float(p), # p-valor do teste de Wilcoxon para a comparação entre os métodos i e j
+            "W_pos": float(W_pos), # Se W_pos < W_neg, o método i é melhor
+            "W_neg": float(W_neg) # Se W_neg < W_pos, o método j é melhor
         }
 
     return results
