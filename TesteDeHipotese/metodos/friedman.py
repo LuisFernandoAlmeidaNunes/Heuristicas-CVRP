@@ -1,6 +1,6 @@
 import numpy as np
 from utils import rank, load_data
-from scipy.stats import f as f_dist
+from scipy.stats import f
 
 """
 Teste de Friedman
@@ -19,7 +19,7 @@ def friedman(dist):
     """
 
     # ranqueia a entrada
-    ranked = rank(dist)
+    ranked = rank(dist, axis=1)
         
     # dimensões da tabela
     n = ranked.shape[0]  # instâncias (linhas na tabela)
@@ -28,25 +28,25 @@ def friedman(dist):
     # rank médio por método
     R = np.mean(ranked, axis=0)
 
+    # estatística de Friedman
+    chi_f = (12 * n / (k * (k + 1))) * (
+        np.sum(R ** 2) - (k * (k + 1) ** 2) / 4
+        )
+    
     # k-1 graus de liberdade
     df_friedman = k - 1
     df_iman = (k - 1, (k - 1) * (n - 1))
 
-    # estatística de Friedman
-    f = (
-        12 * n * (np.sum(R**2) - (k * (k + 1)**2) / 4)
-        / (k * (k + 1))
-    )
-
     # Iman-Davenport
-    iman = (n - 1) * f / (n * (k - 1) - f)
+    iman = (n - 1) * chi_f / (n * (k - 1) - chi_f)
 
-    p_value = 1 - f_dist.cdf(iman, df_friedman, df_iman[1])
+    p_value = 1 - f.cdf(iman, df_friedman, df_iman[1])
 
     print("Friedman finalizado.")
 
     return {
-        "friedman": (f, df_friedman),
+        "friedman": (chi_f, df_friedman),
         "iman": (iman, df_iman),
-        "p_value": (p_value)
+        "p_value": p_value
     }
+
