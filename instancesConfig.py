@@ -4,7 +4,7 @@ from Heuristicas.sweep import Sweep
 from Heuristicas.sequential_insertion import MoleJameson
 
 # nome do arquivo de resultados
-ARQUIVO_DAT = "resultados/resultados.dat"
+ARQUIVO_DAT = "resultado/resultados.dat"
 
 # Set de instancias e seus melhores valores para funcao obj (KBS) e numero de veiculos(k)
 # INSTANCIAS{ (nome, melhor_conhecido, melhor_k) }

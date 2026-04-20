@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.typing import NDArray
 import pandas as pd
 from scipy.stats import rankdata
 
@@ -20,6 +21,15 @@ def load_data(path):
     # pivot: linhas = instância, colunas = método
     tabela= df.pivot(index="INSTANCE", columns="METHOD", values=metrica)
     dist = tabela.to_numpy()
+    ordem = [
+        "CW (Clarke & Wright Savings)",
+        "NN (Nearest Neighbor)",
+        "MJ (Mole & Jameson)",
+        "SW (Sweep)"
+    ]
+
+    tabela = tabela[ordem]
+    print(tabela.columns)
 
     return dist
 
@@ -35,15 +45,16 @@ def calc_hipotese(p:float, alpha: float) -> bool:
     """
     return p < alpha
 
-def rank(dist):
+def rank(dist: NDArray[np.float64], axis: int = 0):
     """
     Calcula os rankings das observações.
 
     Args:
         dist (Dados): Dados a serem classificados.
+        axis (int): Eixo ao longo do qual os rankings são calculados (0 para colunas, 1 para linhas).
 
     Returns:
         Array com rankings estatisticamente corretos.
     """
 
-    return np.apply_along_axis(rankdata, axis=1, arr=dist)
+    return np.apply_along_axis(rankdata, axis=axis, arr=dist)
