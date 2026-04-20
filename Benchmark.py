@@ -32,7 +32,7 @@ from instancesConfig import INSTANCIAS, HEURISTICAS  # Importa a lista de instâ
 PASTA_INSTANCIAS = "Benchmark"
 ARQUIVO_DAT      = "resultados/resultados.dat"
 PASTA_PLOTS      = "resultados"
-N_EXECUCOES      = 1  # Definido conforme necessidade do benchmark
+N_EXECUCOES      = 30  # Definido conforme necessidade do benchmark
 
 # HEURISTICAS = [ClarkeWright(), NearestNeighbor(), MoleJameson(), Sweep()]
 

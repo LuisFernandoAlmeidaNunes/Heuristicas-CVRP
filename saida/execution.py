@@ -67,5 +67,5 @@ def executar_instancia(heuristicas, inst, melhor_conhecido, melhor_k, arquivo_re
     resultados = []
     for h in heuristicas:
         r = executar_e_salvar(h, inst, melhor_conhecido, melhor_k)
-        resultados.append(r)
-    return resultados
+    #     resultados.append(r)
+    # return resultados
