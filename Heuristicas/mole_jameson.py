@@ -3,6 +3,34 @@ from Heuristicas.Heuristica import Heuristica
 
 
 class MoleJameson(Heuristica):
+    """
+    A heurística de Mole & Jameson é um algoritmo clássico de inserção sequencial
+    que expande rotas utilizando um critério de "tensão" ou "custo líquido" (strain).
+    Diferente de métodos gulosos simples, ela avalia globalmente a melhor posição
+    de inserção entre quaisquer dois nós já presentes na rota.
+
+    O funcionamento do algoritmo baseia-se em dois critérios principais:
+
+    1. Critério de Inserção (Delta): Calcula o acréscimo de distância ao inserir
+       um cliente 'c' entre dois nós consecutivos 'u' e 'v'.
+       Fórmula: delta = dist(u, c) + dist(c, v) - dist(u, v).
+
+    2. Critério de Seleção (Strain/Tensão): Para decidir qual cliente inserir,
+       o algoritmo pondera o delta de inserção contra a distância do cliente
+       até o depósito (Alpha). O objetivo é priorizar clientes que, embora
+       distantes do depósito, "caibam" bem entre nós existentes, otimizando
+       o preenchimento geográfico da rota.
+
+    O processo segue as etapas:
+    - Seed Selection: Inicia a rota com o cliente mais distante ainda não visitado.
+    - Inserção Iterativa: Varre todos os clientes restantes e todas as posições
+      possíveis na rota atual, buscando minimizar a função de tensão (f).
+    - Ponderação ALPHA/MU: Utiliza parâmetros para equilibrar a economia de
+      distância versus a necessidade de atender clientes periféricos cedo.
+
+    Esta heurística é reconhecida por gerar rotas mais "compactas" e visualmente
+    organizadas do que o Vizinho Mais Próximo, por exemplo.
+    """
     nome = "MJ (Mole & Jameson)"
 
     def resolver(self, inst, k_alvo: Optional[int] = None) -> Tuple[List[List[int]], float, int]:

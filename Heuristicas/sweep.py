@@ -3,6 +3,33 @@ from typing import List, Tuple, Optional
 from Heuristicas.Heuristica import Heuristica
 
 class Sweep(Heuristica):
+    """
+    A heurística Sweep (Varredura) é um algoritmo geométrico clássico para o CVRP,
+    baseado na estratégia "Cluster-First, Route-Second". Sua lógica principal
+    consiste em converter as coordenadas cartesianas dos clientes em coordenadas
+    polares em relação ao depósito.
+
+    O funcionamento dessa implementação segue estas etapas fundamentais:
+
+    1. Transformação Polar: Calcula o ângulo (atan2) de cada cliente em relação
+       ao depósito central, tratando o depósito como a origem do sistema.
+
+    2. Varredura Angular: Ordena os clientes por seus ângulos, simulando o
+       movimento de um radar ou ponteiro de relógio que "varre" o plano.
+
+    3. Agrupamento (Clustering): Os clientes são adicionados à rota atual
+       conforme a ordem angular. Quando a capacidade do veículo é atingida,
+       a rota é fechada e uma nova se inicia imediatamente no próximo cliente.
+
+    4. Otimização por Rotação: Como o ponto de início da varredura (0°) é
+       arbitrário, o algoritmo testa todos os clientes como possíveis pontos
+       de partida e nos dois sentidos (horário e anti-horário), selecionando
+       a configuração que resulta no menor custo total e melhor uso da frota.
+
+    Esta heurística é extremamente rápida e eficaz para instâncias onde os
+    clientes estão distribuídos geograficamente ao redor do depósito, embora
+    possa ter dificuldades em cenários com restrições de tempo ou janelas muito curtas.
+    """
     nome = "SW (Sweep)"
 
     def resolver(self, inst, k_alvo: Optional[int] = None) -> Tuple[List[List[int]], float, int]:

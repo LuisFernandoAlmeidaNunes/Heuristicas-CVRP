@@ -1,9 +1,3 @@
-"""
-Cria uma instância do CVRP armazenando tudo no objeto Grafo, em memória.
-Suporta os tipos de distância: EUC_2D (padrão), CEIL_2D, ATT e EXPLICIT.
-Formatos explícitos suportados: LOWER_ROW, FULL_MATRIX, UPPER_ROW.
-"""
-
 import math
 import numpy as np
 from core.Grafo import Grafo, No
@@ -33,6 +27,30 @@ _DIST_FUNC = {
 }
 
 class InstanciaCvrp:
+    """
+    Este módulo é responsável pelo Parser e Modelagem das instâncias de CVRP.
+    Sua função principal é realizar o carregamento de arquivos no formato padrão
+    da literatura e convertê-los em uma estrutura de Grafo em memória.
+
+    Os diferenciais desta implementação incluem:
+
+    1. Polimorfismo de Distância: Suporta múltiplos padrões de cálculo exigidos pela
+       instâncias do benchmark, como EUC_2D (Euclidiana padrão), CEIL_2D (Arredondamento
+       para cima) e ATT (Pseudo-euclidiana).
+
+    2. Flexibilidade de Formato: Capaz de ler instâncias baseadas tanto em
+       coordenadas geográficas quanto em matrizes de peso explícitas (Full Matrix,
+       Lower Row e Upper Row), permitindo o uso de uma vasta gama de instâncias
+       clássicas (A, E, F, M, tai, Golden, etc.).
+
+    3. Tratamento de Restrições Adicionais: Além da capacidade do veículo, o parser
+       extrai chaves de DISTANCE (autonomia máxima) e SERVICE_TIME (tempo fixo por
+       cliente), integrando-as ao modelo de viabilidade do problema.
+
+    4. Robusteza e Memória: Utiliza o objeto Grafo para armazenar nós (clientes e
+       depósito) e arestas de forma vetorizada (via numpy quando necessário),
+       otimizando o acesso às distâncias durante a execução das heurísticas.
+    """
     def __init__(self, nome: str, capacidade: int, id_deposito: int, grafo: Grafo,
                 max_distancia: float, tempo_servico: float):
 
@@ -58,7 +76,7 @@ class InstanciaCvrp:
         id_deposito = None
         coordenadas = {}
         demandas = {}
-        tipo_distancia = "EUC_2D"   # ← BUG CORRIGIDO: antes lançava erro se ausente
+        tipo_distancia = "EUC_2D"
         formato_peso = None
         pesos_brutos = []
 

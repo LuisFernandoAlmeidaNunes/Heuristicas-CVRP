@@ -3,6 +3,39 @@ from Heuristicas.Heuristica import Heuristica
 
 #versão de parallel savings
 class ClarkeWright(Heuristica):
+    """
+    A heurística de Clarke & Wright (Savings) é um dos algoritmos construtivos mais
+    amplamente utilizados para o CVRP. Esta implementação utiliza a
+    versão "Paralela", que permite que múltiplas rotas sejam fundidas
+    simultaneamente conforme as oportunidades de economia surgem.
+
+    A lógica do algoritmo baseia-se no conceito de Economia (Savings):
+
+    1. Inicialização: Cada cliente começa em uma rota individual dedicada, indo do
+       depósito ao cliente e retornando (0 -> i -> 0).
+
+    2. Cálculo de Economias: Para cada par de clientes (i, j), calcula-se quanto
+       de distância seria economizado se eles fossem atendidos pelo mesmo veículo
+       em sequência, eliminando duas viagens ao depósito.
+       Fórmula: S(i,j) = d(0,i) + d(0,j) - d(i,j).
+
+    3. Ordenação Estratégica: As economias são processadas da maior para a menor.
+       Isso garante que as fusões que trazem o maior ganho logístico sejam
+       priorizadas logo no início.
+
+    4. Critérios de Fusão (Merge): Duas rotas só podem ser fundidas se:
+       - Os clientes envolvidos estiverem nas extremidades das suas respectivas rotas
+         (conectados diretamente ao depósito).
+       - A nova rota resultante for viável em termos de capacidade e autonomia.
+
+    5. Flexibilidade de Orientação: O algoritmo avalia as quatro combinações
+       possíveis de fusão (ponta com ponta, início com início, etc.), invertendo
+       as sequências quando necessário para manter a continuidade do caminho.
+
+    Dessa forma a solução agrupa clientes em clusters lógicos e reduz
+    drasticamente o número de veículos e a distância total percorrida em
+    comparação com soluções puramente gulosas.
+    """
     nome = "CW (Clarke & Wright Savings)"
 
     def resolver(self, inst, k_alvo: Optional[int] = None) -> Tuple[List[List[int]], float, int]:

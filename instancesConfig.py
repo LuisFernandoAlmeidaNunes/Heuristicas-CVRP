@@ -3,7 +3,8 @@ from Heuristicas.nearest_neighbor import NearestNeighbor
 from Heuristicas.sweep import Sweep
 from Heuristicas.mole_jameson import MoleJameson
 
-# nome do arquivo de resultados
+#Arquivo de configuração com os valores de BKS e K
+
 ARQUIVO_DAT = "resultado/resultados.dat"
 
 # Set de instancias e seus melhores valores para funcao obj (KBS) e numero de veiculos(k)
@@ -11,7 +12,8 @@ ARQUIVO_DAT = "resultado/resultados.dat"
 INSTANCIAS = [
     ("A-n80-k10",       1763.00,    10),
     ("F-n72-k4",        237.00,     4),
-    ("E-n101-k14",      1071.00,    14), 
+    ("F-n135-k7",       1162.00,    7),
+    ("E-n101-k14",      1067.00,    14),
     ("M-n151-k12",      1015.00,    12),
     ("Golden_18",       995.13,     27),
     ("CMT10",           1395.85,    18),

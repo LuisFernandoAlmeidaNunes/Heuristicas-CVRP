@@ -4,6 +4,35 @@ from Heuristicas.Heuristica import Heuristica
 
 
 class NearestNeighbor(Heuristica):
+    """
+    A heurística Nearest Neighbor (Vizinho Mais Próximo) é um algoritmo construtivo
+    guloso que monta rotas baseando-se na proximidade imediata entre os nós.
+    Esta implementação utiliza uma estratégia de "expansão por duas pontas"
+    para garantir maior flexibilidade na construção das rotas.
+
+    O funcionamento segue este fluxo:
+
+    1. Seleção de Semente (Seed): Para iniciar cada rota, o algoritmo escolhe o
+       cliente não visitado mais distante do depósito. Esta técnica (Farthest Seed)
+       ajuda a isolar clientes periféricos em rotas eficientes, evitando que eles
+       sejam deixados para o final, o que geraria custos altíssimos.
+
+    2. Expansão Bidirecional: Diferente do NN tradicional que só cresce para a
+       frente, esta versão utiliza um 'deque' para avaliar a inserção de novos
+       clientes tanto no início quanto no fim da sequência atual. Isso permite
+       que a rota se molde melhor ao cluster de clientes.
+
+    3. Critério de Proximidade e Viabilidade: A cada passo, o algoritmo busca o
+       cliente mais próximo de qualquer uma das extremidades da rota. A inserção
+       só é confirmada se respeitar as restrições de capacidade do veículo
+       (validar_viabilidade).
+
+    4. Encerramento de Rota: Quando nenhum cliente restante pode ser adicionado
+       sem violar a capacidade, a rota é fechada e o processo recomeça com uma
+       nova semente até que todos os clientes tenham sido atendidos.
+
+    É uma heurística de altíssima velocidade (baixa complexidade computacional).
+    """
     nome = "NN (Nearest Neighbor)"
 
     def resolver(self, inst, k_alvo: Optional[int] = None) -> Tuple[List[List[int]], float, int]:

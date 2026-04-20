@@ -5,13 +5,35 @@ from itertools import combinations
 
 
 def executar_analise_estatistica(caminho_tabela_gaps, pasta_resultados):
-    """Realiza os testes de Friedman e Wilcoxon e salva os relatórios e ranks."""
+    """
+    JUSTIFICATIVA DA METODOLOGIA ESTATÍSTICA (Fundamentado em Demšar (2006) — Statistical Comparisons of Classifiers over Multiple Data Sets)
+
+    Optamos por uma abordagem não-paramétrica para validar a comparação entre as heurísticas
+    pelos seguintes fundamentos científicos:
+
+    1. Ausência de Normalidade: Os dados de Gap e Runtime em problemas de otimização combinatória
+       frequentemente apresentam distribuições assimétricas e outliers, o que viola os pressupostos
+       de testes paramétricos como o Teste T ou Z.
+
+    2. Teste de Friedman (Global): Utilizado para detectar se existe uma diferença estatisticamente
+       significativa entre pelo menos dois dos algoritmos. Trabalha com a ordenação (ranks) dos
+       métodos em cada instância, tornando a análise robusta a variações de escala entre instâncias.
+
+    3. Teste de Wilcoxon Signed-Rank (Post-hoc): Aplicado após o Friedman para realizar comparações
+       par a par. É o teste mais adequado para amostras pareadas (mesmas instâncias resolvidas por
+       diferentes métodos) em contextos não-paramétricos.
+
+    4. Correção de Bonferroni: Aplicada para ajustar o nível de significância (alfa) face as
+       múltiplas comparações (6 pares), reduzindo a probabilidade de erros do Tipo I (falsos positivos).
+"""
+
+
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
     PROJ_ROOT = os.path.dirname(SCRIPT_DIR)
     PASTA_RESULTADOS = os.path.join(PROJ_ROOT, "resultados")
 
     caminho_tabela = os.path.join(PASTA_RESULTADOS, "tabela_estatistica_gaps.csv")
-    caminho_saida_estatistica = os.path.join(PASTA_RESULTADOS, "relatorio_estatistico.csv")
+    caminho_saida_estatistica = os.path.join(PASTA_RESULTADOS, "relatorio_teste_hipótese.csv")
 
     if not os.path.exists(caminho_tabela):
         print(f"ERRO: O arquivo não foi encontrado em: {caminho_tabela}")

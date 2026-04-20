@@ -1,13 +1,7 @@
 """
 Main.py — CVRP Solver
 Trabalho de Heurísticas para o CVRP - 2026.1
-Alunos: Augusto, Luis, Maria e Raissa
-
-Uso:
-  python Main.py <arquivo.vrp> <saida.dat> <melhor_conhecido> <SIGLA>
-
-Exemplo:
-  python Main.py Benchmark/A-n80-k10.vrp resultados/resultados.dat 1763 CW
+Alunos: Augusto, Luis, Maria e Raíssa
 """
 import sys
 from core.Instancia_cvrp import InstanciaCvrp
@@ -52,7 +46,7 @@ def exibir_resultado(r, inst, melhor):
     print()
     cabecalho_instancia(inst_info, melhor)
     linha_resultado(r)
-    rodape_instancia([r], melhor)
+    # rodape_instancia([r], melhor)
     mensagem_info(f"Plot salvo: {r['png']}")
 
 
@@ -60,7 +54,6 @@ def exibir_resultado(r, inst, melhor):
 # Modo CLI
 # ─────────────────────────────────────────────────────────────────────────────
 
-#TODO: corrigir onde busca o valor ótimo
 def modo_cli(args):
     if len(args) != 4:
         mensagem_erro("Uso: python Main.py <arquivo.vrp> <saida.dat> <melhor_conhecido> <SIGLA>")
@@ -97,7 +90,8 @@ def modo_cli(args):
         heuristica=heuristica,
         inst=inst,
         melhor_conhecido=melhor,
-        melhor_k=melhor_k,        # ← passa o k_alvo
+        melhor_k=melhor_k,
+        is_beenchmark= False
     )
 
     titulo("RESULTADO")
@@ -122,3 +116,5 @@ if __name__ == "__main__":
         sys.exit(1)
 
     modo_cli(args)
+
+    #existe arquivo de config com os valores de BKS e K esperado de todas as instâncias já (InstancesConfig.py)

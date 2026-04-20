@@ -1,0 +1,8 @@
+Comparacao,p-value,Status
+GLOBAL (Friedman),8.266380004009991e-09,Significativo
+CW (Clarke & Wright Savings) vs MJ (Mole & Jameson),0.0001220703125,Diferente (Significativo)
+CW (Clarke & Wright Savings) vs NN (Nearest Neighbor),0.0001220703125,Diferente (Significativo)
+CW (Clarke & Wright Savings) vs SW (Sweep),6.103515625e-05,Diferente (Significativo)
+MJ (Mole & Jameson) vs NN (Nearest Neighbor),0.0001220703125,Diferente (Significativo)
+MJ (Mole & Jameson) vs SW (Sweep),6.103515625e-05,Diferente (Significativo)
+NN (Nearest Neighbor) vs SW (Sweep),6.103515625e-05,Diferente (Significativo)

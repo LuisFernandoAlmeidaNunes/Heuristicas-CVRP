@@ -3,6 +3,31 @@ from typing import List, Tuple
 
 
 class Heuristica(ABC):
+    """
+    Esta classe abstrata define o esqueleto para todas as outras estratégias de
+    resolução (heurísticas) do CVRP neste projeto. Sua existência garante que
+    diferentes algoritmos possam ser implementados com uma mesma base correta.
+
+    As funcionalidades centrais implementadas nesta base são:
+
+    1. Definição de Interface: Através do método abstrato 'resolver', obriga todas
+       as heurísticas filhas a retornarem os dados no formato padrão:
+       (rotas, custo total, número de veículos).
+
+    2. Cálculo de Custo com Penalização: Implementa uma métrica de avaliação
+       que soma as distâncias euclidianas e aplica uma penalidade caso o
+       número de veículos exceda o limite definido (k_alvo). Isso permite que
+       o algoritmo de busca "sinta" o custo de usar veículos extras, facilitando
+       a convergência para soluções viáveis em relação à frota.
+
+    3. Validação de Viabilidade Unificada: Centraliza as regras de negócio do
+       problema, verificando tanto a Capacidade do Veículo quanto a Autonomia
+       Máxima (Distância + Tempo de Serviço). Já que há instâncias com esses
+       dados adicionais que devem ser levados em conta
+
+    Ao herdar desta classe, foca-se apenas na lógica de agrupamento nas classes de heurísticas
+    e roteirização, enquanto a infraestrutura de validação e custo é reutilizada.
+    """
     nome: str = "BASE"
 
 
@@ -63,9 +88,10 @@ class Heuristica(ABC):
         if st_unitario == 0.0:
             custo_total = dist_total
         else:
+            # O limite DISTANCE engloba distância + service time (jornada total)
             custo_total = dist_total + (len(rota) * st_unitario)
 
-        # O limite DISTANCE engloba distância + service time (jornada total)
+
         if custo_total > max_dist:
             return False
 
