@@ -1,91 +1,76 @@
-from typing import List, Tuple
-from .Heuristica import Heuristica
+from typing import List, Optional, Tuple
+from Heuristicas.Heuristica import Heuristica
 
-
+#versão de parallel savings
 class ClarkeWright(Heuristica):
     nome = "CW (Clarke & Wright Savings)"
 
-    def resolver(self, inst) -> Tuple[List[List[int]], float, int]:
-        """
-        Heurística construtiva Clarke & Wright (Savings):
-        1. Cria rotas individuais para cada cliente: 0-i-0
-        2. Calcula economias s_ij = d(0,i) + d(0,j) - d(i,j) para todos os pares i,j
-        3. Ordena economias decrescente
-        4. Faz merges respeitando capacidade até não ser mais possível
-        """
+    def resolver(self, inst, k_alvo: Optional[int] = None) -> Tuple[List[List[int]], float, int]:
         deposito = inst.id_deposito
         grafo = inst.grafo
         clientes = inst.ids_clientes
 
-        # 1. Inicializa rotas individuais: [cliente]
-        # (O depósito é omitido da lista interna, pois calcular_custo o considera)
-        rotas = [[c] for c in clientes]
+        # 1. Rotas individuais (0-i-0)
+        # Usamos um dicionário para manter as rotas ativas por um ID único
+        rotas = {i: [c] for i, c in enumerate(clientes)}
+        # Mapeia cada cliente para o ID da sua rota atual
+        cliente_para_rota_id = {c: i for i, c in enumerate(clientes)}
 
-        # Mapeamento cliente -> índice da rota atual em 'rotas'
-        cliente_para_rota = {c: i for i, c in enumerate(clientes)}
-
-        # 2. Calcula economias s_ij = d(0,i) + d(0,j) - d(i,j)
+        # 2. Cálculo das Economias (Savings)
         economias = []
         for i in range(len(clientes)):
             for j in range(i + 1, len(clientes)):
                 ci, cj = clientes[i], clientes[j]
+                # s_ij = d(0,i) + d(0,j) - d(i,j)
                 s = (grafo.dist(deposito, ci) +
                      grafo.dist(deposito, cj) -
                      grafo.dist(ci, cj))
                 if s > 0:
                     economias.append((s, ci, cj))
 
-        # 3. Ordena economias em ordem decrescente
-        economias.sort(reverse=True, key=lambda x: x[0])
+        # 3. Ordenar economias decrescente
+        economias.sort(key=lambda x: x[0], reverse=True)
 
-        # Função auxiliar para verificar se o cliente está nas pontas da rota
-        def eh_extremo(rota, cliente):
-            return cliente == rota[0] or cliente == rota[-1]
-
-        # 4. Processa a lista de economias para realizar Merges
+        # 4. Processo de Merge (Fusão)
         for _, ci, cj in economias:
-            ri = cliente_para_rota[ci]
-            rj = cliente_para_rota[cj]
+            id_i = cliente_para_rota_id[ci]
+            id_j = cliente_para_rota_id[cj]
 
-            # Já estão na mesma rota?
-            if ri == rj:
+            if id_i == id_j:
                 continue
 
-            rota_i = rotas[ri]
-            rota_j = rotas[rj]
+            rota_i = rotas[id_i]
+            rota_j = rotas[id_j]
 
-            # Regra: Ambos os clientes devem ser extremidades de suas rotas
-            if not (eh_extremo(rota_i, ci) and eh_extremo(rota_j, cj)):
+            # Critério Clarke-Wright: i e j devem ser extremidades conectadas ao depósito
+            # O nó ci deve estar em uma das pontas da rota_i e cj na ponta da rota_j
+            if not ((ci == rota_i[0] or ci == rota_i[-1]) and
+                    (cj == rota_j[0] or cj == rota_j[-1])):
                 continue
 
-            # Tenta construir a nova rota candidata baseada nas posições das extremidades
-            nova_rota_proposta = []
-
+            # Determina a orientação da fusão
             if ci == rota_i[-1] and cj == rota_j[0]:
-                nova_rota_proposta = rota_i + rota_j
+                nova_rota = rota_i + rota_j
             elif ci == rota_i[0] and cj == rota_j[-1]:
-                nova_rota_proposta = rota_j + rota_i
+                nova_rota = rota_j + rota_i
             elif ci == rota_i[0] and cj == rota_j[0]:
-                nova_rota_proposta = rota_i[::-1] + rota_j
-            elif ci == rota_i[-1] and cj == rota_j[-1]:
-                nova_rota_proposta = rota_i + rota_j[::-1]
+                nova_rota = rota_i[::-1] + rota_j
+            else:  # ci == rota_i[-1] and cj == rota_j[-1]
+                nova_rota = rota_i + rota_j[::-1]
 
-            # VALIDAÇÃO (Capacidade + Distância + Tempo de Serviço)
-            # Se a nova rota proposta violar qualquer restrição da instância, ignoramos o merge
-            if nova_rota_proposta and self.validar_viabilidade(inst, nova_rota_proposta):
-                # Efetiva o Merge
-                rotas[ri] = nova_rota_proposta
-                rotas[rj] = []  # Esvazia a rota antiga j
+            # 5. Validação de Restrições (Capacidade/Tempo)
+            if self.validar_viabilidade(inst, nova_rota):
+                # Atualiza a rota i e remove a rota j
+                rotas[id_i] = nova_rota
+                del rotas[id_j]
 
-                # Atualiza o mapeamento de todos os clientes que estavam na rota_j para a nova ri
-                for c in nova_rota_proposta:
-                    cliente_para_rota[c] = ri
+                # Atualiza o mapeamento de todos os clientes da rota que foi movida
+                # para garantir segurança na lógica de 'id_i == id_j', atualizamos todos)
+                for cliente in nova_rota:
+                    cliente_para_rota_id[cliente] = id_i
 
-        # Filtra as rotas que não ficaram vazias após os merges
-        rotas_finais = [r for r in rotas if r]
-
-        # Calcula resultados finais usando os métodos da classe base
-        custo_total = self.calcular_custo(inst, rotas_finais)
+        rotas_finais = list(rotas.values())
+        custo_total = self.calcular_custo(inst, rotas_finais, k_alvo)
         n_veiculos = len(rotas_finais)
 
         return rotas_finais, custo_total, n_veiculos
