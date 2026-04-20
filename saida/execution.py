@@ -11,8 +11,8 @@ CABECALHO = ["INSTANCE", "METHOD", "OBJECTIVE", "RUNTIME", "GAP"]
 def calcular_penalidade(n_veiculos, melhor_k, melhor_conhecido):
     if melhor_k is None:
         return 0.0
-    a = melhor_conhecido * 0.05 # 5% por veiculos a mais
-    b = melhor_conhecido * 0.05
+    a = melhor_conhecido * 0.005 # 0.5% por veiculos a mais
+    b = melhor_conhecido * 0.0005
     return a * max(0,n_veiculos - melhor_k) + b * max(0, melhor_k - n_veiculos)
 
 def carregar_resultados(caminho_dat=CAMINHO_ARQUIVO):

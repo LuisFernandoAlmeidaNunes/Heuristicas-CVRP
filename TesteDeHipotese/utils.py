@@ -4,34 +4,18 @@ import pandas as pd
 from scipy.stats import rankdata
 
 def load_data(path):
-    """
-    Carrega os dados do arquivo e os organiza em uma tabela.
-    Args:
-        path (str): Caminho para o arquivo de dados.
-    Returns:
-        pd.DataFrame: Tabela organizada com as instâncias e métodos.
-    """
-
-    # metrica a ser analisada
     metrica = "GAP"
-
-    # lê o arquivo 
     df = pd.read_csv(path, sep=r"\t", engine="python")
-
-    # pivot: linhas = instância, colunas = método
-    tabela= df.pivot(index="INSTANCE", columns="METHOD", values=metrica)
-    dist = tabela.to_numpy()
+    tabela = df.pivot(index="INSTANCE", columns="METHOD", values=metrica)
+    
     ordem = [
         "CW (Clarke & Wright Savings)",
         "NN (Nearest Neighbor)",
         "MJ (Mole & Jameson)",
         "SW (Sweep)"
     ]
-
     tabela = tabela[ordem]
-    print(tabela.columns)
-
-    return dist
+    return tabela.to_numpy()
 
 def calc_hipotese(p:float, alpha: float) -> bool:
     """Calcula a hipótese.

@@ -42,8 +42,6 @@ def friedman(dist):
 
     p_value = 1 - f.cdf(iman, df_friedman, df_iman[1])
 
-    print("Friedman finalizado.")
-
     return {
         "friedman": (chi_f, df_friedman),
         "iman": (iman, df_iman),
