@@ -12,7 +12,8 @@ from core.Grafo import Grafo, No
 # ── Funções de distância ────────────────────────────────────────────────────
 
 def _euc_2d(x1, y1, x2, y2) -> float:
-    return math.hypot(x2 - x1, y2 - y1)
+    """Arredonda para o inteiro mais próximo (padrão da literatura"""
+    return float(round(math.hypot(x2 - x1, y2 - y1)))
 
 def _ceil_2d(x1, y1, x2, y2) -> float:
     """EUC_2D arredondado para cima — padrão de várias instâncias clássicas."""
@@ -26,7 +27,7 @@ def _att(x1, y1, x2, y2) -> float:
     return float(t + 1 if t < r else t)
 
 _DIST_FUNC = {
-    "EUC_2D":  None,        # ← BUG: vetorizado sem arredondamento
+    "EUC_2D":  None,
     "CEIL_2D": _ceil_2d,
     "ATT":     _att,
 }
