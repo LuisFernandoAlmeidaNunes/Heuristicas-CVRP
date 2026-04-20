@@ -5,12 +5,13 @@ from typing import List, Tuple
 class Heuristica(ABC):
     nome: str = "BASE"
 
+
     @abstractmethod
-    def resolver(self, inst) -> Tuple[List[List[int]], float, int]:
+    def resolver(self, inst, k_alvo=None) -> Tuple[List[List[int]], float, int]:
         """Retorna (rotas, custo_total, n_veiculos)"""
         pass
 
-    def calcular_custo(self, inst, rotas: List[List[int]]) -> float:
+    def calcular_custo(self, inst, rotas: List[List[int]], k_alvo= None) -> float:
         """
         Calcula o custo total considerando Distâncias
         """
@@ -27,6 +28,12 @@ class Heuristica(ABC):
             for i in range(len(rota) - 1):
                 custo_viagem += grafo.dist(rota[i], rota[i + 1])
             custo_viagem += grafo.dist(rota[-1], deposito)
+
+        # Penalidade α*max{0, k_alvo-k} + β*max{0, k-k_alvo}
+        if k_alvo is not None:
+            k = sum(1 for r in rotas if r)
+           # não incluimos penalidade para ser menos veiculo porque tecnicamente quanto menos melhor se o custo também for menor
+            custo_viagem +=  50 * max(0, k - k_alvo)
 
 
         return custo_viagem
@@ -54,12 +61,12 @@ class Heuristica(ABC):
         st_unitario = getattr(inst, 'tempo_servico', 0.0)
 
         if st_unitario == 0.0:
-            tempo_total = dist_total
+            custo_total = dist_total
         else:
-            tempo_total = dist_total + (len(rota) * st_unitario)
+            custo_total = dist_total + (len(rota) * st_unitario)
 
         # O limite DISTANCE engloba distância + service time (jornada total)
-        if tempo_total > max_dist:
+        if custo_total > max_dist:
             return False
 
         return True
