@@ -41,7 +41,7 @@ class NearestNeighbor(Heuristica):
                             melhor_cliente = c
                             no_inicio = False
 
-                    # Teste 2: Adicionar ao início (o diferencial da referência)
+                    # Teste 2: Adicionar ao início
                     dist_ini = grafo.dist(c, primeiro)
                     if dist_ini < melhor_dist:
                         if self.validar_viabilidade(inst, [c] + list(rota_atual)):

@@ -1,6 +1,6 @@
 import os
 import sys
-import pandas as pd
+
 
 # Garante que a raiz do projeto está no path
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -11,11 +11,7 @@ from core.Instancia_cvrp import InstanciaCvrp
 from saida.execution import executar_instancia, CABECALHO
 from saida.graphics import gerar_graficos, plotar_comparativo
 
-# Heurísticas
-# from Heuristicas.clarke_wright    import ClarkeWright
-# from Heuristicas.nearest_neighbor import NearestNeighbor
-# from Heuristicas.sequential_insertion import MoleJameson
-# from Heuristicas.sweep            import Sweep
+
 
 # Configurações do benchmark
 from instancesConfig import INSTANCIAS, HEURISTICAS  # Importa a lista de instâncias e seus BKS e K
@@ -23,7 +19,7 @@ from instancesConfig import INSTANCIAS, HEURISTICAS  # Importa a lista de instâ
 PASTA_INSTANCIAS = "Benchmark"
 ARQUIVO_DAT      = "resultados/resultados.dat"
 PASTA_PLOTS      = "resultados"
-N_EXECUCOES      = 1  # Definido conforme necessidade do benchmark
+N_EXECUCOES      = 50
 
 def preparar_arquivo_resultados():
     """Cria a pasta e reseta o arquivo com o cabeçalho."""
@@ -35,8 +31,6 @@ def preparar_arquivo_resultados():
 
 def main():
     preparar_arquivo_resultados()
-
-    INSTANCIAS_COMPARATIVO = {"A-n80-k10", "Loggi-n601-k42", "Golden_18"}  
 
     for n in range(1, N_EXECUCOES + 1):
         print(f"\n>>> INICIANDO RODADA {n}/{N_EXECUCOES}")
@@ -55,9 +49,9 @@ def main():
                     arquivo_resultado=ARQUIVO_DAT,
                     pasta_plots=PASTA_PLOTS
                 )
-
+                # pra que isso?
                 # Gera comparativo só na primeira rodada e na instância escolhida
-                if n == 1 and nome in INSTANCIAS_COMPARATIVO:
+                if n == 1 and nome in INSTANCIAS:
                     resultados_rotas = {}
                     for h in HEURISTICAS.values():
                         rotas, custo, k = h.resolver(inst)
@@ -79,7 +73,6 @@ def main():
                 print(f"  Erro em {nome}: {e}")
 
     print("\nGerando análise estatística e gráficos...")
-    gerar_graficos(ARQUIVO_DAT, PASTA_PLOTS)
     print("Benchmark Finalizado.")
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 from Heuristicas.clarke_wright import ClarkeWright
 from Heuristicas.nearest_neighbor import NearestNeighbor
 from Heuristicas.sweep import Sweep
-from Heuristicas.sequential_insertion import MoleJameson
+from Heuristicas.mole_jameson import MoleJameson
 
 # nome do arquivo de resultados
 ARQUIVO_DAT = "resultado/resultados.dat"

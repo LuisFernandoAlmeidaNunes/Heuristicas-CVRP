@@ -46,11 +46,10 @@ def plotar_rotas(inst, rotas, metodo: str, pasta_saida: str = "resultados"):
         ax.scatter(xs[1:-1], ys[1:-1], color=cor, s=40,
                    edgecolors='black', linewidths=0.3, zorder=2)
 
-        # 4. Adicionar IDs apenas se for legível (ex: menos de 150 clientes)
-        if n_clientes < 150:
-            for c_id in rota:
-                ax.text(grafo.nos[c_id].x, grafo.nos[c_id].y, str(c_id),
-                        fontsize=7, ha='center', va='bottom', alpha=0.8)
+
+        for c_id in rota:
+            ax.text(grafo.nos[c_id].x, grafo.nos[c_id].y, str(c_id),
+                    fontsize=7, ha='center', va='bottom', alpha=0.8)
 
     # 5. Destaque do Depósito (Símbolo de estrela maior)
     ax.scatter(dep_no.x, dep_no.y, color="black", s=300,
