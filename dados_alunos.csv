@@ -1,0 +1,11 @@
+Aluno,Idade,Horas_Estudo_Semana,Frequencia_Percentual,Nota_Matematica,Nota_Portugues,Nota_Ciencias,Uso_Celular_Horas_Semana,Sono_Horas_Noite,Participacao
+A1,15,10,90,8.5,7.8,8.0,14,7,Alta
+A2,16,6,85,7.0,6.5,7.2,20,6,Média
+A3,15,12,95,9.2,8.8,9.0,10,8,Alta
+A4,17,4,80,6.5,6.0,6.8,25,5,Baixa
+A5,16,9,88,8.0,7.5,7.9,18,7,Média
+A6,15,7,92,7.8,7.0,7.5,16,6,Média
+A7,17,3,75,5.5,5.8,6.0,30,5,Baixa
+A8,16,11,93,9.0,8.5,8.7,12,8,Alta
+A9,15,8,89,8.2,7.9,8.1,15,7,Média
+A10,17,5,82,6.8,6.2,6.9,22,6,Baixa
