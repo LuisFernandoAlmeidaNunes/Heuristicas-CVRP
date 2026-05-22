@@ -1,8 +1,10 @@
 import os
+from pathlib import Path as FilePath
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
 from matplotlib import cm
+import pandas as pd
 
 from saida.execution import carregar_resultados
 
@@ -119,6 +121,193 @@ def grafico_ic_gap(df, pasta_saida):
     plt.savefig(os.path.join(pasta_saida, "grafico_ic_gap.png"))
     plt.close()
 
+# ── bootstrap ────────────────────────────────────────────────────────────────
+ 
+def _bootstrap_media(dados: np.ndarray,
+                     n_boot: int,
+                     nivel: float,
+                     seed: int) -> tuple[float, float, float]:
+    """
+    Retorna (media, ic_inferior, ic_superior) via bootstrap percentil.
+ 
+    Parâmetros
+    ----------
+    dados   : array 1-D de valores observados
+    n_boot  : número de re-amostras bootstrap
+    nivel   : nível de confiança (ex.: 0.95 → IC 95%)
+    seed    : semente do gerador aleatório
+ 
+    Retorna
+    -------
+    media        : média da amostra original
+    ic_inf       : limite inferior do IC bootstrap
+    ic_sup       : limite superior do IC bootstrap
+    """
+    rng = np.random.default_rng(seed)
+    n = len(dados)
+ 
+    medias_boot = np.empty(n_boot)
+    for i in range(n_boot):
+        amostra = rng.choice(dados, size=n, replace=True)
+        medias_boot[i] = amostra.mean()
+ 
+    alfa = 1.0 - nivel
+    ic_inf = np.percentile(medias_boot, 100 * alfa / 2)
+    ic_sup = np.percentile(medias_boot, 100 * (1 - alfa / 2))
+    media  = dados.mean()
+ 
+    return media, ic_inf, ic_sup
+ 
+PALETA = ["#2196F3", "#F44336", "#4CAF50", "#FF9800",
+         "#9C27B0", "#00BCD4", "#795548", "#607D8B"]
+
+# ── função principal ──────────────────────────────────────────────────────────
+ 
+def gerar_grafico_bootstrap(arquivo_dat: str, arquivo_saida: str ) -> None:
+    """
+    Lê um arquivo .dat, calcula o bootstrap da `metrica` por método e
+    salva o gráfico em `arquivo_saida`.
+ 
+    Parâmetros
+    ----------
+    arquivo_dat   : caminho do arquivo .dat (separado por tab)
+    arquivo_saida : caminho da imagem de saída (.png, .pdf, .svg …)
+    metrica       : coluna numérica a analisar  (padrão: "GAP")
+    n_bootstrap   : número de re-amostras bootstrap (padrão: 10 000)
+    nivel_ic      : nível de confiança do IC      (padrão: 0.95)
+    seed          : semente aleatória              (padrão: 42)
+    figsize       : tamanho da figura em polegadas (padrão: (12, 6))
+    dpi           : resolução da imagem            (padrão: 150)
+ 
+    Exemplo
+    -------
+    >>> gerar_grafico_bootstrap("resultados.dat", "bootstrap.png", metrica="OBJECTIVE")
+    """
+ 
+    # ── leitura e validação ──────────────────────────────────────────────────
+    arquivo_dat    = FilePath(arquivo_dat)
+    arquivo_saida  = FilePath(arquivo_saida)
+    metrica = "GAP"
+    n_bootstrap = 10_000
+    nivel_ic = 0.95
+    seed = 42
+    figsize = (12, 6)
+    dpi = 150
+ 
+    if not arquivo_dat.exists():
+        raise FileNotFoundError(f"Arquivo não encontrado: {arquivo_dat}")
+ 
+    df = pd.read_csv(arquivo_dat, sep="\t")
+ 
+    colunas_obrigatorias = {"METHOD", metrica}
+    faltando = colunas_obrigatorias - set(df.columns)
+    if faltando:
+        raise ValueError(
+            f"Coluna(s) ausente(s) no arquivo: {faltando}\n"
+            f"Colunas disponíveis: {list(df.columns)}"
+        )
+ 
+    metodos  = df["METHOD"].unique()
+    n_metodos = len(metodos)
+ 
+    # ── cálculo do bootstrap por método ─────────────────────────────────────
+    resultados = []
+    for metodo in metodos:
+        dados = df.loc[df["METHOD"] == metodo, metrica].dropna().to_numpy()
+        if len(dados) == 0:
+            continue
+        media, ic_inf, ic_sup = _bootstrap_media(dados, n_bootstrap, nivel_ic, seed)
+        resultados.append(
+            dict(metodo=metodo, media=media, ic_inf=ic_inf, ic_sup=ic_sup, n=len(dados))
+        )
+ 
+    res_df = pd.DataFrame(resultados).sort_values("media")
+ 
+    # ── figura ───────────────────────────────────────────────────────────────
+    fig, (ax_bar, ax_dist) = plt.subplots(
+        1, 2,
+        figsize=figsize,
+        gridspec_kw={"width_ratios": [1.2, 1]},
+    )
+    fig.suptitle(
+        f"Análise Bootstrap — {metrica}  "
+        f"(IC {int(nivel_ic * 100)}%,  {n_bootstrap:,} re-amostras)",
+        fontsize=14, fontweight="bold", y=1.02,
+    )
+ 
+    cores = {m: PALETA[i % len(PALETA)] for i, m in enumerate(res_df["metodo"])}
+ 
+    # ── painel esquerdo: barras com IC ───────────────────────────────────────
+    x = np.arange(len(res_df))
+    for i, row in res_df.reset_index(drop=True).iterrows():
+        cor = cores[row["metodo"]]
+        ax_bar.bar(i, row["media"], color=cor, alpha=0.82, zorder=2)
+        ax_bar.errorbar(
+            i, row["media"],
+            yerr=[[row["media"] - row["ic_inf"]], [row["ic_sup"] - row["media"]]],
+            fmt="none", color="black", capsize=6, linewidth=1.8, zorder=3,
+        )
+        ax_bar.text(
+            i, row["ic_sup"] + (res_df["ic_sup"].max() * 0.01),
+            f"{row['media']:.2f}",
+            ha="center", va="bottom", fontsize=8.5, fontweight="bold",
+        )
+ 
+    nomes_curtos = [
+        m.split("(")[0].strip() if "(" in m else m for m in res_df["metodo"]
+    ]
+    ax_bar.set_xticks(x)
+    ax_bar.set_xticklabels(nomes_curtos, rotation=15, ha="right", fontsize=9)
+    ax_bar.set_ylabel(metrica, fontsize=11)
+    ax_bar.set_title("Média com IC Bootstrap por Método", fontsize=11)
+    ax_bar.yaxis.grid(True, linestyle="--", alpha=0.5, zorder=0)
+    ax_bar.set_axisbelow(True)
+ 
+    # ── painel direito: distribuição bootstrap ───────────────────────────────
+    rng = np.random.default_rng(seed)
+    for _, row in res_df.iterrows():
+        dados  = df.loc[df["METHOD"] == row["metodo"], metrica].dropna().to_numpy()
+        n      = len(dados)
+        medias = np.array([
+            rng.choice(dados, size=n, replace=True).mean()
+            for _ in range(n_bootstrap)
+        ])
+        cor = cores[row["metodo"]]
+        nome_curto = row["metodo"].split("(")[0].strip() if "(" in row["metodo"] else row["metodo"]
+        ax_dist.hist(
+            medias, bins=60, color=cor, alpha=0.55,
+            density=True, label=nome_curto,
+        )
+        ax_dist.axvline(row["ic_inf"], color=cor, linestyle=":", linewidth=1.2)
+        ax_dist.axvline(row["ic_sup"], color=cor, linestyle=":", linewidth=1.2)
+ 
+    ax_dist.set_xlabel(f"Média Bootstrap de {metrica}", fontsize=11)
+    ax_dist.set_ylabel("Densidade", fontsize=11)
+    ax_dist.set_title("Distribuição das Médias Bootstrap", fontsize=11)
+    ax_dist.yaxis.grid(True, linestyle="--", alpha=0.4, zorder=0)
+    ax_dist.set_axisbelow(True)
+    ax_dist.legend(fontsize=8, framealpha=0.7)
+ 
+    # ── rodapé com tabela de resultados ─────────────────────────────────────
+    linhas_rodape = []
+    for _, row in res_df.iterrows():
+        nome_curto = row["metodo"].split("(")[0].strip() if "(" in row["metodo"] else row["metodo"]
+        linhas_rodape.append(
+            f"{nome_curto}: média={row['media']:.3f}  "
+            f"IC=[{row['ic_inf']:.3f}, {row['ic_sup']:.3f}]  n={row['n']}"
+        )
+    fig.text(
+        0.5, -0.04, "\n".join(linhas_rodape),
+        ha="center", va="top", fontsize=7.5,
+        fontfamily="monospace",
+        bbox=dict(boxstyle="round,pad=0.4", facecolor="#f5f5f5", edgecolor="#cccccc"),
+    )
+ 
+    plt.tight_layout()
+    arquivo_saida.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(arquivo_saida, dpi=dpi, bbox_inches="tight")
+    plt.close(fig)
+
 def gerar_tabelas_report(df_medio, pasta_saida):
     """
     Função dedicada exclusivamente ao processamento e exportação de dados.
@@ -200,3 +389,6 @@ def processar_resultados_finais(caminho_dat, pasta_saida):
 
     # 2. Gerar Gráficos
     gerar_graficos_analise(df_medio, pasta_saida)
+
+    # 3. Grafico Bootstrap
+    gerar_grafico_bootstrap(caminho_dat, os.path.join(pasta_saida, "grafico_bootstrap_gap.png"))

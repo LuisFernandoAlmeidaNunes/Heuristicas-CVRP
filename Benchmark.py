@@ -38,7 +38,7 @@ from instancesConfig import INSTANCIAS, HEURISTICAS  # Importa a lista de instâ
 PASTA_INSTANCIAS = "Benchmark"
 ARQUIVO_DAT      = "resultados/resultados.dat"
 PASTA_PLOTS      = "resultados"
-N_EXECUCOES = 3  # MÍNIMO para IC 95%
+N_EXECUCOES = 2  # MÍNIMO para IC 95%
 
 def preparar_arquivo_resultados():
     """Cria a pasta e reseta o arquivo com o cabeçalho."""
@@ -68,15 +68,15 @@ def main():
                     inst=inst,
                     melhor_conhecido=bks,
                     melhor_k=melhor_k,
-
+                    is_beenchmark=False
                 )
             except Exception as e:
                 print(f"Erro: {e}")
 
-    print("\n✅ Benchmark concluído!")
     processar_resultados_finais(ARQUIVO_DAT, PASTA_PLOTS)
     tabela_estatistica = os.path.join(PASTA_PLOTS, "tabela_estatistica_gaps.csv")
     executar_analise_estatistica(tabela_estatistica, PASTA_PLOTS)
+    print("\n✅ Benchmark concluído!")
 
 if __name__ == "__main__":
     main()
