@@ -89,3 +89,8 @@ PSReadLine/
 
 # Python scripts gerados
 temp_*.py
+
+
+#claude
+.claude/
+CLAUDE.md
