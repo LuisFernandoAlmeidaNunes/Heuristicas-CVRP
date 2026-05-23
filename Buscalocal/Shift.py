@@ -1,5 +1,6 @@
 from typing import List, Tuple
 from Heuristicas.Heuristica import Heuristica
+from saida.terminal import spinner_busca_local, spinner_busca_local_fim
 
 
 class Shift(Heuristica):
@@ -33,7 +34,7 @@ class Shift(Heuristica):
 
         return delta_dist + delta_pen
 
-    def resolver(self, inst, k_alvo=None, max_moves_por_no=100) -> Tuple[List[List[int]], float, int]:
+    def resolver(self, inst, k_alvo=None, max_moves_por_no=1000) -> Tuple[List[List[int]], float, int]:
         rotas, _, _ = self.construtivo.resolver(inst, k_alvo)
         rotas = [list(r) for r in rotas if r]
         custo_inicial = self.calcular_custo(inst, rotas, k_alvo)
@@ -41,8 +42,11 @@ class Shift(Heuristica):
         moves_por_no = {c: 0 for c in inst.ids_clientes}
         custo_atual = custo_inicial
         melhorou = True
+        iteracao = 0
         while melhorou:
             melhorou = False
+            iteracao += 1
+            # spinner_busca_local(self.nome, iteracao, custo_atual, custo_inicial)
 
             for i_r1, r1 in enumerate(rotas):
                 for i_c in range(len(r1)):
@@ -65,8 +69,8 @@ class Shift(Heuristica):
                                 continue
 
                             delta = self._delta(inst, rotas, i_r1, i_c, i_r2, pos, k_alvo)
-                            # if delta < -custo_atual * 1e-6:  # Considera melhoria relativa
-                            if delta < -1e-9:  # Considera melhoria significativa
+                            if delta < -custo_atual * 1e-16:  # Considera melhoria relativa
+                            # if delta < -1e-9:  # Considera melhoria significativa
                                 nova_r1 = r1[:i_c] + r1[i_c + 1:]
                                 nova_rotas = [
                                     nova_r1 if j == i_r1 else (nova_r2 if j == i_r2 else r)
@@ -87,5 +91,5 @@ class Shift(Heuristica):
 
         custo = self.calcular_custo(inst, rotas, k_alvo)
         n_veiculos = len(rotas)
-        print(f"[Shift] {self.construtivo.nome}: {custo_inicial:.2f} → {custo:.2f}  (melhora: {custo_inicial - custo:.2f})")
+        spinner_busca_local_fim(self.nome, custo_inicial, custo)
         return rotas, custo, n_veiculos
