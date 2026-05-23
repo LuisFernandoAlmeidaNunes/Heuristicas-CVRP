@@ -7,6 +7,7 @@ Cada heurística tem uma cor fixa. Funciona no Windows (Win10+), Linux e Mac.
 
 import os
 import sys
+import itertools
 
 # Ativa cores ANSI no Windows
 if sys.platform == "win32":
@@ -180,3 +181,39 @@ def rodape_benchmark(arquivo: str):
     )
     _linha_dupla()
     print()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Spinner para busca local
+# ─────────────────────────────────────────────────────────────────────────────
+
+_SPINNER_FRAMES = itertools.cycle(["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
+
+def spinner_busca_local(nome: str, iteracao: int, custo_atual: float, custo_inicial: float):
+    frame   = next(_SPINNER_FRAMES)
+    melhora = custo_inicial - custo_atual
+    cor     = cor_heuristica(nome)
+    sys.stdout.write(
+        f"\r  {CIANO}{frame}{RESET} "
+        f"{cor}{BOLD}{nome}{RESET} "
+        f"{DIM}{CINZA}│{RESET} "
+        f"iter {AMARELO}{iteracao:<4}{RESET} "
+        f"{DIM}{CINZA}│{RESET} "
+        f"custo {BRANCO}{_fmt_custo(custo_atual)}{RESET} "
+        f"{DIM}{CINZA}│{RESET} "
+        f"melhora {VERDE}▼ {_fmt_custo(melhora)}{RESET}   "
+    )
+    sys.stdout.flush()
+
+def spinner_busca_local_fim(nome: str, custo_inicial: float, custo_final: float):
+    melhora = custo_inicial - custo_final
+    cor     = cor_heuristica(nome)
+    sys.stdout.write(
+        f"\r  {VERDE}✓{RESET} "
+        f"{cor}{BOLD}{nome}{RESET} "
+        f"{DIM}{CINZA}│{RESET} "
+        f"{_fmt_custo(custo_inicial)} {CINZA}→{RESET} {VERDE}{_fmt_custo(custo_final)}{RESET} "
+        f"{DIM}{CINZA}│{RESET} "
+        f"melhora {VERDE}▼ {_fmt_custo(melhora)}{RESET}   \n"
+    )
+    sys.stdout.flush()
