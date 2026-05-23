@@ -54,6 +54,10 @@ class Shift(Heuristica):
                         if i_r2 == i_r1:
                             continue
 
+                        carga_r2 = sum(inst.grafo.nos[c].demanda for c in r2)
+                        if inst.grafo.nos[cliente].demanda + carga_r2 > inst.capacidade:
+                            continue
+
                         for pos in range(len(r2) + 1):
                             nova_r2 = r2[:pos] + [cliente] + r2[pos:]
 
@@ -61,8 +65,8 @@ class Shift(Heuristica):
                                 continue
 
                             delta = self._delta(inst, rotas, i_r1, i_c, i_r2, pos, k_alvo)
-
-                            if delta < -custo_atual * 1e-6:
+                            # if delta < -custo_atual * 1e-6:  # Considera melhoria relativa
+                            if delta < -1e-9:  # Considera melhoria significativa
                                 nova_r1 = r1[:i_c] + r1[i_c + 1:]
                                 nova_rotas = [
                                     nova_r1 if j == i_r1 else (nova_r2 if j == i_r2 else r)
