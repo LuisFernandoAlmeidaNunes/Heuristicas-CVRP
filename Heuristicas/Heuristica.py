@@ -44,6 +44,7 @@ class Heuristica(ABC):
         deposito = inst.id_deposito
         grafo = inst.grafo
 
+
         for rota in rotas:
             if not rota:
                 continue
@@ -58,7 +59,8 @@ class Heuristica(ABC):
         if k_alvo is not None:
             k = sum(1 for r in rotas if r)
            # não incluimos penalidade para ser menos veiculo porque tecnicamente quanto menos melhor se o custo também for menor
-            custo_viagem +=  50 * max(0, k - k_alvo)
+            penalidade = (len(inst.ids_clientes)*0.1)
+            custo_viagem += penalidade * max(0, k - k_alvo)
 
 
         return custo_viagem
