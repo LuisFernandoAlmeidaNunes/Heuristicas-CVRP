@@ -2,6 +2,9 @@ from Heuristicas.clarke_wright import ClarkeWright
 from Heuristicas.nearest_neighbor import NearestNeighbor
 from Heuristicas.sweep import Sweep
 from Heuristicas.mole_jameson import MoleJameson
+from Buscalocal.shift import Shift
+from Buscalocal.two_opt import TwoOpt
+from Buscalocal.exchange import Exchange
 
 #Arquivo de configuração com os valores de BKS e K
 
@@ -32,5 +35,11 @@ HEURISTICAS = {
     "NN": NearestNeighbor(),
     "SW": Sweep(),
     "ML": MoleJameson(),
+}
+
+BUSCALOCAL = {
+    "Shift": Shift,
+    "2opt": TwoOpt,
+    "Exchange": Exchange,
 }
 

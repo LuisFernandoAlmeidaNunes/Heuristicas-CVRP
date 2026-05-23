@@ -108,6 +108,7 @@ def gerar_graficos(caminho_dat, pasta_saida):
     # ── Gráfico 1: Runtime com IC bootstrap ───────────────────────────────
     INSTANCIAS_PEQUENAS = {"A-n80-k10", "CMT10", "E-n101-k14", "F-n135-k7",
                            "F-n72-k4", "Golden_18", "M-n151-k12", "tai150b"}
+    INSTANCIAS_GRANDES = set(df["INSTANCE"].unique()) - INSTANCIAS_PEQUENAS
 
     for grupo, label in [(INSTANCIAS_PEQUENAS, "pequenas"), (INSTANCIAS_GRANDES, "grandes")]:
         df_grupo = df[df["INSTANCE"].isin(grupo)]
@@ -192,6 +193,16 @@ def gerar_graficos(caminho_dat, pasta_saida):
         resultados_ic.append({"Metodo": m, "Media_Gap": media, "Erro_IC": erro})
 
     pd.DataFrame(resultados_ic).to_csv(os.path.join(pasta_saida, "estatisticas_ic.csv"), index=False)
+
+    # ── Tabela estatística (pivot INSTANCE × METHOD → GAP médio) ─────────
+    tabela_gaps = df.groupby(["INSTANCE", "METHOD"])["GAP"].mean().unstack("METHOD")
+    tabela_gaps.to_csv(os.path.join(pasta_saida, "tabela_estatistica_gaps.csv"))
+
+
+def processar_resultados_finais(caminho_dat, pasta_saida):
+    """Alias chamado pelo Benchmark — gera gráficos + tabela de gaps para análise estatística."""
+    gerar_graficos(caminho_dat, pasta_saida)
+
 
 def plotar_comparativo(inst, rotas_melhor, rotas_pior, metodo_melhor, metodo_pior, pasta_saida):
     """Plota lado a lado a melhor e pior rota da mesma instância."""
