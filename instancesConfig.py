@@ -2,7 +2,7 @@ from Heuristicas.clarke_wright import ClarkeWright
 from Heuristicas.nearest_neighbor import NearestNeighbor
 from Heuristicas.sweep import Sweep
 from Heuristicas.mole_jameson import MoleJameson
-from Buscalocal.shift import Shift
+from Buscalocal.Shift import Shift
 from Buscalocal.two_opt import TwoOpt
 from Buscalocal.exchange import Exchange
 
@@ -25,7 +25,7 @@ INSTANCIAS = [
     ("Golden_3",        10997.80,   9),
     ("Li_21",           16212.83,   10),
     ("X-n502-k39",      69226.00,   39),
-    ("Loggi-n601-k42",  347046.00,  42),
+#    ("Loggi-n601-k42",  347046.00,  42),
     ("XL-n1701-k562",   521136.00,  562),
     ("XL-n2541-k121",   146390.00,  121),
 ]
@@ -35,6 +35,7 @@ HEURISTICAS = {
     "NN": NearestNeighbor(),
     "SW": Sweep(),
     "ML": MoleJameson(),
+    "LS-SW-SHIFT": Shift(Sweep()),
 }
 
 BUSCALOCAL = {
