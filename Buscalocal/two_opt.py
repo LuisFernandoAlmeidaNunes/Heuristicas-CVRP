@@ -1,5 +1,6 @@
 from typing import List, Tuple
 from Heuristicas.Heuristica import Heuristica
+from saida.terminal import spinner_busca_local, spinner_busca_local_fim
 
 
 class TwoOpt(Heuristica):
@@ -34,10 +35,15 @@ class TwoOpt(Heuristica):
         rotas, _, _ = self.construtivo.resolver(inst, k_alvo)
         rotas = [list(r) for r in rotas if r]
         custo_inicial = self.calcular_custo(inst, rotas, k_alvo)
+        custo_atual = custo_inicial
+        max_dist = getattr(inst, 'max_distancia', float('inf'))
 
         melhorou = True
+        iteracao = 0
         while melhorou:
             melhorou = False
+            iteracao += 1
+            spinner_busca_local(self.nome, iteracao, custo_atual, custo_inicial)
 
             for idx_rota, r in enumerate(rotas):
                 if len(r) < 2:
@@ -45,15 +51,17 @@ class TwoOpt(Heuristica):
 
                 for i in range(len(r) - 1):
                     for j in range(i + 1, len(r)):
-
-                        if self._delta(inst, r, i, j) >= -1e-9:
+                        delta = self._delta(inst, r, i, j)
+                        if delta >= -1e-9:
                             continue
 
                         nova_rota = r[:i] + r[i:j+1][::-1] + r[j+1:]
 
-                        if not self.validar_viabilidade(inst, nova_rota):
+                        # capacidade não muda na intra; só valida distância/autonomia
+                        if max_dist != float('inf') and not self.validar_viabilidade(inst, nova_rota):
                             continue
 
+                        custo_atual += delta
                         rotas[idx_rota] = nova_rota
                         r = nova_rota
                         melhorou = True
@@ -62,7 +70,10 @@ class TwoOpt(Heuristica):
                     if melhorou:
                         break
 
+                if melhorou:
+                    break
+
         custo = self.calcular_custo(inst, rotas, k_alvo)
         n_veiculos = len(rotas)
-        print(f"[2-Opt] {self.construtivo.nome}: {custo_inicial:.2f} → {custo:.2f}  (melhora: {custo_inicial - custo:.2f})")
+        spinner_busca_local_fim(self.nome, custo_inicial, custo)
         return rotas, custo, n_veiculos
