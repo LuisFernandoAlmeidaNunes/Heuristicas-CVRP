@@ -1,5 +1,6 @@
 from typing import List, Tuple
 from Heuristicas.Heuristica import Heuristica
+from saida.terminal import spinner_busca_local, spinner_busca_local_fim
 
 
 class Exchange(Heuristica):
@@ -81,6 +82,7 @@ class Exchange(Heuristica):
             melhorou = False
             iter_atual += 1
             custo_anterior = custo_atual
+            spinner_busca_local(self.nome, iter_atual, custo_atual, custo_inicial)
 
             for i_r1 in range(len(rotas)):
                 r1 = rotas[i_r1]
@@ -96,16 +98,19 @@ class Exchange(Heuristica):
                         if moves_por_no[cj] >= self.max_moves_por_no:
                             continue
 
-                        if self._delta_intra(inst, r1, i, j) >= -1e-9:
+                        delta = self._delta_intra(inst, r1, i, j)
+                        if delta >= -1e-9:
                             continue
 
                         nova_r1 = list(r1)
                         nova_r1[i], nova_r1[j] = nova_r1[j], nova_r1[i]
 
-                        if not self.validar_viabilidade(inst, nova_r1):
+                        # capacidade não muda na intra; só valida distância/autonomia
+                        max_dist = getattr(inst, 'max_distancia', float('inf'))
+                        if max_dist != float('inf') and not self.validar_viabilidade(inst, nova_r1):
                             continue
 
-                        custo_atual += self._delta_intra(inst, r1, i, j)
+                        custo_atual += delta
                         rotas[i_r1] = nova_r1
                         r1 = nova_r1
                         moves_por_no[ci] += 1
@@ -117,40 +122,42 @@ class Exchange(Heuristica):
                         break
 
                     # --- Inter-rota ---
+                    demanda_ci = inst.grafo.nos[ci].demanda
+                    carga_r1 = sum(inst.grafo.nos[c].demanda for c in r1)
+
                     for i_r2 in range(len(rotas)):
                         if i_r2 == i_r1:
                             continue
                         r2 = rotas[i_r2]
+                        carga_r2 = sum(inst.grafo.nos[c].demanda for c in r2)
 
                         for j in range(len(r2)):
                             cj = r2[j]
                             if moves_por_no[cj] >= self.max_moves_por_no:
                                 continue
 
-                            # Verifica viabilidade de capacidade antes do delta
-                            demanda_ci = inst.grafo.nos[ci].demanda
                             demanda_cj = inst.grafo.nos[cj].demanda
-                            carga_r1 = sum(inst.grafo.nos[c].demanda for c in r1)
-                            carga_r2 = sum(inst.grafo.nos[c].demanda for c in r2)
-
                             if carga_r1 - demanda_ci + demanda_cj > inst.capacidade:
                                 continue
                             if carga_r2 - demanda_cj + demanda_ci > inst.capacidade:
                                 continue
 
-                            if self._delta_inter(inst, rotas, i_r1, i, i_r2, j) >= -1e-9:
+                            delta = self._delta_inter(inst, rotas, i_r1, i, i_r2, j)
+                            if delta >= -1e-9:
                                 continue
 
                             nova_r1 = list(r1)
                             nova_r2 = list(r2)
                             nova_r1[i], nova_r2[j] = cj, ci
 
-                            if not self.validar_viabilidade(inst, nova_r1):
-                                continue
-                            if not self.validar_viabilidade(inst, nova_r2):
-                                continue
+                            max_dist = getattr(inst, 'max_distancia', float('inf'))
+                            if max_dist != float('inf'):
+                                if not self.validar_viabilidade(inst, nova_r1):
+                                    continue
+                                if not self.validar_viabilidade(inst, nova_r2):
+                                    continue
 
-                            custo_atual += self._delta_inter(inst, rotas, i_r1, i, i_r2, j)
+                            custo_atual += delta
                             rotas[i_r1] = nova_r1
                             rotas[i_r2] = nova_r2
                             r1 = nova_r1
@@ -167,12 +174,12 @@ class Exchange(Heuristica):
                 if melhorou:
                     break
 
-            # Critério de qualidade: para se a melhoria relativa for desprezível
+            # Para se a melhoria relativa for desprezível
             gap = (custo_anterior - custo_atual) / custo_anterior if custo_anterior > 0 else 0
             if melhorou and gap < self.min_melhora_relativa:
                 break
 
         custo = self.calcular_custo(inst, rotas, k_alvo)
         n_veiculos = len(rotas)
-        print(f"[Exchange] {self.construtivo.nome}: {custo_inicial:.2f} → {custo:.2f}  (melhora: {custo_inicial - custo:.2f})")
+        spinner_busca_local_fim(self.nome, custo_inicial, custo)
         return rotas, custo, n_veiculos
