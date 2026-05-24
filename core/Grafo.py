@@ -2,6 +2,7 @@ import numpy as np
 
 
 class No:
+    """Estrutura básica do nó para formação do grafo"""
     def __init__(self, id_no: int, x: float, y: float, demanda: int = 0):
         self.id = id_no
         self.x = x
@@ -13,6 +14,39 @@ class No:
 
 
 class Grafo:
+    """
+    Este módulo implementa a infraestrutura de dados do Grafo.
+    A opção pela Matriz densa (O(n²)) em vez de listas ou cálculo dinâmico justifica-se
+    pelo acesso em tempo constante O(1) às distâncias, fundamental para o desempenho
+    das heurísticas que realizam milhões de consultas por segundo.
+
+    Os principais destaques técnicos desta implementação são:
+
+    1. Estrutura Vetorizada (NumPy): Em vez de calcular distâncias sob demanda usando
+       laços de repetição (loops), o módulo utiliza Broadcasting do NumPy para
+       gerar a matriz de distâncias completa de uma só vez. Isso reduz drasticamente
+       o tempo de processamento inicial, especialmente em instâncias com centenas de nós.
+
+    2. Precisão de Ponto Flutuante: O uso de 'float64' garante uma precisão de até
+       15 dígitos decimais, essencial para evitar erros acumulados de arredondamento
+       que poderiam invalidar os resultados de Gaps muito pequenos ou o Teste de Hipótese.
+
+    3. Localidade de Dados e Cache: Matrizes NumPy são armazenadas em blocos contíguos
+       de memória. Isso favorece a "Localidade Espacial", permitindo que a CPU
+       carregue dados vizinhos no Cache L1/L2 de forma eficiente. Listas de objetos
+       em Python são espalhadas na memória (ponteiros), o que causa "Cache Misses"
+       e degrada a performance em algoritmos de busca intensa.
+
+    4. Vetorização SIMD: O uso de matrizes nos permite aplicar operações de álgebra
+       linear e broadcasting do NumPy. Isso possibilita que a CPU processe múltiplos
+       dados simultaneamente (Single Instruction, Multiple Data), algo impossível
+       com estruturas de listas convencionais.
+
+    Embora a matriz consuma mais memória (O(n²)), para o escopo de instâncias de
+    CVRP (geralmente até algumas milhares de nós), o ganho em velocidade de execução
+    justifica o tradeoff de memória.
+
+    """
     def __init__(self):
         self.nos = {}            # {id_no: No}
         self._matriz = None      # np.ndarray (n x n), índice 0-based interno
@@ -25,15 +59,6 @@ class Grafo:
     def construir_arestas(self, fn_dist=None):
         """
         Constrói a matriz de distâncias vetorizada.
-
-        fn_dist(x1, y1, x2, y2) -> float
-            Função de distância customizada (CEIL_2D, ATT, etc.).
-            Se None, usa EUC_2D vetorizado via numpy.
-
-        CORREÇÕES em relação à versão anterior:
-          1. float64 em vez de float32  → pra evitar erros de arrendodamento do float. (consegue uma precisão de até 15 digitos)
-          2. Mapeamento id->índice explícito → suporta IDs não sequenciais
-          3. Broadcasting (n,1,2)-(1,n,2) → legível e sem risco de inversão. (acho o problema relatado era esse)
         """
         ids = sorted(self.nos.keys())
         n = len(ids)

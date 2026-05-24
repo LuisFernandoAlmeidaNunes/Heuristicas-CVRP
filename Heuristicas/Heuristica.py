@@ -3,20 +3,47 @@ from typing import List, Tuple
 
 
 class Heuristica(ABC):
+    """
+    Esta classe abstrata define o esqueleto para todas as outras estratégias de
+    resolução (heurísticas) do CVRP neste projeto. Sua existência garante que
+    diferentes algoritmos possam ser implementados com uma mesma base correta.
+
+    As funcionalidades centrais implementadas nesta base são:
+
+    1. Definição de Interface: Através do método abstrato 'resolver', obriga todas
+       as heurísticas filhas a retornarem os dados no formato padrão:
+       (rotas, custo total, número de veículos).
+
+    2. Cálculo de Custo com Penalização: Implementa uma métrica de avaliação
+       que soma as distâncias euclidianas e aplica uma penalidade caso o
+       número de veículos exceda o limite definido (k_alvo). Isso permite que
+       o algoritmo de busca "sinta" o custo de usar veículos extras, facilitando
+       a convergência para soluções viáveis em relação à frota.
+
+    3. Validação de Viabilidade Unificada: Centraliza as regras de negócio do
+       problema, verificando tanto a Capacidade do Veículo quanto a Autonomia
+       Máxima (Distância + Tempo de Serviço). Já que há instâncias com esses
+       dados adicionais que devem ser levados em conta
+
+    Ao herdar desta classe, foca-se apenas na lógica de agrupamento nas classes de heurísticas
+    e roteirização, enquanto a infraestrutura de validação e custo é reutilizada.
+    """
     nome: str = "BASE"
 
+
     @abstractmethod
-    def resolver(self, inst) -> Tuple[List[List[int]], float, int]:
+    def resolver(self, inst, k_alvo=None) -> Tuple[List[List[int]], float, int]:
         """Retorna (rotas, custo_total, n_veiculos)"""
         pass
 
-    def calcular_custo(self, inst, rotas: List[List[int]]) -> float:
+    def calcular_custo(self, inst, rotas: List[List[int]], k_alvo= None) -> float:
         """
         Calcula o custo total considerando Distâncias
         """
         custo_viagem = 0.0
         deposito = inst.id_deposito
         grafo = inst.grafo
+
 
         for rota in rotas:
             if not rota:
@@ -27,6 +54,13 @@ class Heuristica(ABC):
             for i in range(len(rota) - 1):
                 custo_viagem += grafo.dist(rota[i], rota[i + 1])
             custo_viagem += grafo.dist(rota[-1], deposito)
+
+        # Penalidade α*max{0, k_alvo-k} + β*max{0, k-k_alvo}
+        if k_alvo is not None:
+            k = sum(1 for r in rotas if r)
+           # não incluimos penalidade para ser menos veiculo porque tecnicamente quanto menos melhor se o custo também for menor
+            penalidade = (len(inst.ids_clientes)*0.1)
+            custo_viagem += penalidade * max(0, k - k_alvo)
 
 
         return custo_viagem
@@ -54,12 +88,13 @@ class Heuristica(ABC):
         st_unitario = getattr(inst, 'tempo_servico', 0.0)
 
         if st_unitario == 0.0:
-            tempo_total = dist_total
+            custo_total = dist_total
         else:
-            tempo_total = dist_total + (len(rota) * st_unitario)
+            # O limite DISTANCE engloba distância + service time (jornada total)
+            custo_total = dist_total + (len(rota) * st_unitario)
 
-        # O limite DISTANCE engloba distância + service time (jornada total)
-        if tempo_total > max_dist:
+
+        if custo_total > max_dist:
             return False
 
         return True

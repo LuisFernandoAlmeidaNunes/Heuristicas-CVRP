@@ -1,9 +1,13 @@
 from Heuristicas.clarke_wright import ClarkeWright
 from Heuristicas.nearest_neighbor import NearestNeighbor
 from Heuristicas.sweep import Sweep
-from Heuristicas.sequential_insertion import MoleJameson
+from Heuristicas.mole_jameson import MoleJameson
+from Buscalocal.Shift import Shift
+from Buscalocal.two_opt import TwoOpt
+from Buscalocal.exchange import Exchange
 
-# nome do arquivo de resultados
+#Arquivo de configuração com os valores de BKS e K
+
 ARQUIVO_DAT = "resultado/resultados.dat"
 
 # Set de instancias e seus melhores valores para funcao obj (KBS) e numero de veiculos(k)
@@ -11,7 +15,8 @@ ARQUIVO_DAT = "resultado/resultados.dat"
 INSTANCIAS = [
     ("A-n80-k10",       1763.00,    10),
     ("F-n72-k4",        237.00,     4),
-    ("E-n101-k14",      1071.00,    14), 
+    ("F-n135-k7",       1162.00,    7),
+    ("E-n101-k14",      1067.00,    14),
     ("M-n151-k12",      1015.00,    12),
     ("Golden_18",       995.13,     27),
     ("CMT10",           1395.85,    18),
@@ -20,7 +25,7 @@ INSTANCIAS = [
     ("Golden_3",        10997.80,   9),
     ("Li_21",           16212.83,   10),
     ("X-n502-k39",      69226.00,   39),
-    ("Loggi-n601-k42",  347046.00,  42),
+#    ("Loggi-n601-k42",  347046.00,  42),
     ("XL-n1701-k562",   521136.00,  562),
     ("XL-n2541-k121",   146390.00,  121),
 ]
@@ -30,5 +35,15 @@ HEURISTICAS = {
     "NN": NearestNeighbor(),
     "SW": Sweep(),
     "ML": MoleJameson(),
+    "LS-SW-SHIFT": Shift(Sweep()),
+    "LS-SW-2OPT": TwoOpt(Sweep()),
+    "LS-CW-2OPT": TwoOpt(ClarkeWright()),
+    "LS-SW-EXCHANGE": Exchange(Sweep()),
+}
+
+BUSCALOCAL = {
+    "Shift": Shift,
+    "2opt": TwoOpt,
+    "Exchange": Exchange,
 }
 
