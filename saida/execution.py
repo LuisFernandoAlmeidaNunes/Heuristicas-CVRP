@@ -2,7 +2,7 @@ import os
 import time
 import csv
 import pandas as pd
-
+from Heuristicas.Heuristica import Heuristica
 
 # Este módulo centraliza a lógica de execução, cronometragem e persistência de dados.
 # Sua função é garantir que todas as heurísticas sejam testadas sob as mesmas
@@ -61,11 +61,15 @@ def executar_e_salvar(heuristica, inst, melhor_conhecido, melhor_k=None, is_been
     fim   = time.perf_counter()
     runtime = fim - inicio
 
-    # GAP sobre o custo já penalizado (comparável ao BKS)
-    gap = max(0.0, (custo - melhor_conhecido) / melhor_conhecido * 100)
-
+    # GAP sobre o custo
+    # 'custo_sem_penalidade' não estava definido — considerar custo sem penalidade por enquanto
+    custo_sem_penalidade = custo
+    gap = max(0.0, (custo_sem_penalidade - melhor_conhecido) / melhor_conhecido * 100)
+    
     salvar_resultado(inst.nome, heuristica.nome, custo, runtime, gap)
+
     from saida.graphics import plotar_rotas
+    
     if not is_beenchmark:
         caminho_png = plotar_rotas(inst, rotas, heuristica.nome, PASTA_PLOTS)
 

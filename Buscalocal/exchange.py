@@ -82,7 +82,7 @@ class Exchange(Heuristica):
             melhorou = False
             iter_atual += 1
             custo_anterior = custo_atual
-            spinner_busca_local(self.nome, iter_atual, custo_atual, custo_inicial)
+            #spinner_busca_local(self.nome, iter_atual, custo_atual, custo_inicial)
 
             for i_r1 in range(len(rotas)):
                 r1 = rotas[i_r1]
@@ -181,5 +181,5 @@ class Exchange(Heuristica):
 
         custo = self.calcular_custo(inst, rotas, k_alvo)
         n_veiculos = len(rotas)
-        spinner_busca_local_fim(self.nome, custo_inicial, custo)
+        #spinner_busca_local_fim(self.nome, custo_inicial, custo)
         return rotas, custo, n_veiculos

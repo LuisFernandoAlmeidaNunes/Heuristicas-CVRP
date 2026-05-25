@@ -11,7 +11,7 @@ from saida.terminal import (
     cabecalho_instancia, linha_resultado, rodape_instancia,
     mensagem_sucesso, mensagem_info, mensagem_aviso, mensagem_erro
 )
-from instancesConfig import INSTANCIAS, HEURISTICAS
+from instancesConfig import INSTANCIAS, HEURISTICAS, BUSCALOCAL
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -63,10 +63,7 @@ def modo_cli(args):
     caminho_vrp, arquivo_saida, melhor_str, sigla = args
     sigla = sigla.upper()
 
-    if sigla not in HEURISTICAS:
-        mensagem_erro(f"Heurística '{sigla}' não reconhecida.")
-        mensagem_info(f"Disponíveis: {list(HEURISTICAS.keys())}")
-        sys.exit(1)
+    heuristica = resolver_sigla(sigla)
 
     try:
         melhor = float(melhor_str)
@@ -98,7 +95,34 @@ def modo_cli(args):
     exibir_resultado(resultado, inst, melhor)
     mensagem_sucesso(f"Resultados salvos em: {arquivo_saida}")
 
+ #────────────────────────────────────────────────────────────────────────────
+# Modo Benchmark (gera .dat para análise estatística posterior)
+#────────────────────────────────────────────────────────────────────────────
+def resolver_sigla(sigla:str):
+    sigla = sigla.upper()
 
+    if sigla in HEURISTICAS:
+        return HEURISTICAS[sigla]
+    
+    partes = sigla.split("-")
+    if len(partes) == 3 and partes[0] == "LS":
+        _, sigla_construtivo, sigla_busca = partes
+
+        if sigla_construtivo not in HEURISTICAS:
+            mensagem_erro(f"Construtivo '{sigla_construtivo}' não reconhecido.")
+            mensagem_info(f"Disponíveis: {list(HEURISTICAS.keys())}")
+            sys.exit(1)
+
+        if sigla_busca not in BUSCALOCAL:
+            mensagem_erro(f"Busca Local '{sigla_busca}' não reconhecida.")
+            mensagem_info(f"Disponíveis: {list(BUSCALOCAL.keys())}")
+            sys.exit(1)
+        construtivo = HEURISTICAS[sigla_construtivo]
+        classe_busca = BUSCALOCAL[sigla_busca]
+        return classe_busca(construtivo)
+    
+    mensagem_erro(f"Sigla '{sigla}' não reconhecida.")
+    sys.exit(1)
 # ─────────────────────────────────────────────────────────────────────────────
 # Entry point
 # ─────────────────────────────────────────────────────────────────────────────

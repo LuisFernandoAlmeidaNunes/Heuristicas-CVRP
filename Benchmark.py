@@ -2,6 +2,14 @@ import os
 import sys
 from Statistics.teste_hipotese import executar_analise_estatistica
 
+from core.Instancia_cvrp import InstanciaCvrp
+from saida.execution import executar_instancia, CABECALHO
+from saida.graphics import processar_resultados_finais
+
+# Configurações do benchmark
+from instancesConfig import INSTANCIAS, HEURISTICAS, BUSCALOCAL # Importa a lista de instâncias e seus BKS e K
+
+
 # Este script coordena o pipeline completo de experimentos para o CVRP.
 # Ele realiza a execução em lote das heurísticas, gera as visualizações de
 # resultados e conduz a análise estatística rigorosa.
@@ -28,17 +36,10 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from core.Instancia_cvrp import InstanciaCvrp
-from saida.execution import executar_instancia, CABECALHO
-from saida.graphics import processar_resultados_finais
-
-# Configurações do benchmark
-from instancesConfig import INSTANCIAS, HEURISTICAS  # Importa a lista de instâncias e seus BKS e K
-
 PASTA_INSTANCIAS = "Benchmark"
 ARQUIVO_DAT      = "resultados/resultados.dat"
 PASTA_PLOTS      = "resultados"
-N_EXECUCOES = 2  # MÍNIMO para IC 95%
+N_EXECUCOES = 1  # MÍNIMO para IC 95%
 
 def preparar_arquivo_resultados():
     """Cria a pasta e reseta o arquivo com o cabeçalho."""
@@ -54,23 +55,29 @@ def main():
     INSTANCIAS_COMPARATIVO = {"Li_21", "Golden_3", "XL-n2541-k121"}  
 
     for n in range(1, N_EXECUCOES + 1):
-        print(f"\n>>> RODADA {n}/{N_EXECUCOES}")
+        #print(f"\n>>> RODADA {n}/{N_EXECUCOES}")
         for idx, (nome, bks, melhor_k) in enumerate(INSTANCIAS, start=1):
-            print(f"[{idx}/15] {nome}")
+           # print(f"[{idx}/{len(INSTANCIAS)}] {nome}")
             caminho_vrp = os.path.join(PASTA_INSTANCIAS, f"{nome}.vrp")
 
             if not os.path.isfile(caminho_vrp):
-                print(f"Arquivo não encontrado: {caminho_vrp}")
+              #  print(f"Arquivo não encontrado: {caminho_vrp}")
                 continue
 
             try:
                 inst = InstanciaCvrp.ler_arquivo(caminho_vrp)
+                
+                # cria um novo dic com apenas itens do heuristicas cujas chaves comecam com ls
+                # mantem so com os q comecam com LS
+                heuristicas_ls = {k: v for k, v in HEURISTICAS.items() if k.startswith("LS-CW")}
+
                 executar_instancia(
-                    heuristicas=HEURISTICAS.values(),
+                    # heuristicas=HEURISTICAS.values(),
+                    heuristicas=heuristicas_ls.values(), # apenas busccas locais
                     inst=inst,
                     melhor_conhecido=bks,
                     melhor_k=melhor_k,
-                    is_beenchmark=False
+                    is_beenchmark=True
                 )
             except Exception as e:
                 print(f"Erro: {e}")
@@ -78,7 +85,7 @@ def main():
     processar_resultados_finais(ARQUIVO_DAT, PASTA_PLOTS)
     tabela_estatistica = os.path.join(PASTA_PLOTS, "tabela_estatistica_gaps.csv")
     executar_analise_estatistica(tabela_estatistica, PASTA_PLOTS)
-    print("\n✅ Benchmark concluído!")
+    print("\nBenchmark finalizado. Resultados e gráficos salvos em:", PASTA_PLOTS)
 
 if __name__ == "__main__":
     main()

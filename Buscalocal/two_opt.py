@@ -43,7 +43,7 @@ class TwoOpt(Heuristica):
         while melhorou:
             melhorou = False
             iteracao += 1
-            spinner_busca_local(self.nome, iteracao, custo_atual, custo_inicial)
+            #spinner_busca_local(self.nome, iteracao, custo_atual, custo_inicial)
 
             for idx_rota, r in enumerate(rotas):
                 if len(r) < 2:
@@ -75,5 +75,29 @@ class TwoOpt(Heuristica):
 
         custo = self.calcular_custo(inst, rotas, k_alvo)
         n_veiculos = len(rotas)
+        #
+        # 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         spinner_busca_local_fim(self.nome, custo_inicial, custo)
         return rotas, custo, n_veiculos

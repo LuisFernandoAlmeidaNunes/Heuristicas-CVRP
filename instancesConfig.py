@@ -37,13 +37,15 @@ HEURISTICAS = {
     "ML": MoleJameson(),
     "LS-SW-SHIFT": Shift(Sweep()),
     "LS-SW-2OPT": TwoOpt(Sweep()),
-    "LS-CW-2OPT": TwoOpt(ClarkeWright()),
     "LS-SW-EXCHANGE": Exchange(Sweep()),
+    "LS-CW-2OPT": TwoOpt(ClarkeWright()),
+    "LS-CW-SHIFT": Shift(ClarkeWright()),      
+    "LS-CW-EXCHANGE": Exchange(ClarkeWright()), 
 }
 
 BUSCALOCAL = {
-    "Shift": Shift,
-    "2opt": TwoOpt,
-    "Exchange": Exchange,
+    "SHIFT": Shift,
+    "2OPT": TwoOpt,
+    "EXCHANGE": Exchange,
 }
 
