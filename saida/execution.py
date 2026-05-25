@@ -61,12 +61,11 @@ def executar_e_salvar(heuristica, inst, melhor_conhecido, melhor_k=None, is_been
     fim   = time.perf_counter()
     runtime = fim - inicio
 
-    # GAP sobre o custo
-    # 'custo_sem_penalidade' não estava definido — considerar custo sem penalidade por enquanto
-    custo_sem_penalidade = custo
-    gap = max(0.0, (custo_sem_penalidade - melhor_conhecido) / melhor_conhecido * 100)
-    
-    salvar_resultado(inst.nome, heuristica.nome, custo, runtime, gap)
+    # GAP sobre o custo com penalidade de veículos
+    custo_penalidade = heuristica.calcular_custo(inst, rotas, melhor_k)
+    gap = max(0.0, (custo_penalidade - melhor_conhecido) / melhor_conhecido * 100)
+
+    salvar_resultado(inst.nome, heuristica.nome, custo_penalidade, runtime, gap)
 
     from saida.graphics import plotar_rotas
     
@@ -75,7 +74,7 @@ def executar_e_salvar(heuristica, inst, melhor_conhecido, melhor_k=None, is_been
 
         return {
             "heuristica": heuristica.nome,
-            "custo":      custo,
+            "custo":      custo_penalidade,
             "veiculos":   n_veiculos,
             "runtime":    runtime,
             "gap":        gap,
@@ -84,7 +83,7 @@ def executar_e_salvar(heuristica, inst, melhor_conhecido, melhor_k=None, is_been
     else:
         return {
             "heuristica": heuristica.nome,
-            "custo": custo,
+            "custo": custo_penalidade,
             "veiculos": n_veiculos,
             "runtime": runtime,
             "gap": gap

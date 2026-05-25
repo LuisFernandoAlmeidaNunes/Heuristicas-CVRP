@@ -46,7 +46,7 @@ class Shift(Heuristica):
         while melhorou:
             melhorou = False
             iteracao += 1
-            #spinner_busca_local(self.nome, iteracao, custo_atual, custo_inicial)
+            spinner_busca_local(self.nome, iteracao, custo_atual, custo_inicial)
 
             for i_r1, r1 in enumerate(rotas):
                 for i_c in range(len(r1)):
@@ -91,5 +91,5 @@ class Shift(Heuristica):
 
         custo = self.calcular_custo(inst, rotas, k_alvo)
         n_veiculos = len(rotas)
-        #spinner_busca_local_fim(self.nome, custo_inicial, custo)
+        spinner_busca_local_fim(self.nome, custo_inicial, custo)
         return rotas, custo, n_veiculos
