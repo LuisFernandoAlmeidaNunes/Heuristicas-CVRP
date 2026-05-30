@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 from Heuristicas.Heuristica import Heuristica
 from saida.terminal import spinner_busca_local, spinner_busca_local_fim
 
@@ -72,8 +72,16 @@ class Exchange(Heuristica):
         rotas, _, _ = self.construtivo.resolver(inst, k_alvo)
         rotas = [list(r) for r in rotas if r]
         custo_inicial = self.calcular_custo(inst, rotas, k_alvo)
+        max_dist = getattr(inst, 'max_distancia', float('inf'))
 
         moves_por_no = {c: 0 for c in inst.ids_clientes}
+
+        # Ponto 1: cargas calculadas uma vez e mantidas atualizadas pontualmente
+        cargas = {
+            idx: sum(inst.grafo.nos[c].demanda for c in r)
+            for idx, r in enumerate(rotas)
+        }
+
         custo_atual = custo_inicial
         iter_atual = 0
         melhorou = True
@@ -92,7 +100,10 @@ class Exchange(Heuristica):
                     if moves_por_no[ci] >= self.max_moves_por_no:
                         continue
 
+                    demanda_ci = inst.grafo.nos[ci].demanda
+
                     # --- Intra-rota ---
+                    movimento_intra = None
                     for j in range(i + 1, len(r1)):
                         cj = r1[j]
                         if moves_por_no[cj] >= self.max_moves_por_no:
@@ -106,30 +117,32 @@ class Exchange(Heuristica):
                         nova_r1[i], nova_r1[j] = nova_r1[j], nova_r1[i]
 
                         # capacidade não muda na intra; só valida distância/autonomia
-                        max_dist = getattr(inst, 'max_distancia', float('inf'))
                         if max_dist != float('inf') and not self.validar_viabilidade(inst, nova_r1):
                             continue
 
+                        movimento_intra = (j, delta, nova_r1)
+                        break
+
+                    if movimento_intra is not None:
+                        j, delta, nova_r1 = movimento_intra
+                        cj = r1[j]
                         custo_atual += delta
                         rotas[i_r1] = nova_r1
                         r1 = nova_r1
                         moves_por_no[ci] += 1
                         moves_por_no[cj] += 1
+                        # carga não muda na intra
                         melhorou = True
                         break
 
-                    if melhorou:
-                        break
-
                     # --- Inter-rota ---
-                    demanda_ci = inst.grafo.nos[ci].demanda
-                    carga_r1 = sum(inst.grafo.nos[c].demanda for c in r1)
-
+                    # Ponto 2: detecção separada da aplicação — ci e estado
+                    # permanecem consistentes independente do first-improvement
+                    movimento_inter = None
                     for i_r2 in range(len(rotas)):
                         if i_r2 == i_r1:
                             continue
                         r2 = rotas[i_r2]
-                        carga_r2 = sum(inst.grafo.nos[c].demanda for c in r2)
 
                         for j in range(len(r2)):
                             cj = r2[j]
@@ -137,9 +150,10 @@ class Exchange(Heuristica):
                                 continue
 
                             demanda_cj = inst.grafo.nos[cj].demanda
-                            if carga_r1 - demanda_ci + demanda_cj > inst.capacidade:
+
+                            if cargas[i_r1] - demanda_ci + demanda_cj > inst.capacidade:
                                 continue
-                            if carga_r2 - demanda_cj + demanda_ci > inst.capacidade:
+                            if cargas[i_r2] - demanda_cj + demanda_ci > inst.capacidade:
                                 continue
 
                             delta = self._delta_inter(inst, rotas, i_r1, i, i_r2, j)
@@ -150,27 +164,32 @@ class Exchange(Heuristica):
                             nova_r2 = list(r2)
                             nova_r1[i], nova_r2[j] = cj, ci
 
-                            max_dist = getattr(inst, 'max_distancia', float('inf'))
                             if max_dist != float('inf'):
                                 if not self.validar_viabilidade(inst, nova_r1):
                                     continue
                                 if not self.validar_viabilidade(inst, nova_r2):
                                     continue
 
-                            custo_atual += delta
-                            rotas[i_r1] = nova_r1
-                            rotas[i_r2] = nova_r2
-                            r1 = nova_r1
-                            moves_por_no[ci] += 1
-                            moves_por_no[cj] += 1
-                            melhorou = True
+                            movimento_inter = (i_r2, j, delta, nova_r1, nova_r2, demanda_ci, demanda_cj)
                             break
 
-                        if melhorou:
+                        if movimento_inter is not None:
                             break
 
-                    if melhorou:
+                    if movimento_inter is not None:
+                        i_r2, j, delta, nova_r1, nova_r2, demanda_ci, demanda_cj = movimento_inter
+                        cj = rotas[i_r2][j]
+                        custo_atual += delta
+                        rotas[i_r1] = nova_r1
+                        rotas[i_r2] = nova_r2
+                        # Ponto 1: atualização pontual das cargas
+                        cargas[i_r1] = cargas[i_r1] - demanda_ci + demanda_cj
+                        cargas[i_r2] = cargas[i_r2] - demanda_cj + demanda_ci
+                        moves_por_no[ci] += 1
+                        moves_por_no[cj] += 1
+                        melhorou = True
                         break
+
                 if melhorou:
                     break
 
