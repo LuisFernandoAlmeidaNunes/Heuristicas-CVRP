@@ -47,6 +47,7 @@ class Shift(Heuristica):
             melhorou = False
             iteracao += 1
             # spinner_busca_local(self.nome, iteracao, custo_atual, custo_inicial)
+            cargas = {i: sum(inst.grafo.nos[c].demanda for c in r) for i, r in enumerate(rotas)}
 
             for i_r1, r1 in enumerate(rotas):
                 for i_c in range(len(r1)):
@@ -54,23 +55,22 @@ class Shift(Heuristica):
                     if moves_por_no[cliente] >= max_moves_por_no:
                         continue
 
+                    demanda_cliente = inst.grafo.nos[cliente].demanda
+
                     for i_r2, r2 in enumerate(rotas):
                         if i_r2 == i_r1:
                             continue
 
-                        carga_r2 = sum(inst.grafo.nos[c].demanda for c in r2)
-                        if inst.grafo.nos[cliente].demanda + carga_r2 > inst.capacidade:
+                        if demanda_cliente + cargas[i_r2] > inst.capacidade:
                             continue
 
                         for pos in range(len(r2) + 1):
-                            nova_r2 = r2[:pos] + [cliente] + r2[pos:]
-
-                            if not self.validar_viabilidade(inst, nova_r2):
-                                continue
-
                             delta = self._delta(inst, rotas, i_r1, i_c, i_r2, pos, k_alvo)
-                            if delta < -custo_atual * 1e-16:  # Considera melhoria relativa
-                            # if delta < -1e-9:  # Considera melhoria significativa
+                            # if delta < -custo_atual * 1e-16:  # Considera melhoria relativa
+                            if delta < -1e-9:  # Considera melhoria significativa
+                                nova_r2 = r2[:pos] + [cliente] + r2[pos:]
+                                if not self.validar_viabilidade(inst, nova_r2):
+                                    continue
                                 nova_r1 = r1[:i_c] + r1[i_c + 1:]
                                 nova_rotas = [
                                     nova_r1 if j == i_r1 else (nova_r2 if j == i_r2 else r)
