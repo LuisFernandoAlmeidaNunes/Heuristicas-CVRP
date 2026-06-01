@@ -75,5 +75,5 @@ class TwoOpt(Heuristica):
 
         custo = self.calcular_custo(inst, rotas, k_alvo)
         n_veiculos = len(rotas)
-        # spinner_busca_local_fim(self.nome, custo_inicial, custo)
+        spinner_busca_local_fim(self.nome, custo_inicial, custo)
         return rotas, custo, n_veiculos

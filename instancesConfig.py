@@ -31,13 +31,12 @@ INSTANCIAS = [
 ]
 
 HEURISTICAS = {
-    "CW": ClarkeWright(),
-    "NN": NearestNeighbor(),
-    "SW": Sweep(),
-    "ML": MoleJameson(),
+    # "CW": ClarkeWright(),
+    # "NN": NearestNeighbor(),
+    # "SW": Sweep(),
+    # "ML": MoleJameson(),
     "LS-SW-SHIFT": Shift(Sweep()),
     "LS-SW-2OPT": TwoOpt(Sweep()),
-    "LS-CW-2OPT": TwoOpt(ClarkeWright()),
     "LS-SW-EXCHANGE": Exchange(Sweep()),
 }
 
