@@ -51,8 +51,6 @@ def preparar_arquivo_resultados():
 def main():
     preparar_arquivo_resultados()
 
-    INSTANCIAS_COMPARATIVO = {"Li_21", "Golden_3", "XL-n2541-k121"}  
-
     for n in range(1, N_EXECUCOES + 1):
         print(f"\n>>> RODADA {n}/{N_EXECUCOES}")
         for idx, (nome, bks, melhor_k) in enumerate(INSTANCIAS, start=1):
@@ -77,9 +75,10 @@ def main():
 
     processar_resultados_finais(ARQUIVO_DAT, PASTA_PLOTS)
     tabela_estatistica = os.path.join(PASTA_PLOTS, "tabela_estatistica_gaps.csv")
-    executar_analise_estatistica(tabela_estatistica, PASTA_PLOTS)
+    # executar_analise_estatistica(tabela_estatistica, PASTA_PLOTS)
     print("\n✅ Benchmark concluído!")
 
 if __name__ == "__main__":
-    main()
+    processar_resultados_finais(ARQUIVO_DAT, PASTA_PLOTS)
+
 
