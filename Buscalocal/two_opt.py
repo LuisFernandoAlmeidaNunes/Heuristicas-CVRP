@@ -67,12 +67,6 @@ class TwoOpt(Heuristica):
                         melhorou = True
                         break
 
-                    if melhorou:
-                        break
-
-                if melhorou:
-                    break
-
         custo = self.calcular_custo(inst, rotas, k_alvo)
         n_veiculos = len(rotas)
         spinner_busca_local_fim(self.nome, custo_inicial, custo)

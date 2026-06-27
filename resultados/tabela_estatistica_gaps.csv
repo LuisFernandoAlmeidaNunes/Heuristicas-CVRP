@@ -1,5 +1,2 @@
-INSTANCE,2opt,CW (Clarke & Wright Savings),Exchange,NN (Nearest Neighbor),SW (Sweep)
-A-n80-k10,,5.5554,,15.7034,
-F-n72-k4,,11.0912,,62.1705,
-X-n502-k39,6.5087,,,,49.0873
-XL-n2541-k121,65.68706666666667,65.2372,302.8396,,415.220825
+INSTANCE,2opt
+F-n72-k4,23.1115

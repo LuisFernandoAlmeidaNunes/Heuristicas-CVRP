@@ -50,6 +50,7 @@ class Grafo:
     def __init__(self):
         self.nos = {}            # {id_no: No}
         self._matriz = None      # np.ndarray (n x n), índice 0-based interno
+        self._matriz_list = None # list[list[float]] — espelho da matriz p/ acesso escalar rápido
         self._bigTour = None     # matriz codificada para padrão big tour
         self._id_para_idx = {}   # {id_no -> índice interno}
         self._idx_para_id = []   # [id_no por índice interno]
@@ -87,6 +88,11 @@ class Grafo:
                     self._matriz[i, j] = d
                     self._matriz[j, i] = d
 
+        # Espelho em lista Python pura: o acesso escalar matriz[i][j] é bem mais
+        # rápido que a indexação escalar do NumPy + float() no caminho quente das
+        # buscas locais (dist() é chamada dezenas de milhões de vezes).
+        self._matriz_list = self._matriz.tolist()
+
     def construir_arestas_explicitas(self, matriz_por_id: np.ndarray):
         """
         Recebe matriz quadrada indexada pelo ID do nó (linha/coluna 0 é buffer).
@@ -102,6 +108,8 @@ class Grafo:
             for j, id_j in enumerate(ids):
                 self._matriz[i, j] = float(matriz_por_id[id_i, id_j])
 
+        self._matriz_list = self._matriz.tolist()
+
     def codificar_matriz(self):
         self._big_tour = []
         for i, rota in enumerate(self._matriz):
@@ -112,7 +120,8 @@ class Grafo:
         return self._big_tour
 
     def dist(self, i: int, j: int) -> float:
-        return float(self._matriz[self._id_para_idx[i], self._id_para_idx[j]])
+        idx = self._id_para_idx
+        return self._matriz_list[idx[i]][idx[j]]
 
     @property
     def n_arestas(self) -> int:
