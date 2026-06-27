@@ -95,3 +95,4 @@ temp_*.py
 #claude
 .claude/
 CLAUDE.md
+.harness/
