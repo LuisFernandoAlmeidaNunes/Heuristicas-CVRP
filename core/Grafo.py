@@ -50,6 +50,7 @@ class Grafo:
     def __init__(self):
         self.nos = {}            # {id_no: No}
         self._matriz = None      # np.ndarray (n x n), índice 0-based interno
+        self._bigTour = None     # matriz codificada para padrão big tour
         self._id_para_idx = {}   # {id_no -> índice interno}
         self._idx_para_id = []   # [id_no por índice interno]
 
@@ -100,6 +101,15 @@ class Grafo:
         for i, id_i in enumerate(ids):
             for j, id_j in enumerate(ids):
                 self._matriz[i, j] = float(matriz_por_id[id_i, id_j])
+
+    def codificar_matriz(self):
+        self._big_tour = []
+        for i, rota in enumerate(self._matriz):
+            self._big_tour.extend(rota)
+            # Adiciona o separador '0' entre as rotas, exceto no final
+            if i < len(self._matriz) - 1:
+                self._big_tour.append(0)
+        return self._big_tour
 
     def dist(self, i: int, j: int) -> float:
         return float(self._matriz[self._id_para_idx[i], self._id_para_idx[j]])

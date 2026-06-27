@@ -1,4 +1,4 @@
-# CVRP Solver - Heurísticas para o Problema de Roteamento de Veículos Capacitado
+saida# CVRP Solver - Heurísticas para o Problema de Roteamento de Veículos Capacitado
 
 Este projeto implementa e compara quatro heurísticas clássicas para a resolução do **Problema de Roteamento de Veículos Capacitado (CVRP)**. O objetivo é analisar o desempenho de diferentes algoritmos construtivos em relação à qualidade da solução (Gap) e eficiência computacional (Runtime), validando os resultados através de testes estatísticos rigorosos.
 
