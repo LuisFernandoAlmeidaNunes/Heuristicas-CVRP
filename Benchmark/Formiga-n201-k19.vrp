@@ -1,0 +1,418 @@
+NAME : Formiga-n201-k19
+COMMENT : CVRP - municipios reais de MG ao redor de Formiga (lat/long IBGE projetados).
+COMMENT : Produtos pereciveis - Modelo A (duracao maxima de rota). Unidades em MINUTOS (~50 km/h).
+COMMENT : DISTANCE = janela de frescor (max duracao de rota). 4a coluna do COORD = municipio.
+TYPE : CVRP
+DIMENSION : 201
+EDGE_WEIGHT_TYPE : EUC_2D
+CAPACITY : 240
+DISTANCE : 600
+SERVICE_TIME : 8
+NODE_COORD_SECTION
+1 214.0 212.6 Formiga_CD
+2 197.2 214.5 Córrego_Fundo
+3 200.2 235.9 Arcos
+4 184.5 224.7 Pains
+5 251.6 211.5 Itapecerica
+6 241.1 239.9 Pedra_do_Indaiá
+7 247.5 190.4 Camacho
+8 204.7 254.7 Japaraíba
+9 232.9 171.8 Candeias
+10 166.7 209.8 Pimenta
+11 178.5 250.3 Iguatama
+12 230.6 262.6 Santo_Antônio_do_Monte
+13 202.8 158.0 Cristais
+14 266.7 237.3 São_Sebastião_do_Oeste
+15 199.9 270.7 Lagoa_da_Prata
+16 233.7 155.4 Campo_Belo
+17 154.7 235.8 Doresópolis
+18 269.5 180.5 São_Francisco_de_Paula
+19 218.5 148.6 Aguanil
+20 147.4 210.7 Piumhi
+21 251.4 154.4 Santana_do_Jacaré
+22 283.3 199.9 Carmo_da_Mata
+23 152.9 172.6 Guapé
+24 246.5 281.8 Araújos
+25 281.1 254.7 Divinópolis
+26 136.1 192.1 Capitólio
+27 244.9 138.1 Cana_Verde
+28 288.9 181.2 Oliveira
+29 163.5 149.1 Ilicínea
+30 257.7 281.7 Perdigão
+31 296.6 215.0 Cláudio
+32 215.8 295.3 Moema
+33 197.2 128.9 Boa_Esperança
+34 296.7 248.5 Carmo_do_Cajuru
+35 277.8 148.8 Santo_Antônio_do_Amparo
+36 145.4 271.7 Bambuí
+37 256.2 128.8 Perdões
+38 182.4 301.6 Luz
+39 285.1 276.2 São_Gonçalo_do_Pará
+40 269.4 291.0 Nova_Serrana
+41 212.8 116.5 Coqueiral
+42 234.6 308.6 Bom_Despacho
+43 313.3 202.3 Carmópolis_de_Minas
+44 163.9 126.2 Campo_do_Meio
+45 154.4 297.8 Córrego_Danta
+46 204.8 108.7 Santana_da_Vargem
+47 238.0 110.4 Nepomuceno
+48 139.5 288.0 Tapiraí
+49 259.5 116.3 Ribeirão_Vermelho
+50 127.9 144.7 Carmo_do_Rio_Claro
+51 264.0 311.1 Leandro_Ferreira
+52 172.7 109.7 Campos_Gerais
+53 304.2 280.8 Igaratinga
+54 298.3 136.8 Bom_Sucesso
+55 277.1 118.1 Ijaci
+56 103.1 178.6 São_José_da_Barra
+57 280.7 307.6 Conceição_do_Pará
+58 320.0 263.0 Itaúna
+59 267.3 108.3 Lavras
+60 115.0 275.7 Medeiros
+61 331.6 221.5 Itaguara
+62 332.8 206.4 Piracema
+63 96.1 229.7 Vargem_Bonita
+64 331.0 187.1 Passa_Tempo
+65 96.8 240.8 São_Roque_de_Minas
+66 203.5 92.2 Três_Pontas
+67 280.4 317.1 Pitangui
+68 291.8 310.0 Onça_de_Pitangui
+69 299.0 120.7 Ibituruna
+70 116.7 128.5 Conceição_da_Aparecida
+71 328.8 153.5 São_Tiago
+72 316.1 293.3 Pará_de_Minas
+73 339.9 247.6 Itatiaiuçu
+74 93.8 159.4 Alpinópolis
+75 283.4 99.1 Itumirim
+76 169.1 338.0 Estrela_do_Indaiá
+77 193.3 345.2 Dores_do_Indaiá
+78 163.8 86.9 Fama
+79 239.9 79.7 Carmo_da_Cachoeira
+80 350.9 221.8 Crucilândia
+81 78.7 189.6 São_João_Batista_do_Glória
+82 124.9 108.2 Alterosa
+83 120.7 314.8 Campos_Altos
+84 350.9 185.6 Desterro_de_Entre_Rios
+85 338.6 276.6 Mateus_Leme
+86 278.1 87.8 Ingaí
+87 354.2 238.5 Rio_Manso
+88 147.2 337.8 Santa_Rosa_da_Serra
+89 315.8 112.4 Nazareno
+90 168.0 347.6 Serra_da_Saudade
+91 148.8 84.7 Alfenas
+92 212.8 67.5 Varginha
+93 338.6 288.7 Florestal
+94 310.0 323.2 Pequi
+95 310.4 101.4 Itutinga
+96 333.4 123.7 Conceição_da_Barra_de_Minas
+97 124.5 93.8 Areado
+98 323.0 313.6 São_José_da_Varginha
+99 175.2 68.7 Paraguaçu
+100 363.0 230.1 Bonfim
+101 364.5 211.3 Piedade_dos_Gerais
+102 355.1 264.5 Igarapé
+103 66.1 178.4 Passos
+104 349.4 281.2 Juatuba
+105 90.3 124.1 Nova_Resende
+106 237.0 362.7 Martinho_Campos
+107 95.3 308.5 Pratinha
+108 196.2 60.4 Elói_Mendes
+109 358.2 267.5 São_Joaquim_de_Bicas
+110 77.5 139.2 Bom_Jesus_da_Penha
+111 279.5 72.9 Luminárias
+112 258.7 63.7 São_Bento_Abade
+113 352.5 137.5 Ritápolis
+114 307.8 339.2 Maravilhas
+115 367.5 253.8 Brumadinho
+116 197.8 370.7 Quartel_Geral
+117 362.5 152.2 Resende_Costa
+118 299.1 347.9 Papagaios
+119 137.1 69.0 Serrania
+120 369.0 266.2 Mário_Campos
+121 96.8 97.8 Monte_Belo
+122 236.0 49.4 Três_Corações
+123 367.5 278.3 Betim
+124 311.9 76.2 Carrancas
+125 365.0 137.5 Coronel_Xavier_Chaves
+126 354.3 305.2 Esmeraldas
+127 53.2 161.0 Fortaleza_de_Minas
+128 118.5 73.6 Divisa_Nova
+129 48.1 176.0 Itaú_de_Minas
+130 374.5 269.0 Sarzedo
+131 361.0 123.8 São_João_del_Rei
+132 336.6 332.6 Fortuna_de_Minas
+133 384.4 184.9 Entre_Rios_de_Minas
+134 136.5 365.6 São_Gotardo
+135 65.7 123.8 São_Pedro_da_União
+136 386.2 228.8 Moeda
+137 265.7 376.6 Pompéu
+138 200.0 40.6 Monsenhor_Paulo
+139 152.1 51.3 Machado
+140 211.8 386.0 Abaeté
+141 365.1 124.7 Santa_Cruz_de_Minas
+142 335.7 337.4 Cachoeira_da_Prata
+143 389.2 219.8 Belo_Vale
+144 269.3 45.4 São_Thomé_das_Letras
+145 70.5 108.1 Juruaia
+146 36.5 227.9 Delfinópolis
+147 370.8 126.6 Tiradentes
+148 382.6 152.6 Lagoa_Dourada
+149 50.2 139.4 Jacuí
+150 178.3 387.2 Cedro_do_Abaeté
+151 146.5 377.7 Matutina
+152 393.9 203.0 Jeceaba
+153 179.9 36.5 Cordislândia
+154 93.3 78.8 Cabo_Verde
+155 385.5 270.5 Ibirité
+156 77.1 92.2 Muzambinho
+157 162.1 38.6 Carvalhópolis
+158 34.4 175.5 Pratápolis
+159 343.4 341.6 Inhaúma
+160 217.3 30.3 Campanha
+161 398.7 191.1 São_Brás_do_Suaçuí
+162 385.9 282.9 Contagem
+163 382.9 133.3 Prados
+164 231.2 27.9 Cambuquira
+165 27.1 196.5 Cássia
+166 146.6 37.7 Poço_Fundo
+167 38.9 284.9 Tapira
+168 400.8 168.7 Casa_Grande
+169 316.9 51.0 Minduri
+170 193.7 22.7 São_Gonçalo_do_Sapucaí
+171 382.0 305.4 Ribeirão_das_Neves
+172 73.8 343.6 Ibiá
+173 351.5 77.1 Madre_de_Deus_de_Minas
+174 169.1 25.3 Turvolândia
+175 256.6 24.7 Conceição_do_Rio_Verde
+176 112.5 47.3 Campestre
+177 53.7 100.7 Guaxupé
+178 390.0 126.1 Dores_de_Campos
+179 407.0 175.5 Queluzito
+180 411.3 208.1 Congonhas
+181 93.4 56.1 Botelhos
+182 111.6 381.9 Rio_Paranaíba
+183 291.7 29.7 Cruzília
+184 362.4 345.9 Sete_Lagoas
+185 340.2 367.1 Caetanópolis
+186 223.7 12.9 Lambari
+187 401.8 285.8 Belo_Horizonte
+188 376.3 334.0 Capim_Branco
+189 19.2 152.2 São_Sebastião_do_Paraíso
+190 342.0 370.3 Paraopeba
+191 368.4 79.0 Piedade_do_Rio_Grande
+192 42.6 101.3 Guaranésia
+193 231.0 10.0 Jesuânia
+194 10.0 192.1 Capetinga
+195 417.2 240.7 Itabirito
+196 151.1 18.1 São_João_da_Mata
+197 396.1 115.9 Barroso
+198 147.0 406.1 Tiros
+199 337.2 47.7 São_Vicente_de_Minas
+200 387.8 322.9 Pedro_Leopoldo
+201 372.7 343.6 Prudente_de_Morais
+DEMAND_SECTION
+1 0
+2 17
+3 7
+4 25
+5 20
+6 11
+7 8
+8 30
+9 25
+10 15
+11 26
+12 24
+13 26
+14 10
+15 19
+16 9
+17 22
+18 28
+19 25
+20 17
+21 13
+22 15
+23 18
+24 25
+25 21
+26 8
+27 11
+28 19
+29 24
+30 12
+31 18
+32 4
+33 25
+34 26
+35 29
+36 8
+37 24
+38 26
+39 25
+40 16
+41 24
+42 28
+43 29
+44 22
+45 6
+46 19
+47 8
+48 29
+49 15
+50 3
+51 26
+52 13
+53 22
+54 15
+55 16
+56 5
+57 25
+58 25
+59 6
+60 26
+61 12
+62 14
+63 12
+64 13
+65 27
+66 8
+67 12
+68 15
+69 15
+70 12
+71 20
+72 8
+73 30
+74 29
+75 15
+76 9
+77 8
+78 3
+79 25
+80 9
+81 26
+82 2
+83 29
+84 10
+85 29
+86 18
+87 12
+88 26
+89 20
+90 27
+91 24
+92 15
+93 21
+94 5
+95 12
+96 29
+97 22
+98 21
+99 26
+100 9
+101 9
+102 16
+103 13
+104 6
+105 8
+106 13
+107 17
+108 21
+109 28
+110 22
+111 6
+112 10
+113 14
+114 21
+115 12
+116 12
+117 24
+118 24
+119 16
+120 29
+121 7
+122 23
+123 24
+124 26
+125 29
+126 6
+127 12
+128 8
+129 20
+130 23
+131 4
+132 5
+133 28
+134 7
+135 2
+136 30
+137 6
+138 16
+139 24
+140 9
+141 13
+142 9
+143 4
+144 8
+145 27
+146 11
+147 9
+148 24
+149 16
+150 21
+151 10
+152 17
+153 18
+154 30
+155 15
+156 23
+157 15
+158 8
+159 28
+160 4
+161 11
+162 11
+163 10
+164 6
+165 20
+166 23
+167 25
+168 10
+169 18
+170 5
+171 17
+172 8
+173 30
+174 8
+175 27
+176 14
+177 7
+178 18
+179 29
+180 9
+181 12
+182 13
+183 26
+184 24
+185 30
+186 27
+187 3
+188 20
+189 30
+190 23
+191 19
+192 14
+193 25
+194 25
+195 22
+196 4
+197 5
+198 9
+199 3
+200 18
+201 6
+DEPOT_SECTION
+1
+-1
+EOF

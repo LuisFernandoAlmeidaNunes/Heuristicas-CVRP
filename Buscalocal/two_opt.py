@@ -1,6 +1,6 @@
 from typing import List, Tuple
 from Heuristicas.Heuristica import Heuristica
-from saida.terminal import spinner_busca_local, spinner_busca_local_fim
+from saida.terminal import spinner_busca_local_fim
 
 
 class TwoOpt(Heuristica):
@@ -16,7 +16,8 @@ class TwoOpt(Heuristica):
 
     nome = "2opt"
 
-    def __init__(self, construtivo: Heuristica):
+    def __init__(self, construtivo: Heuristica = None):
+        # construtivo opcional: quando None, usar apenas como busca local (melhorar)
         self.construtivo = construtivo
 
     def _delta(self, inst, r, i, j) -> float:
@@ -31,20 +32,17 @@ class TwoOpt(Heuristica):
             + d(prev_i, r[j]) + d(r[i], next_j)
         )
 
-    def resolver(self, inst, k_alvo=None) -> Tuple[List[List[int]], float, int]:
-        rotas, _, _ = self.construtivo.resolver(inst, k_alvo)
+    def melhorar(self, inst, rotas: List[List[int]], k_alvo=None) -> Tuple[List[List[int]], float]:
+        """
+        Aplica o 2-Opt sobre rotas já construídas (sem reconstruir).
+        Retorna (rotas_melhoradas, custo). Estratégia de primeira melhora.
+        """
         rotas = [list(r) for r in rotas if r]
-        custo_inicial = self.calcular_custo(inst, rotas, k_alvo)
-        custo_atual = custo_inicial
         max_dist = getattr(inst, 'max_distancia', float('inf'))
 
         melhorou = True
-        iteracao = 0
         while melhorou:
             melhorou = False
-            iteracao += 1
-            # spinner_busca_local(self.nome, iteracao, custo_atual, custo_inicial)
-
             for idx_rota, r in enumerate(rotas):
                 if len(r) < 2:
                     continue
@@ -61,13 +59,20 @@ class TwoOpt(Heuristica):
                         if max_dist != float('inf') and not self.validar_viabilidade(inst, nova_rota):
                             continue
 
-                        custo_atual += delta
                         rotas[idx_rota] = nova_rota
                         r = nova_rota
                         melhorou = True
                         break
 
-        custo = self.calcular_custo(inst, rotas, k_alvo)
+        return rotas, self.calcular_custo(inst, rotas, k_alvo)
+
+    def resolver(self, inst, k_alvo=None) -> Tuple[List[List[int]], float, int]:
+        rotas, _, _ = self.construtivo.resolver(inst, k_alvo)
+        rotas = [list(r) for r in rotas if r]
+        custo_inicial = self.calcular_custo(inst, rotas, k_alvo)
+
+        rotas, custo = self.melhorar(inst, rotas, k_alvo)
+
         n_veiculos = len(rotas)
         spinner_busca_local_fim(self.nome, custo_inicial, custo)
         return rotas, custo, n_veiculos
