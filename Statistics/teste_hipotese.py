@@ -41,7 +41,7 @@ def executar_analise_estatistica(caminho_tabela_gaps, pasta_resultados):
 
     # CARREGAMENTO DOS DADOS
     df = pd.read_csv(caminho_tabela)
-    metodos = ['CW (Clarke & Wright Savings)', 'MJ (Mole & Jameson)', 'NN (Nearest Neighbor)', 'SW (Sweep)']
+    metodos = ['2opt','GRASP-CW-2OPT','ILS-CW-2OPT']
 
     print(f"=== Iniciando Análise Estatística (n={len(df)} instâncias) ===")
 
@@ -56,7 +56,7 @@ def executar_analise_estatistica(caminho_tabela_gaps, pasta_resultados):
 
     # TESTE DE WILCOXON (PAR A PAR)
     if p_friedman < 0.05:
-        n_comparacoes = 6
+        n_comparacoes = 3
         limite_bonferroni = 0.05 / n_comparacoes
 
         for h1, h2 in combinations(metodos, 2):

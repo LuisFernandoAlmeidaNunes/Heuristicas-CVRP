@@ -46,8 +46,8 @@ def exibir_resultado(r, inst, melhor):
     print()
     cabecalho_instancia(inst_info, melhor)
     linha_resultado(r)
-    # rodape_instancia([r], melhor)
-    mensagem_info(f"Plot salvo: {r['png']}")
+    mensagem_info(f"Mapa salvo   : {r['png']}")
+    mensagem_info(f"Rotas salvas : {r['rotas_txt']}")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -78,7 +78,6 @@ def modo_cli(args):
     inst = InstanciaCvrp.ler_arquivo(caminho_vrp)
     mensagem_info(f"  → {inst}")
 
-    # Busca melhor_k no config pelo nome da instância
     _, melhor_k = get_config_instancia(inst.nome)
     if melhor_k is None:
         mensagem_aviso(f"'{inst.nome}' não encontrado no config — penalidade de veículos desativada.")
@@ -91,7 +90,7 @@ def modo_cli(args):
         inst=inst,
         melhor_conhecido=melhor,
         melhor_k=melhor_k,
-        is_beenchmark= False
+        is_beenchmark=False
     )
 
     titulo("RESULTADO")
@@ -116,5 +115,3 @@ if __name__ == "__main__":
         sys.exit(1)
 
     modo_cli(args)
-
-    #existe arquivo de config com os valores de BKS e K esperado de todas as instâncias já (InstancesConfig.py)
